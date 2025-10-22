@@ -8,7 +8,6 @@ public class Math {
     int Multi(int x, int y) {
         return x * y;
     }
-public class Math{
 
 /*
 Developer: Judy Alazemi
