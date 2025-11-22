@@ -1,260 +1,125 @@
-import { useState } from "react";
-import { Button } from "./ui/button";
-import { Input } from "./ui/input";
-import { Label } from "./ui/label";
-import { Checkbox } from "./ui/checkbox";
-import { Eye, EyeOff } from "lucide-react";
-import logo from "figma:asset/ee4997137a1efdc01022e716ee2109a026346eff.png";
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Create Account</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 
-export function SignUpPage() {
-  const [showPassword, setShowPassword] = useState(false);
-  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-  const [formData, setFormData] = useState({
-    firstName: "",
-    lastName: "",
-    email: "",
-    password: "",
-    confirmPassword: "",
-    newsletter: false,
-  });
-  const [errors, setErrors] = useState<Record<string, string>>({});
+    <link rel="stylesheet" href="assets/css/auth.css">
+    <script src="assets/js/auth.js" defer></script>
+</head>
 
-  const validateForm = () => {
-    const newErrors: Record<string, string> = {};
+<body>
 
-    if (!formData.firstName.trim()) {
-      newErrors.firstName = "First name is required";
-    }
+    <!-- HEADER -->
+    <header class="top-banner">
 
-    if (!formData.lastName.trim()) {
-      newErrors.lastName = "Last name is required";
-    }
+        <!-- HAMBURGER MENU BUTTON -->
+        <button id="menu-btn" class="hamburger-btn">
+            <img src="assets/images/hamburgermenu.png" class="hamburger-icon" alt="menu">
+        </button>
 
-    if (!formData.email.trim()) {
-      newErrors.email = "Email is required";
-    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
-      newErrors.email = "Please enter a valid email";
-    }
+        <!-- LOGO (redirects to home page) -->
+        <a href="home.php"> <!-- EDIT: change home.php to your real homepage file -->
+            <img src="assets/images/sabillogowhite.png" class="logo" alt="Sabil Logo">
+        </a>
 
-    if (!formData.password) {
-      newErrors.password = "Password is required";
-    } else if (formData.password.length < 8) {
-      newErrors.password = "Password must be at least 8 characters";
-    }
+    </header>
 
-    if (!formData.confirmPassword) {
-      newErrors.confirmPassword = "Please confirm your password";
-    } else if (formData.password !== formData.confirmPassword) {
-      newErrors.confirmPassword = "Passwords do not match";
-    }
+    <!-- SIDE MENU -->
+    <div id="side-menu" class="side-menu">
+        <button id="close-menu" class="close-btn">✕</button>
 
-    setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
-  };
+        <nav class="menu-links">
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (validateForm()) {
-      console.log("Form submitted:", formData);
-      // Here you would typically send the data to your backend
-      alert("Account created successfully! (Demo only)");
-    }
-  };
+            <!-- EDIT THESE LINKS TO MATCH YOUR PAGES -->
+            <a href="home.php">Option 1 <!-- EDIT WITH home.php or whatever page --></a>
+            <a href="#">Option 2 <!-- EDIT WITH page2.php --></a>
+            <a href="#">Option 3 <!-- EDIT WITH page3.php --></a>
+            <a href="#">Option 4 <!-- EDIT WITH page4.php --></a>
+            <a href="#">Option 5 <!-- EDIT WITH page5.php --></a>
+            <a href="#">Option 6 <!-- EDIT WITH page6.php --></a>
 
-  const handleChange = (field: string, value: string | boolean) => {
-    setFormData((prev) => ({ ...prev, [field]: value }));
-    // Clear error when user starts typing
-    if (errors[field]) {
-      setErrors((prev) => ({ ...prev, [field]: "" }));
-    }
-  };
-
-  return (
-    <div className="min-h-screen flex">
-      {/* Left side - Form */}
-      <div className="flex-1 flex items-center justify-center p-8">
-        <div className="w-full max-w-md">
-          {/* Logo and Header */}
-          <div className="mb-8">
-            <div className="mb-6">
-              <img src={logo} alt="Sabil" className="h-16" />
-            </div>
-            <h1 className="mb-2">Create your account</h1>
-            <p className="text-neutral-600">
-              Join thousands of happy shoppers today
-            </p>
-          </div>
-
-          {/* Form */}
-          <form onSubmit={handleSubmit} className="space-y-5">
-            {/* Name fields */}
-            <div className="grid grid-cols-2 gap-4">
-              <div className="space-y-2">
-                <Label htmlFor="firstName">First Name</Label>
-                <Input
-                  id="firstName"
-                  placeholder="John"
-                  value={formData.firstName}
-                  onChange={(e) => handleChange("firstName", e.target.value)}
-                  className={errors.firstName ? "border-red-500" : ""}
-                />
-                {errors.firstName && (
-                  <p className="text-sm text-red-500">{errors.firstName}</p>
-                )}
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="lastName">Last Name</Label>
-                <Input
-                  id="lastName"
-                  placeholder="Doe"
-                  value={formData.lastName}
-                  onChange={(e) => handleChange("lastName", e.target.value)}
-                  className={errors.lastName ? "border-red-500" : ""}
-                />
-                {errors.lastName && (
-                  <p className="text-sm text-red-500">{errors.lastName}</p>
-                )}
-              </div>
-            </div>
-
-            {/* Email */}
-            <div className="space-y-2">
-              <Label htmlFor="email">Email Address</Label>
-              <Input
-                id="email"
-                type="email"
-                placeholder="john@example.com"
-                value={formData.email}
-                onChange={(e) => handleChange("email", e.target.value)}
-                className={errors.email ? "border-red-500" : ""}
-              />
-              {errors.email && (
-                <p className="text-sm text-red-500">{errors.email}</p>
-              )}
-            </div>
-
-            {/* Password */}
-            <div className="space-y-2">
-              <Label htmlFor="password">Password</Label>
-              <div className="relative">
-                <Input
-                  id="password"
-                  type={showPassword ? "text" : "password"}
-                  placeholder="••••••••"
-                  value={formData.password}
-                  onChange={(e) => handleChange("password", e.target.value)}
-                  className={errors.password ? "border-red-500" : ""}
-                />
-                <button
-                  type="button"
-                  onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-neutral-500 hover:text-neutral-700"
-                >
-                  {showPassword ? (
-                    <EyeOff className="w-4 h-4" />
-                  ) : (
-                    <Eye className="w-4 h-4" />
-                  )}
-                </button>
-              </div>
-              {errors.password && (
-                <p className="text-sm text-red-500">{errors.password}</p>
-              )}
-            </div>
-
-            {/* Confirm Password */}
-            <div className="space-y-2">
-              <Label htmlFor="confirmPassword">Confirm Password</Label>
-              <div className="relative">
-                <Input
-                  id="confirmPassword"
-                  type={showConfirmPassword ? "text" : "password"}
-                  placeholder="••••••••"
-                  value={formData.confirmPassword}
-                  onChange={(e) =>
-                    handleChange("confirmPassword", e.target.value)
-                  }
-                  className={errors.confirmPassword ? "border-red-500" : ""}
-                />
-                <button
-                  type="button"
-                  onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-neutral-500 hover:text-neutral-700"
-                >
-                  {showConfirmPassword ? (
-                    <EyeOff className="w-4 h-4" />
-                  ) : (
-                    <Eye className="w-4 h-4" />
-                  )}
-                </button>
-              </div>
-              {errors.confirmPassword && (
-                <p className="text-sm text-red-500">{errors.confirmPassword}</p>
-              )}
-            </div>
-
-            {/* Newsletter */}
-            <div className="flex items-center space-x-2">
-              <Checkbox
-                id="newsletter"
-                checked={formData.newsletter}
-                onCheckedChange={(checked) =>
-                  handleChange("newsletter", checked as boolean)
-                }
-              />
-              <Label
-                htmlFor="newsletter"
-                className="text-sm text-neutral-600 cursor-pointer"
-              >
-                Send me exclusive offers and promotions
-              </Label>
-            </div>
-
-            {/* Submit Button */}
-            <Button type="submit" className="w-full">
-              Create Account
-            </Button>
-
-            {/* Terms */}
-            <p className="text-sm text-neutral-600 text-center">
-              By signing up, you agree to our{" "}
-              <a href="#" className="text-black hover:underline">
-                Terms of Service
-              </a>{" "}
-              and{" "}
-              <a href="#" className="text-black hover:underline">
-                Privacy Policy
-              </a>
-            </p>
-
-            {/* Sign In Link */}
-            <p className="text-center text-neutral-600">
-              Already have an account?{" "}
-              <a href="#" className="text-black hover:underline">
-                Sign in
-              </a>
-            </p>
-          </form>
-        </div>
-      </div>
-
-      {/* Right side - Image */}
-      <div className="hidden lg:block lg:flex-1 bg-neutral-100 relative overflow-hidden">
-        <div className="absolute inset-0 flex items-center justify-center p-12">
-          <div className="max-w-md text-center">
-            <div className="mb-6">
-              <div className="w-20 h-20 bg-black rounded-full mx-auto mb-6 flex items-center justify-center">
-                <ShoppingBag className="w-10 h-10 text-white" />
-              </div>
-            </div>
-            <h2 className="mb-4">Welcome to ShopHub</h2>
-            <p className="text-neutral-600">
-              Discover amazing products, exclusive deals, and a shopping
-              experience tailored just for you.
-            </p>
-          </div>
-        </div>
-      </div>
+        </nav>
     </div>
-  );
-}
+
+    <div id="overlay" class="overlay"></div>
+
+    <!-- PAGE CONTENT -->
+    <main class="content">
+
+        <h1>Create your account</h1>
+        <p class="subtitle">Join thousands of happy shoppers today</p>
+
+        <form class="auth-form">
+
+            <div class="two-cols">
+                <div class="form-group">
+                    <label>First Name</label>
+                    <input type="text" placeholder="John">
+                </div>
+
+                <div class="form-group">
+                    <label>Last Name</label>
+                    <input type="text" placeholder="Doe">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>Email Address</label>
+                <input type="email" placeholder="john@example.com">
+            </div>
+
+            <div class="form-group">
+                <label>Password</label>
+                <div class="password-wrapper">
+                    <input id="password" type="password" placeholder="••••••••">
+                    <button type="button" class="toggle-password" data-target="password">
+                        <svg class="eye-icon" xmlns="http://www.w3.org/2000/svg"
+                             width="20" height="20" fill="none" stroke="currentColor"
+                             stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+                                <circle cx="12" cy="12" r="3"/>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>Confirm Password</label>
+                <div class="password-wrapper">
+                    <input id="confirmPassword" type="password" placeholder="••••••••">
+                    <button type="button" class="toggle-password" data-target="confirmPassword">
+                        <svg class="eye-icon" xmlns="http://www.w3.org/2000/svg"
+                             width="20" height="20" fill="none" stroke="currentColor"
+                             stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+                                <circle cx="12" cy="12" r="3"/>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+
+            <button class="btn-primary">Create Account</button>
+
+            <p class="legal">
+                By signing up, you agree to our 
+                <a href="#">Terms of Service</a> and 
+                <a href="#">Privacy Policy</a>
+            </p>
+
+            <p class="signin">
+                Already have an account? 
+                <a href="signin.php">Sign in</a> <!-- already redirects correctly -->
+            </p>
+
+
+            <script src="assets/js/validate.js" defer></script>
+
+
+        </form>
+
+    </main>
+
+</body>
+</html>
