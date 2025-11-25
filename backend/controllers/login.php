@@ -1,5 +1,5 @@
 <?php
-session_start():
+session_start();
 require_once"../config/db.php";
 
 $email = $_POST["email"] ?? '';
@@ -27,6 +27,7 @@ if ($resul->num_rows === 1) {
     } else {    
         echo "Incorrect password.";
         exit;
+    }
     } else {
         echo "Email not found.";
         exit;
