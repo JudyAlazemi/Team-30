@@ -36,4 +36,9 @@ echo "Email not found.";
 
 }
 
+<<<<<<< HEAD
 ?>
+=======
+?>
+
+>>>>>>> 2db52b339aead7b3d74efc4764b63ed46808f9b2
