@@ -5,40 +5,81 @@
     <title>Create Account</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
+    <link rel="stylesheet" href="style.css">
+    <script defer src="nav.js"></script>
     <link rel="stylesheet" href="assets/css/registerlogin.css">
     <script src="assets/js/auth.js" defer></script>
 </head>
 
 <body>
 
-    <!-- HEADER -->
-    <header class="top-banner">
+<header class="topbar">
+  <div class="topbar-inner">
 
-        <!-- HAMBURGER MENU BUTTON -->
-        <button id="menu-btn" class="hamburger-btn">
-            <img src="assets/images/hamburgermenu.png" class="hamburger-icon" alt="menu">
-        </button>
+    <button class="icon-btn menu-toggle" aria-label="Open menu" aria-expanded="false">
+      <img class="icon icon--menu" src="images/menu.png" alt="" />
+      <img class="icon icon--close" src="images/close.png" alt="" />
+    </button>
 
-        <!-- LOGO REDIRECT -->
-        <a href="home.html">
-            <img src="assets/images/sabillogowhite.png" class="logo" alt="Sabil Logo">
+    <a class="brand" href="index.html">
+      <img class="brand-logo" src="images/logo.png" alt="Sabil" />
+    </a>
+
+    <nav class="actions" aria-label="Account & tools">
+      <a id="userBtn" class="action" href="login.html" role="button" aria-pressed="false">
+        <img id="userIcon" class="icon"
+          src="images/sign-in.png"
+          data-src-inactive="images/sign-in.png"
+          data-src-active="images/user-shaded.png"
+        />
+        <span id="userText" class="action-text">Sign in</span>
+      </a>
+
+      <div class="search-group">
+        <a id="searchBtn" class="action" href="#" aria-expanded="false">
+          <img class="icon" src="images/search.png" alt="Search" />
         </a>
+        <input
+          type="text"
+          id="navSearchInput"
+          class="nav-search-input"
+          placeholder="Search..."
+        />
+      </div>
 
-    </header>
+      <a id="favBtn" class="action" href="favourites.html">
+        <img id="favIcon" class="icon"
+          src="images/favorite.png"
+          data-src-inactive="images/favorite.png"
+          data-src-active="images/favorite-shaded.png"
+        />
+      </a>
 
-    <!-- SIDE MENU -->
-    <div id="side-menu" class="side-menu">
-        <button id="close-menu" class="close-btn">✕</button>
+      <a id="bagBtn" class="action" href="cart.html">
+        <img id="bagIcon" class="icon"
+          src="images/shopping-bag.png"
+          data-src-inactive="images/shopping-bag.png"
+          data-src-active="images/shopping-bag-filled.png"
+        />
+      </a>
+    </nav>
 
-        <nav class="menu-links">
-            <a href="home.html">Option 1</a>
-            <a href="#">Option 2</a>
-            <a href="#">Option 3</a>
-            <a href="#">Option 4</a>
-            <a href="#">Option 5</a>
-            <a href="#">Option 6</a>
-        </nav>
-    </div>
+  </div>
+</header>
+
+<div id="menuDrawer" class="drawer" aria-hidden="true">
+  <div class="drawer__backdrop" data-close-drawer></div>
+  <aside class="drawer__panel">
+    <nav class="drawer__nav">
+      <a href="products.html">Shop all</a>
+      <a href="favourites.html">Favourites</a>
+      <a href="cart.html">Cart</a>
+      <a href="aboutus.html">About us</a>
+      <a href="contactus.html">Contact us</a>
+    </nav>
+  </aside>
+</div>
+
 
     <div id="overlay" class="overlay"></div>
 
