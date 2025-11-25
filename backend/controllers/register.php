@@ -21,12 +21,19 @@ if ($stmt->num_rows > 0) {
 }
 
 $hash = password_hash($password, PASSWORD_DEFAULT);
-$stmt = $conn->prepare("INSERT INTO users (name, email, password) VALUES (?, ?, ?)");
-$stmt->bind_param("sss", $name, $email, $hashed);
 
-if (!$stmt->execute()) {
-    echo "Regestration successful!";
+$stmt = $conn->prepare("INSERT INTO users (name, email, password) VALUES (?, ?, ?)");
+if (!$stmt) {
+    die("Prepare failed: " . $conn->error);
+}
+
+if (!$stmt->bind_param("sss", $name, $email, $hashed)) {
+    die("Bind failed: " . $stmt->error);
+}
+
+if ($stmt->execute()) {
+    echo "Registration successful!";
 } else {
-    echo "Error: " . $stmt->error;
+    echo "Execute failed: " . $stmt->error;
 }
 ?>
