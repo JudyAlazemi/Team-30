@@ -27,7 +27,7 @@ if (!$stmt) {
     die("Prepare failed: " . $conn->error);
 }
 
-if (!$stmt->bind_param("sss", $name, $email, $hashed)) {
+if (!$stmt->bind_param("sss", $name, $email, $hash)) {
     die("Bind failed: " . $stmt->error);
 }
 
