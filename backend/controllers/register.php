@@ -1,8 +1,8 @@
 <?php
-require_once "../config/db.php";   //imports db connection 
+require_once "../config/db.php";          //imports db connection 
 require_once "../models/User.php";
 
-$user = new User();        // creates a new User from model class
+$user = new User();                      // creates a new User from model class
 
 $name  = $_POST['name']          ?? '';
 $email  = $_POST['email']        ?? '';
