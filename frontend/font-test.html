@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Font Test - SABIL</title>
+    <style>
+        @font-face {
+            font-family: 'Meshed Display';
+            src: url('fonts/MeshedDisplay-Regular.ttf') format('truetype');
+            font-weight: 400;
+            font-style: normal;
+        }
+
+        @font-face {
+            font-family: 'Meshed Display';
+            src: url('fonts/MeshedDisplay-Bold.ttf') format('truetype');
+            font-weight: 700;
+            font-style: normal;
+        }
+
+        @font-face {
+            font-family: 'Meshed Display';
+            src: url('fonts/MeshedDisplay-Light.ttf') format('truetype');
+            font-weight: 300;
+            font-style: normal;
+        }
+
+        body {
+            font-family: 'Meshed Display', Arial, sans-serif;
+            padding: 50px;
+            background-color: #f4eee9;
+            color: #4e4138;
+        }
+
+        .test-section {
+            background: white;
+            padding: 30px;
+            margin: 20px 0;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        h1 {
+            font-size: 48px;
+            font-weight: 700;
+        }
+
+        h2 {
+            font-size: 36px;
+            font-weight: 600;
+        }
+
+        h3 {
+            font-size: 24px;
+            font-weight: 500;
+        }
+
+        p {
+            font-size: 18px;
+            font-weight: 400;
+            line-height: 1.6;
+        }
+
+        .light {
+            font-weight: 300;
+        }
+
+        .regular {
+            font-weight: 400;
+        }
+
+        .bold {
+            font-weight: 700;
+        }
+
+        .status {
+            padding: 10px;
+            background: #4ade80;
+            color: white;
+            border-radius: 5px;
+            margin: 10px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="test-section">
+        <h1>SABIL Perfumes - Font Test</h1>
+        <div class="status">✅ If you can see a stylish display font, Meshed Display is working!</div>
+    </div>
+
+    <div class="test-section">
+        <h2>Font Weight Tests</h2>
+        <p class="light">Light (300): The quick brown fox jumps over the lazy dog</p>
+        <p class="regular">Regular (400): The quick brown fox jumps over the lazy dog</p>
+        <p class="bold">Bold (700): The quick brown fox jumps over the lazy dog</p>
+    </div>
+
+    <div class="test-section">
+        <h2>Product Names</h2>
+        <h3>Midnight Oud</h3>
+        <p>Deep and mysterious oriental fragrance</p>
+        <p class="bold">$89.99</p>
+    </div>
+
+    <div class="test-section">
+        <h2>Instructions</h2>
+        <p><strong>✅ Font is working if:</strong> The text looks elegant and stylish (not basic Arial)</p>
+        <p><strong>❌ Font is NOT working if:</strong> The text looks like plain Arial/Times New Roman</p>
+        <br>
+        <p><strong>If font is NOT working, check:</strong></p>
+        <ul>
+            <li>Are the font files in the <code>fonts/</code> folder?</li>
+            <li>Open browser DevTools (F12) → Console tab → Check for font errors</li>
+            <li>Try hard refresh: Ctrl+F5 (Windows) or Cmd+Shift+R (Mac)</li>
+        </ul>
+    </div>
+
+    <script>
+        // Check if font is loaded
+        document.fonts.ready.then(function () {
+            const fontCheck = document.fonts.check('16px "Meshed Display"');
+            if (fontCheck) {
+                console.log('✅ Meshed Display font is loaded successfully!');
+            } else {
+                console.error('❌ Meshed Display font failed to load!');
+                alert('⚠️ Font not loading! Check the browser console (F12) for errors.');
+            }
+        });
+    </script>
+</body>
+</html>

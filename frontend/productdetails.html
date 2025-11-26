@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Details - SABIL Perfumes</title>
+    <link rel="stylesheet" href="styles/globals.css">
+    <link rel="stylesheet" href="styles/product.css">
+</head>
+<body>
+    <header>
+        <nav class="navbar">
+            <div class="container">
+                <div class="logo">SABIL</div>
+                <ul class="nav-links">
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="products.html">Products</a></li>
+                    <li><a href="aboutus.html">About</a></li>
+                    <li><a href="contactus.html">Contact</a></li>
+                    <li><a href="cart.html">Cart</a></li>
+                </ul>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <section class="product-details-section">
+            <div class="container">
+                <a href="products.html" class="back-link">&larr; Back to Products</a>
+                
+                <div class="product-details-grid">
+                    <div class="product-images">
+                        <div class="main-image">
+                            <img id="mainProductImage" src="images/products/perfume1.jpg" alt="Product Image">
+                        </div>
+                        <div class="image-thumbnails">
+                            <img src="images/products/perfume1.jpg" alt="View 1" class="thumbnail active" onclick="changeImage('images/products/perfume1.jpg')">
+                            <img src="images/products/perfume1-alt1.jpg" alt="View 2" class="thumbnail" onclick="changeImage('images/products/perfume1-alt1.jpg')">
+                            <img src="images/products/perfume1-alt2.jpg" alt="View 3" class="thumbnail" onclick="changeImage('images/products/perfume1-alt2.jpg')">
+                        </div>
+                    </div>
+
+                    <div class="product-details-content">
+                        <h1 id="productName">Midnight Oud</h1>
+                        <p class="product-rating">⭐⭐⭐⭐⭐ (128 reviews)</p>
+                        <p class="product-price-large" id="productPrice">$89.99</p>
+                        
+                        <div class="product-description-section">
+                            <h3>Description</h3>
+                            <p id="productDescription">
+                                Midnight Oud is a luxurious and captivating fragrance that embodies elegance and mystery. 
+                                This deep oriental scent features rich oud wood as its heart, complemented by warm spices 
+                                and a hint of amber. Perfect for evening wear and special occasions.
+                            </p>
+                        </div>
+
+                        <div class="product-notes">
+                            <h3>Fragrance Notes</h3>
+                            <div class="notes-grid">
+                                <div class="note-item">
+                                    <strong>Top Notes:</strong>
+                                    <p>Bergamot, Saffron, Pink Pepper</p>
+                                </div>
+                                <div class="note-item">
+                                    <strong>Heart Notes:</strong>
+                                    <p>Oud Wood, Rose, Patchouli</p>
+                                </div>
+                                <div class="note-item">
+                                    <strong>Base Notes:</strong>
+                                    <p>Amber, Musk, Sandalwood</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="product-specs">
+                            <h3>Product Information</h3>
+                            <ul>
+                                <li><strong>Size:</strong> 100ml / 3.4 fl oz</li>
+                                <li><strong>Concentration:</strong> Eau de Parfum</li>
+                                <li><strong>Gender:</strong> Unisex</li>
+                                <li><strong>Longevity:</strong> 8-10 hours</li>
+                                <li><strong>Sillage:</strong> Strong</li>
+                            </ul>
+                        </div>
+
+                        <div class="product-actions">
+                            <div class="quantity-selector">
+                                <label for="quantity">Quantity:</label>
+                                <div class="quantity-controls">
+                                    <button class="qty-btn" onclick="decreaseQuantity()">-</button>
+                                    <input type="number" id="quantity" value="1" min="1" max="10">
+                                    <button class="qty-btn" onclick="increaseQuantity()">+</button>
+                                </div>
+                            </div>
+                            
+                            <button class="hero-btn add-to-cart-btn" onclick="addToCart()">Add to Cart</button>
+                            <button class="hero-btn buy-now-btn" onclick="buyNow()">Buy Now</button>
+                        </div>
+
+                        <div class="product-features">
+                            <div class="feature-item">
+                                <span class="feature-icon">✓</span>
+                                <span>Free shipping on orders over $50</span>
+                            </div>
+                            <div class="feature-item">
+                                <span class="feature-icon">✓</span>
+                                <span>30-day money-back guarantee</span>
+                            </div>
+                            <div class="feature-item">
+                                <span class="feature-icon">✓</span>
+                                <span>Authentic & cruelty-free</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Related Products Section -->
+                <div class="related-products">
+                    <h2>You May Also Like</h2>
+                    <div class="related-products-grid">
+                        <div class="product-card-small">
+                            <img src="images/products/perfume2.jpg" alt="Rose Garden">
+                            <h4>Rose Garden</h4>
+                            <p>$79.99</p>
+                            <a href="productdetails.html?id=2" class="hero-btn">View Details</a>
+                        </div>
+                        <div class="product-card-small">
+                            <img src="images/products/perfume4.jpg" alt="Amber Nights">
+                            <h4>Amber Nights</h4>
+                            <p>$94.99</p>
+                            <a href="productdetails.html?id=4" class="hero-btn">View Details</a>
+                        </div>
+                        <div class="product-card-small">
+                            <img src="images/products/perfume6.jpg" alt="Velvet Musk">
+                            <h4>Velvet Musk</h4>
+                            <p>$84.99</p>
+                            <a href="productdetails.html?id=6" class="hero-btn">View Details</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2024 SABIL Perfumes. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="productdetails.js"></script>
+</body>
+</html>
