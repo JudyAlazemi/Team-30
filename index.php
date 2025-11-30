@@ -10,9 +10,11 @@ if (file_exists(__DIR__ . '/db.php')) {
     <meta name="viewport" content="width=device-width,initial-scale=1" />
     <title>Sabil</title>
     <link rel="stylesheet" href="assets/css/style.css" />
-    <script defer src="nav.js"></script>
-    <script defer src="home.js"></script>
-    <script defer src="newsletter.js"></script>
+
+    <script defer src="assets/js/nav.js"></script>
+    <script defer src="assets/js/home.js"></script>
+    <script defer src="assets/js/newsletter.js"></script>
+
     <link rel="icon" type="image/png" href="assets/images/logo.png">
 </head>
 
@@ -36,7 +38,7 @@ if (file_exists(__DIR__ . '/db.php')) {
     <nav class="actions" aria-label="Account & tools">
 
       <!-- USER -->
-      <a id="userBtn" class="action" href="login.php" role="button" aria-pressed="false">
+      <a id="userBtn" class="action" href="login.html" role="button" aria-pressed="false">
         <img
           id="userIcon"
           class="icon"
