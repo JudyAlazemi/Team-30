@@ -1,0 +1,277 @@
+<?php
+session_start();
+require_once __DIR__ . "/db.php";
+
+if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["action"])) {
+    header("Content-Type: application/json");
+
+    $action     = $_POST["action"];
+    $userId     = $_SESSION["user_id"] ?? null;
+    $sessionId  = session_id();
+
+    // Determine WHERE clause
+    if ($userId) {
+        $where  = "user_id = ?";
+        $types  = "i";
+        $params = [$userId];
+    } else {
+        $where  = "session_id = ?";
+        $types  = "s";
+        $params = [$sessionId];
+    }
+
+    // 1️⃣ LIST favourites
+    if ($action === "list") {
+        $stmt = $conn->prepare("SELECT product_id FROM favourites WHERE $where");
+        $stmt->bind_param($types, ...$params);
+        $stmt->execute();
+        $res = $stmt->get_result();
+
+        $ids = [];
+        while ($row = $res->fetch_assoc()) {
+            $ids[] = (int)$row["product_id"];
+        }
+
+        echo json_encode([
+            "status" => "success",
+            "favourites" => $ids
+        ]);
+        exit;
+    }
+
+    // 2️⃣ TOGGLE favourite
+    if ($action === "toggle") {
+        $productId = (int)($_POST["product_id"] ?? 0);
+        if ($productId <= 0) {
+            echo json_encode(["status" => "error", "message" => "Invalid product"]);
+            exit;
+        }
+
+        // Check if exists
+        $stmt = $conn->prepare("SELECT id FROM favourites WHERE product_id = ? AND $where LIMIT 1");
+        $stmt->bind_param("i" . $types, $productId, ...$params);
+        $stmt->execute();
+        $stmt->store_result();
+
+        // Remove
+        if ($stmt->num_rows > 0) {
+            $stmt->bind_result($favId);
+            $stmt->fetch();
+            $stmt->close();
+
+            $del = $conn->prepare("DELETE FROM favourites WHERE id = ?");
+            $del->bind_param("i", $favId);
+            $del->execute();
+
+            echo json_encode(["status" => "success", "favourited" => false]);
+            exit;
+        }
+
+        // Add
+        $stmt->close();
+
+        if ($userId) {
+            $ins = $conn->prepare("INSERT INTO favourites (user_id, product_id) VALUES (?, ?)");
+            $ins->bind_param("ii", $userId, $productId);
+        } else {
+            $ins = $conn->prepare("INSERT INTO favourites (session_id, product_id) VALUES (?, ?)");
+            $ins->bind_param("si", $sessionId, $productId);
+        }
+        $ins->execute();
+
+        echo json_encode(["status" => "success", "favourited" => true]);
+        exit;
+    }
+
+    echo json_encode(["status" => "error", "message" => "Unknown action"]);
+    exit;
+}
+
+?>
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>About | Sabil</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="static.css" />
+  <script src="nav.js" defer></script>  
+  <script defer src="newsletter.js"></script>
+  <script defer src="fav.js"></script>
+
+    <link rel="icon" type="image/png" href="images/logo.png">
+</head>
+<body class="page-static">
+
+<!-- TOP BAR / HEADER -->
+<header class="topbar">
+  <div class="topbar-inner">
+
+    <!-- Left: Menu button -->
+    <button class="icon-btn menu-toggle" aria-label="Open menu" aria-expanded="false">
+      <img class="icon icon--menu" src="images/menu.png" alt="" />
+      <img class="icon icon--close" src="images/close.png" alt="" />
+    </button>
+
+    <!-- Center: Logo -->
+    <a class="brand" href="index.php">
+      <img class="brand-logo" src="images/logo.png" alt="Sabil" />
+    </a>
+
+    <!-- Right: actions -->
+    <nav class="actions" aria-label="Account & tools">
+
+      <!-- USER -->
+      <a id="userBtn" class="action" href="login.php" role="button" aria-pressed="false">
+        <img
+          id="userIcon"
+          class="icon"
+          src="images/sign-in.png"
+          alt="User"
+          data-src-inactive="images/sign-in.png"
+          data-src-active="images/user-shaded.png"
+        />
+        <span id="userText" class="action-text">Sign in</span>
+      </a>
+
+      <!-- SEARCH -->
+      <div class="search-group">
+        <a id="searchBtn" class="action" href="#" aria-expanded="false" aria-controls="navSearchInput">
+          <img class="icon" src="images/search.png" alt="Search" />
+        </a>
+        <input
+          type="text"
+          id="navSearchInput"
+          class="nav-search-input"
+          placeholder="Search..."
+          autocomplete="off"
+        />
+      </div>
+
+      <!-- FAVOURITES ICON -->
+      <a id="favBtn" class="action" href="favourites.php" role="button" aria-pressed="true">
+        <img
+          id="favIcon"
+          class="icon"
+          src="images/favorite.png"
+          alt="Favourite"
+          data-src-inactive="images/favorite.png"
+          data-src-active="images/favorite-shaded.png"
+        />
+      </a>
+
+      <!-- BAG -->
+      <a id="bagBtn" class="action" href="cart.php" role="button" aria-pressed="false">
+        <img
+          id="bagIcon"
+          class="icon"
+          src="images/shopping-bag.png"
+          alt="Shopping bag"
+          data-src-inactive="images/shopping-bag.png"
+          data-src-active="images/shopping-bag-filled.png"
+        />
+      </a>
+
+    </nav>
+  </div>
+</header>
+
+<!-- SIDE MENU DRAWER -->
+<div id="menuDrawer" class="drawer" aria-hidden="true">
+  <div class="drawer__backdrop" data-close-drawer></div>
+
+  <aside class="drawer__panel" role="dialog" aria-modal="true" aria-label="Site menu">
+    <nav class="drawer__nav">
+      <a href="products.php">Shop all</a>
+      <a href="favourites.php">Favourites</a>
+      <a href="cart.php">Cart</a>
+      <a href="aboutus.php">About us</a>
+      <a href="contactus.php">Contact us</a>
+      <a href="faq.php">FAQ</a>
+      <a href="terms.php">Terms</a>
+      <a href="privacypolicy.php">Privacy Policy</a>
+    </nav>
+  </aside>
+</div>
+
+
+  <!-- SIDE MENU DRAWER -->
+  <div id="menuDrawer" class="drawer" aria-hidden="true">
+    <div class="drawer__backdrop" data-close-drawer></div>
+
+    <aside class="drawer__panel" role="dialog" aria-modal="true" aria-label="Site menu">
+      <nav class="drawer__nav">
+        <a href="products.html">Shop all</a>
+        <a href="favourites.php">Favourites</a>
+        <a href="cart.html">Cart</a>
+        <a href="aboutus.html">About us</a>
+        <a href="contactus.html">Contact us</a>
+      </nav>
+    </aside>
+  </div>
+
+  <!-- MAIN FAVOURITES CONTENT -->
+<main class="favourites-main" style="text-align:center;">
+    <section class="favourites-header">
+      <h1>Your Favourites</h1>
+      <p>Perfumes you have saved.</p>
+    </section>
+
+    <!-- Empty message -->
+    <section id="empty-state" class="favourites-empty">
+      <p>You don’t have any favourites yet.</p>
+    </section>
+
+    <!-- Grid where fav.js will inject cards -->
+    <section id="favourites-grid" class="favourites-grid">
+      <!-- JS injects cards here -->
+    </section>
+
+  </main>
+
+  <!-- FOOTER -->
+<footer class="site-footer">
+  <div class="footer-container">
+
+    <!-- Newsletter -->
+    <div class="footer-newsletter">
+      <h3>Join our newsletter</h3>
+      <p>Get personalized updates, launch news, and exclusive access just for you.</p>
+
+      <form id="newsletterForm">
+        <input 
+          type="email"
+          id="newsletterEmail"
+          name="email"
+          placeholder="Enter your email"
+          required
+        >
+        <button type="submit">Subscribe</button>
+        <p id="newsletterMsg" style="margin-top:10px;"></p>
+      </form>
+    </div>
+
+    <!-- Column 1 -->
+    <div class="footer-links">
+      <a href="contactus.php">Contact Us</a>
+      <a href="faq.php">FAQ</a>
+      <a href="aboutus.php">About Us</a>
+      <a href="terms.php">Terms</a>
+      <a href="privacypolicy.php">Privacy Policy</a>
+    </div>
+
+    <!-- Column 2 -->
+    <div class="footer-links">
+      <a href="#">Order</a>
+      <a href="cart.php">Shopping Cart</a>
+      <a href="favourites.php">Favourites</a>
+    </div>
+  </div>
+
+  <div class="footer-bottom">
+    <p>© <?php echo date('Y'); ?> Sabil. All rights reserved.</p>
+  </div>
+</footer>
+</body>
+</html>
