@@ -9,11 +9,11 @@ if (file_exists(__DIR__ . '/db.php')) {
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1" />
     <title>Sabil</title>
-    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="assets/css/style.css" />
     <script defer src="nav.js"></script>
     <script defer src="home.js"></script>
     <script defer src="newsletter.js"></script>
-    <link rel="icon" type="image/png" href="images/logo.png">
+    <link rel="icon" type="image/png" href="assets/images/logo.png">
 </head>
 
 <body class="page-home">
