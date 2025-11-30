@@ -9,7 +9,7 @@ if (file_exists(__DIR__ . '/db.php')) {
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1" />
     <title>Sabil</title>
-    <link rel="stylesheet" href="assets/css/style.css" />
+    <link rel="stylesheet" href="/Team-30/assets/css/style.css" />
 
     <script defer src="assets/js/nav.js"></script>
     <script defer src="assets/js/home.js"></script>
@@ -25,13 +25,13 @@ if (file_exists(__DIR__ . '/db.php')) {
 
     <!-- Left: Menu button -->
     <button class="icon-btn menu-toggle" aria-label="Open menu" aria-expanded="false">
-      <img class="icon icon--menu" src="images/menu.png" alt="" />
-      <img class="icon icon--close" src="images/close.png" alt="" />
+      <img class="icon icon--menu" src="assets/images/menu.png" alt="" />
+      <img class="icon icon--close" src="assets/images/close.png" alt="" />
     </button>
 
     <!-- Center: Logo -->
     <a class="brand" href="index.php">
-      <img class="brand-logo" src="images/logo.png" alt="Sabil" />
+      <img class="brand-logo" src="assets/images/logo.png" alt="Sabil" />
     </a>
 
     <!-- Right: actions -->
@@ -42,10 +42,10 @@ if (file_exists(__DIR__ . '/db.php')) {
         <img
           id="userIcon"
           class="icon"
-          src="images/sign-in.png"
+          src="assets/images/sign-in.png"
           alt="User"
-          data-src-inactive="images/sign-in.png"
-          data-src-active="images/user-shaded.png"
+          data-src-inactive="assets/images/sign-in.png"
+          data-src-active="assets/images/user-shaded.png"
         />
         <span id="userText" class="action-text">Sign in</span>
       </a>
@@ -53,7 +53,7 @@ if (file_exists(__DIR__ . '/db.php')) {
       <!-- SEARCH GROUP (one flex item) -->
       <div class="search-group">
         <a id="searchBtn" class="action" href="#">
-          <img class="icon" src="images/search.png" alt="Search" />
+          <img class="icon" src="assets/images/search.png" alt="Search" />
         </a>
         <input
           type="text"
@@ -68,10 +68,10 @@ if (file_exists(__DIR__ . '/db.php')) {
         <img
           id="favIcon"
           class="icon"
-          src="images/favorite.png"
+          src="assets/images/favorite.png"
           alt="Favourite"
-          data-src-inactive="images/favorite.png"
-          data-src-active="images/favorite-shaded.png"
+          data-src-inactive="assets/images/favorite.png"
+          data-src-active="assets/images/favorite-shaded.png"
         />
       </a>
 
@@ -80,10 +80,10 @@ if (file_exists(__DIR__ . '/db.php')) {
         <img
           id="bagIcon"
           class="icon"
-          src="images/shopping-bag.png"
+          src="assets/images/shopping-bag.png"
           alt="Shopping bag"
-          data-src-inactive="images/shopping-bag.png"
-          data-src-active="images/shopping-bag-filled.png"
+          data-src-inactive="assets/images/shopping-bag.png"
+          data-src-active="assets/images/shopping-bag-filled.png"
         />
       </a>
     </nav>
@@ -112,7 +112,7 @@ if (file_exists(__DIR__ . '/db.php')) {
 <!-- HERO SECTION -->
 <section class="hero">
   <video class="hero-video" autoplay muted loop playsinline>
-    <source src="images/welcome.mp4" type="video/mp4">
+    <source src="assets/images/welcome.mp4" type="video/mp4">
   </video>
 
   <div class="hero-overlay"></div>
@@ -132,19 +132,19 @@ if (file_exists(__DIR__ . '/db.php')) {
   <!-- Track: grid on desktop, carousel on mobile -->
   <div class="collection-track" id="collectionTrack">
     <article class="product-card">
-      <img src="images/perfume.png" alt="Midnight Oud">
+      <img src="assets/images/perfume.png" alt="Midnight Oud">
       <h3 class="card-title">Midnight Oud</h3>
     </article>
     <article class="product-card">
-      <img src="images/perfume.png" alt="Rose Garden">
+      <img src="assets/images/perfume.png" alt="Rose Garden">
       <h3 class="card-title">Rose Garden</h3>
     </article>
     <article class="product-card">
-      <img src="images/perfume.png" alt="Citrus Breeze">
+      <img src="assets/images/perfume.png" alt="Citrus Breeze">
       <h3 class="card-title">Citrus Breeze</h3>
     </article>
     <article class="product-card">
-      <img src="images/perfume.png" alt="Amber Nights">
+      <img src="assets/images/perfume.png" alt="Amber Nights">
       <h3 class="card-title">Amber Nights</h3>
     </article>
   </div>
@@ -158,7 +158,7 @@ if (file_exists(__DIR__ . '/db.php')) {
 
 <!-- Full-width image section -->
 <section class="hero-image">
-  <img src="images/pic.png" alt="Shadow aesthetic">
+  <img src="assets/images/pic.png" alt="Shadow aesthetic">
 </section>
 
 <section class="signature-collection">
@@ -170,22 +170,22 @@ if (file_exists(__DIR__ . '/db.php')) {
   <!-- Track: grid on desktop, carousel on mobile -->
   <div class="collection-track" id="signatureTrack">
     <article class="product-card">
-      <img src="images/perfume.png" alt="Ocean Mist">
+      <img src="assets/images/perfume.png" alt="Ocean Mist">
       <h3 class="card-title">Ocean Mist</h3>
     </article>
 
     <article class="product-card">
-      <img src="images/perfume.png" alt="Velvet Musk">
+      <img src="assets/images/perfume.png" alt="Velvet Musk">
       <h3 class="card-title">Velvet Musk</h3>
     </article>
 
     <article class="product-card">
-      <img src="images/perfume.png" alt="Jasmin Dreams">
+      <img src="assets/images/perfume.png" alt="Jasmin Dreams">
       <h3 class="card-title">Jasmin Dreams</h3>
     </article>
 
     <article class="product-card">
-      <img src="images/perfume.png" alt="Spice Route">
+      <img src="assets/images/perfume.png" alt="Spice Route">
       <h3 class="card-title">Spice Route</h3>
     </article>
   </div>

@@ -187,12 +187,12 @@ body {
 
 /* Favourites page */
 .page-favourites #favIcon {
-  content: url("images/favorite-shaded.png");
+  content: url("../images/favorite-shaded.png");
 }
 
 /* Cart page */
 .page-cart #bagIcon {
-  content: url("images/shopping-bag-filled.png");
+  content: url("../images/shopping-bag-filled.png");
 }
 
 
@@ -472,7 +472,7 @@ body.drawer-open{ overflow: hidden; }
 /* Background image */
 .cta-quiz__bg{
   position: absolute; inset: 0;
-  background-image: url("images/flower.png"); /* your file */
+  background-image: url("../images/flower.png"); /* your file */
   background-size: cover;
   background-position: center;
   filter: none;                /* set to blur(1px) if you want */
