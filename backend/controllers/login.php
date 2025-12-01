@@ -22,7 +22,7 @@ if ($result->num_rows === 1) {
         $_SESSION['user_id'] = $user['id'];
         $_SESSION['user_name'] = $user['name'];
 
-        echo "Login seccessful! Welcome, " . $user['name'];
+        header("Location: ../../index.php");
         exit;
     } else {    
         echo "Incorrect password.";
