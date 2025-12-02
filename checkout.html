@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <link rel="stylesheet" href="style.css">
-<script defer src="nav.js"></script>
+<script defer src="assets/js/nav.js"></script>
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -287,31 +287,41 @@
     </style>
 </head>
 <body>
-    <header class="topbar">
+ 
+<header class="topbar">
   <div class="topbar-inner">
 
+    <!-- Left: Menu button -->
     <button class="icon-btn menu-toggle" aria-label="Open menu" aria-expanded="false">
-      <img class="icon icon--menu" src="images/menu.png" alt="" />
-      <img class="icon icon--close" src="images/close.png" alt="" />
+      <img class="icon icon--menu" src="assets/images/menu.png" alt="" />
+      <img class="icon icon--close" src="assets/images/close.png" alt="" />
     </button>
 
-    <a class="brand" href="index.html">
-      <img class="brand-logo" src="images/logo.png" alt="Sabil" />
+    <!-- Center: Logo -->
+    <a class="brand" href="index.php">
+      <img class="brand-logo" src="assets/images/logo.png" alt="Sabil" />
     </a>
 
+    <!-- Right: actions -->
     <nav class="actions" aria-label="Account & tools">
+
+      <!-- USER -->
       <a id="userBtn" class="action" href="login.html" role="button" aria-pressed="false">
-        <img id="userIcon" class="icon"
-          src="images/sign-in.png"
-          data-src-inactive="images/sign-in.png"
-          data-src-active="images/user-shaded.png"
+        <img
+          id="userIcon"
+          class="icon"
+          src="assets/images/sign-in.png"
+          alt="User"
+          data-src-inactive="assets/images/sign-in.png"
+          data-src-active="assets/images/user-shaded.png"
         />
         <span id="userText" class="action-text">Sign in</span>
       </a>
 
+      <!-- SEARCH GROUP (one flex item) -->
       <div class="search-group">
-        <a id="searchBtn" class="action" href="#" aria-expanded="false">
-          <img class="icon" src="images/search.png" alt="Search" />
+        <a id="searchBtn" class="action" href="#">
+          <img class="icon" src="assets/images/search.png" alt="Search" />
         </a>
         <input
           type="text"
@@ -321,41 +331,55 @@
         />
       </div>
 
-      <a id="favBtn" class="action" href="favourites.html">
-        <img id="favIcon" class="icon"
-          src="images/favorite.png"
-          data-src-inactive="images/favorite.png"
-          data-src-active="images/favorite-shaded.png"
+      <!-- FAVOURITE -->
+      <a id="favBtn" class="action" href="favourites.php" role="button" aria-pressed="false">
+        <img
+          id="favIcon"
+          class="icon"
+          src="assets/images/favorite.png"
+          alt="Favourite"
+          data-src-inactive="assets/images/favorite.png"
+          data-src-active="assets/images/favorite-shaded.png"
         />
       </a>
 
-      <a id="bagBtn" class="action" href="cart.html">
-        <img id="bagIcon" class="icon"
-          src="images/shopping-bag.png"
-          data-src-inactive="images/shopping-bag.png"
-          data-src-active="images/shopping-bag-filled.png"
+      <!-- BAG -->
+      <a id="bagBtn" class="action" href="cart.html" role="button" aria-pressed="false">
+        <img
+          id="bagIcon"
+          class="icon"
+          src="assets/images/shopping-bag.png"
+          alt="Shopping bag"
+          data-src-inactive="assets/images/shopping-bag.png"
+          data-src-active="assets/images/shopping-bag-filled.png"
         />
       </a>
     </nav>
-
   </div>
 </header>
 
+<!-- MENU DRAWER (left-side) -->
 <div id="menuDrawer" class="drawer" aria-hidden="true">
   <div class="drawer__backdrop" data-close-drawer></div>
-  <aside class="drawer__panel">
+
+  <aside class="drawer__panel" role="dialog" aria-modal="true" aria-label="Site menu">
     <nav class="drawer__nav">
       <a href="products.html">Shop all</a>
-      <a href="favourites.html">Favourites</a>
       <a href="cart.html">Cart</a>
-      <a href="aboutus.html">About us</a>
-      <a href="contactus.html">Contact us</a>
+      <a href="favourites.php">Favourites</a>
+      <a href="contactus.php">Contact us</a>
+      <a href="faq.php">FAQ</a>
+      <a href="aboutus.php">About us</a>
+      <a href="terms.php">Terms</a>
+      <a href="privacypolicy.php">Privacy Policy</a>
+  
     </nav>
   </aside>
 </div>
+
     <div class="container">
         <div class="header">
-            <a href="shopping-cart.html" class="back-link">
+            <a href="cart.html" class="back-link">
                 <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
                     <path d="M19 12H5M12 19l-7-7 7-7"/>
                 </svg>
@@ -621,5 +645,7 @@
             // window.location.href = 'order-success.html';
         });
     </script>
+
+    
 </body>
 </html>

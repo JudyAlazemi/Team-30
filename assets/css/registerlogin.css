@@ -1,0 +1,222 @@
+
+/* =============================
+   Login & Register Pages
+   ============================= */
+   :root{
+    --background: #f4eee9;
+    --primary: #303c30;
+    --secondary: #4e4138;
+    --topbar-h: 88px;
+}
+
+@font-face{
+  font-family: "Meshed Display";
+  src: url("assets/fonts/MeshedDisplay-Medium") format("truetype");
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+
+/* === Global === */
+body {
+    margin: 0;
+    padding: 0;
+    background: #F4EEE9; /* full background */
+    font-family: 'Meshed Display', sans-serif;
+    color: #303C30;
+}
+
+/* === HEADER === */
+.top-banner {
+    background: #4e4138;
+    width: 100%;
+    padding: 1.5rem 0;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.logo {
+    height: 70px;
+}
+
+/* === Hamburger === */
+.hamburger-btn {
+    position: absolute;
+    left: 25px;
+    top: 32px;
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    z-index: 9999;
+}
+
+.hamburger-icon {
+    width: 36px;
+    height: 36px;
+    object-fit: contain;
+}
+
+
+/* === Side Menu === */
+.side-menu {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 260px;
+    height: 100%;
+    background: #4e4138;
+    transform: translateX(-100%);
+    transition: 0.3s ease;
+    padding: 2rem 1.5rem;
+    z-index: 500;
+    display: flex;
+    flex-direction: column;
+}
+
+.side-menu.active {
+    transform: translateX(0);
+}
+
+.close-btn {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    background: none;
+    border: none;
+    color: #F4EEE9;
+    font-size: 28px;
+    cursor: pointer;
+}
+
+/* MENU LINKS LIST */
+.menu-links {
+    margin-top: 60px; /* spacing under icons */
+    display: flex;
+    flex-direction: column;
+    gap: 32px;        /* 32px spacing between each option */
+}
+
+.menu-links a {
+    color: #F4EEE9;
+    font-size: 20px;
+    font-weight: 400;
+    text-decoration: none;
+}
+
+.menu-links a:hover {
+    opacity: 0.7;
+}
+
+/* Overlay */
+.overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.5);
+    display: none;
+    z-index: 400;
+}
+
+.overlay.active {
+    display: block;
+}
+
+/* === Content === */
+.content {
+    width: 90%;
+    max-width: 750px;  /* AUTO WIDTH but not too wide */
+    margin: 3rem auto;
+}
+
+h1 {
+    font-size: 30px;
+    margin-bottom: 8px;
+}
+
+.subtitle {
+    color: #666;
+    margin-bottom: 32px;
+}
+
+/* === Form === */
+.form-group {
+    margin-bottom: 20px;
+}
+
+label {
+    font-size: 15px;
+    margin-bottom: 6px;
+    display: block;
+}
+
+input {
+    width: 100%;
+    padding: 0.85rem;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    background: white;
+}
+
+.two-cols {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+}
+
+/* Password wrapper */
+.password-wrapper {
+    position: relative;
+}
+
+.toggle-password {
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    cursor: pointer;
+}
+
+.eye-icon {
+    stroke: #7e7e7e;
+}
+
+/* Button */
+.btn-primary {
+    width: 100%;
+    padding: 14px;
+    background: #4e4138;
+    color: #f4eee9;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    margin-top: 10px;
+}
+
+/* Footer text */
+.legal, .signin {
+    text-align: center;
+    margin-top: 14px;
+    color: #555;
+}
+
+.flex-row-between {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.forgot-link {
+    font-size: 14px;
+    color: #303C30;
+    text-decoration: none;
+}
+
+.forgot-link:hover {
+    text-decoration: underline;
+}
+

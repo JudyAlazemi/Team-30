@@ -1,0 +1,287 @@
+/* ===== Static Pages — frame & type ===== */
+:root{
+  --bg:        #f4eee9;
+  --ink:       #303c30;
+  --ink-soft:  #4e4138;
+  --line:      #d8cfc6;
+  --accent:    #4e4138;
+}
+
+@font-face{
+  font-family: "Meshed Display";
+  src: url("assets/fonts/MeshedDisplay-Medium") format("truetype");
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+
+.page-static { background: var(--bg); color: var(--ink); }
+
+/* Wrapper to align with your site margins */
+.static-wrap {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+/* Title band */
+.static-hero {
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+  background: var(--bg);
+}
+.static-hero .static-wrap { padding: 28px 24px; }
+.static-hero h1 {
+  margin: 0;
+  font-weight: 500;
+  font-size: clamp(28px, 3.5vw, 42px);
+  letter-spacing: .3px;
+  color: var(--ink-soft);
+}
+
+/* 2-column grid (sidebar | content | optional image) */
+.static-grid {
+  display: grid;
+  grid-template-columns: 220px 1fr 40%;
+  gap: 40px;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 36px 24px 80px;
+}
+
+/* Sidebar */
+.static-sidebar {
+  position: sticky;
+  top: 90px;                    /* sits under your topbar */
+  align-self: start;
+  height: fit-content;
+}
+.static-menu { list-style: none; margin: 0; padding: 0; }
+.static-menu li + li { margin-top: 14px; }
+.static-menu a {
+  text-decoration: none;
+  color: var(--ink-soft);
+  font-size: 13px;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  opacity: .8;
+  border-left: 2px solid transparent;
+  padding-left: 10px;
+  display: inline-block;
+  transition: opacity .2s ease, border-color .2s ease, color .2s ease;
+}
+.static-menu a:hover { opacity: 1; color: var(--ink); }
+.static-menu a[aria-current="page"] {
+  opacity: 1;
+  color: var(--ink);
+  border-left-color: var(--accent);
+}
+
+/* Main content */
+.static-content {
+  max-width: 680px;
+}
+.static-content .lead {
+  font-size: 18px;
+  line-height: 1.6;
+  margin: 0 0 18px;
+}
+.static-content h2 {
+  margin: 32px 0 10px;
+  font-weight: 500;
+  font-size: 22px;
+  color: var(--ink);
+}
+.static-content p,
+.static-content li {
+  line-height: 1.7;
+  font-size: 18px;
+}
+.static-content a { color: var(--accent); text-underline-offset: 2px; }
+.static-address { font-style: normal; white-space: pre-line; }
+
+/* Right media pane */
+.static-media { display: block; }
+.static-media img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 10px;
+  object-fit: cover;
+}
+
+/* Text button link */
+.btn-link {
+  display: inline-block;
+  padding: 8px 14px;
+  border: 1.5px solid var(--accent);
+  border-radius: 6px;
+  color: var(--accent);
+  text-decoration: none;
+  transition: background .2s ease, color .2s ease;
+}
+.btn-link:hover { background: var(--accent); color: #fff; }
+
+/* ===== FAQ accordion (for faq.html) ===== */
+details.static-faq {
+  border-top: 1px solid var(--line);
+  padding: 14px 0;
+}
+details.static-faq:last-child { border-bottom: 1px solid var(--line); }
+details.static-faq > summary {
+  cursor: pointer;
+  list-style: none;
+  font-size: 18px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+details.static-faq > summary::-webkit-details-marker { display: none; }
+details.static-faq[open] > summary { color: var(--ink); }
+.static-faq__answer { margin: 10px 0 6px; color: var(--ink-soft); }
+
+/* ===== Responsive ===== */
+@media (max-width: 1100px){
+  .static-grid { grid-template-columns: 200px 1fr; }
+  .static-media { display: none; } /* hide big image on medium screens */
+}
+@media (max-width: 760px){
+  .static-grid {
+    grid-template-columns: 1fr;
+    gap: 24px;
+    padding: 24px 16px 60px;
+  }
+  .static-sidebar {
+    position: static;
+    border-bottom: 1px solid var(--line);
+    padding-bottom: 12px;
+  }
+  .static-menu {
+    display: flex;
+    gap: 14px;
+    overflow-x: auto;
+    padding-bottom: 6px;
+  }
+  .static-menu li + li { margin-top: 0; }
+}
+
+/* =====================
+   FAQ PAGE OVERRIDES 
+   ===================== */
+
+/* 1) Remove the generic static sidebar on FAQ pages */
+.page-faq .static-sidebar { display: none; }
+
+/* 2) Grid becomes: [categories | content] */
+.page-faq .static-grid {
+  grid-template-columns: 220px 1fr;   /* left rail + main */
+  gap: 48px;
+}
+
+/* Flatten panels */
+.page-faq .faq-categories,
+.page-faq .faq-groups {
+  background: transparent;
+  border: 0;
+  box-shadow: none;
+  border-radius: 0;
+}
+
+/* Remove the big rounded box around the right column if any */
+.page-faq .faq-groups > .faq-group {
+  background: transparent;
+  border: 0;
+  padding: 0;
+}
+
+/* Tighter section heading + divider */
+.page-faq .faq-group-title {
+  margin: 0 0 18px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--line);
+}
+
+
+.page-faq .faq-category-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 10px;
+}
+/* Sidebar container spacing only */
+.page-faq .faq-categories { padding-top: 4px; }
+
+/* Make links look lighter */
+.page-faq .faq-category-link {
+  border: 0;
+  padding: 6px 0;
+  opacity: .85;
+}
+.page-faq .faq-category-link:hover { opacity: 1; }
+.page-faq .faq-category-link.is-active {
+  border-left: 0;
+  color: var(--ink);
+  opacity: 1;
+  text-underline-offset: 3px;
+  text-decoration: underline;
+}
+
+
+/* 5) Group title on the right */
+.page-faq .faq-group-title {
+  margin: 0 0 14px;
+  font-weight: 500;
+  font-size: 22px;
+  color: var(--ink);
+}
+/* Each item separated by a hairline */
+.page-faq .faq-item { border-top: 1px solid var(--line); }
+.page-faq .faq-item:last-child { border-bottom: 1px solid var(--line); }
+
+/* Question row */
+.page-faq .faq-question {
+  padding: 18px 0;
+  font-size: 18px;
+  font-weight: 500;
+}
+
+.faq-icon {
+  font-size: 20px;
+  font-weight: 400;
+  color: var(--ink-soft);
+  transition: opacity .2s ease;
+}
+
+.faq-question[aria-expanded="true"] .faq-icon {
+  opacity: 0.6;
+}
+
+
+
+/* Answer body */
+.page-faq .faq-answer-inner {
+  padding: 4px 0 16px;
+  color: var(--ink-soft);
+  line-height: 1.7;
+  font-size: 16px;
+}
+/* Give the whole FAQ area a bit more breathing room */
+.page-faq .static-grid { gap: 56px; }
+
+/* Keep right column to a comfortable width */
+.page-faq .faq-main { max-width: 860px; }
+
+/* Mobile: make the tab rail minimal */
+@media (max-width: 760px){
+  .page-faq .faq-category-link {
+    text-decoration: none;
+    border-bottom: 2px solid transparent;
+    padding: 8px 2px;
+  }
+  .page-faq .faq-category-link.is-active {
+    border-bottom-color: var(--accent);
+    text-decoration: none;
+  }
+}
