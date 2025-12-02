@@ -9,11 +9,12 @@
 
 @font-face{
   font-family: "Meshed Display";
-  src: url("fonts/MeshedDisplay-Light.ttf") format("truetype");
+  src: url("assets/fonts/MeshedDisplay-Medium") format("truetype");
   font-weight: 500;
   font-style: normal;
   font-display: swap;
 }
+
 
 .page-static { background: var(--bg); color: var(--ink); }
 

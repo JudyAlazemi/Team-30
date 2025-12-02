@@ -1,9 +1,29 @@
+
+/* =============================
+   Login & Register Pages
+   ============================= */
+   :root{
+    --background: #f4eee9;
+    --primary: #303c30;
+    --secondary: #4e4138;
+    --topbar-h: 88px;
+}
+
+@font-face{
+  font-family: "Meshed Display";
+  src: url("assets/fonts/MeshedDisplay-Medium") format("truetype");
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+
 /* === Global === */
 body {
     margin: 0;
     padding: 0;
     background: #F4EEE9; /* full background */
-    font-family: system-ui, sans-serif;
+    font-family: 'Meshed Display', sans-serif;
     color: #303C30;
 }
 
@@ -169,8 +189,8 @@ input {
 .btn-primary {
     width: 100%;
     padding: 14px;
-    background: black;
-    color: white;
+    background: #4e4138;
+    color: #f4eee9;
     border: none;
     border-radius: 6px;
     cursor: pointer;
@@ -199,3 +219,4 @@ input {
 .forgot-link:hover {
     text-decoration: underline;
 }
+

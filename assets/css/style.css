@@ -4,10 +4,9 @@
     --secondary: #4e4138;
     --topbar-h: 88px;
 }
-
 @font-face{
   font-family: "Meshed Display";
-  src: url("fonts/MeshedDisplay-Medium.ttf") format("truetype");
+  src: url("assets/fonts/MeshedDisplay-Medium") format("truetype");
   font-weight: 500;
   font-style: normal;
   font-display: swap;
@@ -333,7 +332,8 @@ body.drawer-open{ overflow: hidden; }
 }
 
 .collection-header{
-  display:flex; align-items:center; justify-content:space-between;
+  display:flex;
+   align-items:center; justify-content:space-between;
   padding: 0 16px 20px;
 }
 .collection-header h2{
@@ -346,15 +346,19 @@ body.drawer-open{ overflow: hidden; }
 }
 .view-more-btn:hover{ background:var(--secondary,#4e4138); color:#f4eee9; }
 
+
 /* ---------- Desktop: 4-up grid ---------- */
 @media (min-width: 721px){
   .collection-track{
-    display:grid;
-    grid-template-columns:repeat(4,1fr);
-    gap:20px;
+    display: grid;
+    /* allow columns to actually shrink */
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 20px;
     padding: 0 12px;
+    width: 100%;
   }
-  .product-card{ display:flex; flex-direction:column; gap:10px; }
+
+  .product-card{ display:flex; flex-direction:column; gap:10px; min-width: 0; }
   .product-card img{ width:100%; height:auto; border-radius:12px; display:block; }
   .card-title{ font-size:16px; color:var(--secondary,#4e4138); margin:6px 4px 0; }
   .product-card:hover img{ transform:scale(1.04); transition:transform .35s ease; }

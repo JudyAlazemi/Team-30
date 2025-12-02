@@ -119,34 +119,31 @@ if (file_exists(__DIR__ . '/db.php')) {
 
   <div class="hero-content">
     <h1>Let your scent<br>guide your journey.</h1>
-    <a href="products.php" class="hero-btn">Shop now</a>
+    <a href="products.html" class="hero-btn">Shop now</a>
   </div>
 </section>
 
 <section class="new-collection">
   <div class="collection-header">
     <h2>New Collection</h2>
-    <a href="products.php" class="view-more-btn">View More</a>
+    <a href="products.html" class="view-more-btn">View More</a>
   </div>
 
   <!-- Track: grid on desktop, carousel on mobile -->
   <div class="collection-track" id="collectionTrack">
     <article class="product-card">
-      <img src="assets/images/perfume.png" alt="Midnight Oud">
+      <img src="assets/images/midnightoud.png" alt="Midnight Oud">
       <h3 class="card-title">Midnight Oud</h3>
     </article>
     <article class="product-card">
-      <img src="assets/images/perfume.png" alt="Rose Garden">
-      <h3 class="card-title">Rose Garden</h3>
+      <img src="assets/images/oceanmist.png" alt="Ocean Breeze">
+      <h3 class="card-title">Ocean Breeze</h3>
     </article>
     <article class="product-card">
-      <img src="assets/images/perfume.png" alt="Citrus Breeze">
-      <h3 class="card-title">Citrus Breeze</h3>
+      <img src="assets/images/velvetmusk.JPEG" alt="Velvet Rose">
+      <h3 class="card-title">Velvet Rose</h3>
     </article>
-    <article class="product-card">
-      <img src="assets/images/perfume.png" alt="Amber Nights">
-      <h3 class="card-title">Amber Nights</h3>
-    </article>
+
   </div>
 
   <!-- arrows OUTSIDE the track -->
@@ -164,31 +161,27 @@ if (file_exists(__DIR__ . '/db.php')) {
 <section class="signature-collection">
   <div class="collection-header">
     <h2>Signature Collection</h2>
-    <a href="products.php" class="view-more-btn">View More</a>
+    <a href="products.html" class="view-more-btn">View More</a>
   </div>
 
   <!-- Track: grid on desktop, carousel on mobile -->
   <div class="collection-track" id="signatureTrack">
     <article class="product-card">
-      <img src="assets/images/perfume.png" alt="Ocean Mist">
-      <h3 class="card-title">Ocean Mist</h3>
+      <img src="assets/images/perfume.png" alt="Vanilla Dream">
+      <h3 class="card-title">Vanilla Dream</h3>
     </article>
 
     <article class="product-card">
-      <img src="assets/images/perfume.png" alt="Velvet Musk">
-      <h3 class="card-title">Velvet Musk</h3>
+      <img src="assets/images/perfume.png" alt="Amber Woods">
+      <h3 class="card-title">Amber Woods</h3>
     </article>
 
     <article class="product-card">
-      <img src="assets/images/perfume.png" alt="Jasmin Dreams">
-      <h3 class="card-title">Jasmin Dreams</h3>
+      <img src="assets/images/perfume.png" alt="Cherry Blossom">
+      <h3 class="card-title">Cherry Blossom</h3>
     </article>
 
-    <article class="product-card">
-      <img src="assets/images/perfume.png" alt="Spice Route">
-      <h3 class="card-title">Spice Route</h3>
-    </article>
-  </div>
+   
 
   <!-- Mobile arrows -->
   <div class="carousel-arrows signature-arrows">
@@ -262,7 +255,7 @@ if (file_exists(__DIR__ . '/db.php')) {
     <div class="quiz-step" data-step="result">
       <h2>Your fragrance match</h2>
       <p id="quizResultText">We think you’ll love Ocean Mist.</p>
-      <a href="products.php" class="quiz-shop-btn">Shop Now</a>
+      <a href="products.html" class="quiz-shop-btn">Shop Now</a>
     </div>
   </div>
 </div>
