@@ -1,0 +1,135 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Sabil</title>
+
+    <!-- Main stylesheet -->
+    <link rel="stylesheet" href="style.css" />
+
+    <!-- JavaScript -->
+    <script defer src="nav.js"></script>
+    <script defer src="fav.js"></script>
+
+    <link rel="icon" type="image/png" href="images/logo.png">
+</head>
+
+<body class="page-favourites">
+
+  <!-- TOP BAR / HEADER -->
+  <header class="topbar">
+    <div class="topbar-inner">
+
+      <!-- Left: Menu button -->
+      <button class="icon-btn menu-toggle" aria-label="Open menu" aria-expanded="false">
+        <img class="icon icon--menu" src="images/menu.png" alt="" />
+        <img class="icon icon--close" src="images/close.png" alt="" />
+      </button>
+
+      <!-- Center: Logo -->
+      <a class="brand" href="index.html">
+        <img class="brand-logo" src="images/logo.png" alt="Sabil" />
+      </a>
+
+      <!-- Right: actions -->
+      <nav class="actions" aria-label="Account & tools">
+
+        <!-- USER -->
+        <a id="userBtn" class="action" href="login.html" role="button" aria-pressed="false">
+          <img
+            id="userIcon"
+            class="icon"
+            src="images/sign-in.png"
+            alt="User"
+            data-src-inactive="images/sign-in.png"
+            data-src-active="images/user-shaded.png"
+          />
+          <span id="userText" class="action-text">Sign in</span>
+        </a>
+
+        <!-- SEARCH -->
+        <div class="search-group">
+          <a id="searchBtn" class="action" href="#" aria-expanded="false" aria-controls="navSearchInput">
+            <img class="icon" src="images/search.png" alt="Search" />
+          </a>
+          <input
+            type="text"
+            id="navSearchInput"
+            class="nav-search-input"
+            placeholder="Search."
+            autocomplete="off"
+          />
+        </div>
+
+        <!-- FAVOURITES ICON -->
+        <a id="favBtn" class="action" href="favourites.html" role="button" aria-pressed="false">
+          <img
+            id="favIcon"
+            class="icon"
+            src="images/favorite.png"
+            alt="Favourite"
+            data-src-inactive="images/favorite.png"
+            data-src-active="images/favorite-shaded.png"
+          />
+        </a>
+
+        <!-- BAG -->
+        <a id="bagBtn" class="action" href="cart.html" role="button" aria-pressed="false">
+          <img
+            id="bagIcon"
+            class="icon"
+            src="images/shopping-bag.png"
+            alt="Shopping bag"
+            data-src-inactive="images/shopping-bag.png"
+            data-src-active="images/shopping-bag-filled.png"
+          />
+        </a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- SIDE MENU DRAWER -->
+  <div id="menuDrawer" class="drawer" aria-hidden="true">
+    <div class="drawer__backdrop" data-close-drawer></div>
+
+    <aside class="drawer__panel" role="dialog" aria-modal="true" aria-label="Site menu">
+      <nav class="drawer__nav">
+        <a href="products.html">Shop all</a>
+        <a href="favourites.html">Favourites</a>
+        <a href="cart.html">Cart</a>
+        <a href="aboutus.html">About us</a>
+        <a href="contactus.html">Contact us</a>
+      </nav>
+    </aside>
+  </div>
+
+  <!-- MAIN FAVOURITES CONTENT -->
+  <main class="favourites-main">
+
+    <section class="favourites-header">
+      <h1>Your Favourites</h1>
+      <p>Perfumes you have saved.</p>
+    </section>
+
+    <!-- Empty message when there are no favourites -->
+    <section id="empty-state" class="favourites-empty">
+      <p>You don’t have any favourites yet.</p>
+    </section>
+
+    <!-- Grid where JS will inject favourite cards -->
+    <section id="favourites-grid" class="favourites-grid">
+      <!-- Cards will be added here by fav.js -->
+    </section>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="site-footer">
+    <div class="container">
+      <p>© 2025 Sabil . All rights reserved. </p>
+    </div>
+  </footer>
+
+</body>
+</html>
