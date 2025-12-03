@@ -89,8 +89,12 @@ if (file_exists(__DIR__ . '/db.php')) {
       </a>
     </nav>
   </div>
-</header>
-
+    <!-- Page title band -->
+  <header class="static-hero">
+    <div class="static-wrap">
+      <h1>Terms & Conditions</h1>
+    </div>
+  </header>
 <!-- MENU DRAWER (left-side) -->
 <div id="menuDrawer" class="drawer" aria-hidden="true">
   <div class="drawer__backdrop" data-close-drawer></div>
@@ -109,6 +113,22 @@ if (file_exists(__DIR__ . '/db.php')) {
     </nav>
   </aside>
 </div>
+
+  <!-- Two-column layout -->
+  <main class="static-grid">
+    <!-- Left: sidebar links -->
+    <aside class="static-sidebar" aria-label="Static page navigation">
+      <nav>
+        <ul class="static-menu">
+          <li><a href="contactus.php" >Contact us</a></li>
+          <li><a href="faq.php">FAQ</a></li>
+          <li><a href="aboutus.php">About us</a></li>
+          <li><a href="terms.php"aria-current="page">Terms & Conditions</a></li>
+          <li><a href="privacypolicy.php">Privacy Policy</a></li>
+        
+        </ul>
+      </nav>
+    </aside>
 
     <!-- Right: main content -->
     <article class="static-content">
