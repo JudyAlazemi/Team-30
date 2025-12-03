@@ -1,11 +1,54 @@
-@font-face{
-  font-family: "Meshed Display";
-  src: url("assets/fonts/MeshedDisplay-Medium") format("truetype");
-  font-weight: 500;
-  font-style: normal;
-  font-display: swap;
+/* This contains all styles for products.html and productdetails.html */
+
+/* Import Meshed Display Font */
+@font-face {
+    font-family: 'Meshed Display';
+    src: url('../fonts/MeshedDisplay-Regular.ttf') format('truetype');
+    font-weight: 400;
+    font-style: normal;
 }
 
+@font-face {
+    font-family: 'Meshed Display';
+    src: url('../fonts/MeshedDisplay-Light.ttf') format('truetype');
+    font-weight: 300;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Meshed Display';
+    src: url('../fonts/MeshedDisplay-Medium.ttf') format('truetype');
+    font-weight: 500;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Meshed Display';
+    src: url('../fonts/MeshedDisplay-SemiBold.ttf') format('truetype');
+    font-weight: 600;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Meshed Display';
+    src: url('../fonts/MeshedDisplay-Bold.ttf') format('truetype');
+    font-weight: 700;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Meshed Display';
+    src: url('../fonts/MeshedDisplay-ExtraBold.ttf') format('truetype');
+    font-weight: 800;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Meshed Display';
+    src: url('../fonts/MeshedDisplay-Black.ttf') format('truetype');
+    font-weight: 900;
+    font-style: normal;
+}
 
 /* CSS Variables */
 :root {
@@ -606,3 +649,26 @@ footer {
         grid-template-columns: 1fr;
     }
 }
+.favourite-toast {
+    position: fixed;
+    top: 120px;
+    right: 20px;
+    background: #4e4138;
+    color: white;
+    padding: 12px 20px;
+    border-radius: 10px;
+    z-index: 2000;
+    font-size: 15px;
+    animation: fadeIn 0.3s ease, fadeOut 0.3s ease 2s forwards;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateX(40px); }
+    to { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes fadeOut {
+    from { opacity: 1; transform: translateX(0); }
+    to { opacity: 0; transform: translateX(40px); }
+}
+

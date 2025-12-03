@@ -559,3 +559,33 @@ function updateCartCount() {
 }
 
 updateCartCount();
+
+// -------------------------------
+// FAVOURITE SYSTEM FOR DETAILS PAGE
+// -------------------------------
+function addToFavouritesDetails() {
+    const productId = Number(window.currentProductId);
+
+    let favourites = JSON.parse(localStorage.getItem("favourites")) || [];
+
+    if (!favourites.includes(productId)) {
+        favourites.push(productId);
+        localStorage.setItem("favourites", JSON.stringify(favourites));
+        showFavouriteToast("Added to favourites!");
+    } else {
+        showFavouriteToast("Already in favourites!");
+    }
+}
+
+// Toast popup
+function showFavouriteToast(message) {
+    let toast = document.createElement("div");
+    toast.className = "favourite-toast";
+    toast.innerText = message;
+
+    document.body.appendChild(toast);
+
+    setTimeout(() => {
+        toast.remove();
+    }, 2500);
+}

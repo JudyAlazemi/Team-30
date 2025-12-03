@@ -1,25 +1,32 @@
 :root{
-    --background: #f4eee9;
-    --primary: #303c30;
-    --secondary: #4e4138;
-    --topbar-h: 88px;
+  --background:#f4eee9;
+  --primary:#303c30;
+  --secondary:#4e4138;
+  --text-dark:#2c2420;
+  --text-light:#6b5d54;
+  --white:#ffffff;
+  --border:#d4c5ba;
+  --topbar-h:88px;
 }
+
 @font-face{
   font-family: "Meshed Display";
-  src: url("assets/fonts/MeshedDisplay-Medium") format("truetype");
+  src:
+    url("../assets/fonts/MeshedDisplay-Medium.woff2") format("woff2"),
+    url("../assets/fonts/MeshedDisplay-Medium.ttf") format("truetype");
   font-weight: 500;
   font-style: normal;
   font-display: swap;
 }
 
-* { box-sizing: border-box;}
+*{ box-sizing:border-box; }
 html, body { margin:0; padding:0; }
-body {
-    background: #f4eee9;
-    color:var(--primary);
-    font-family: 'Meshed Display', sans-serif;
-    
+body{
+  background: var(--background);
+  color: var(--primary);
+  font-family: "Meshed Display", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
 }
+
 
  .topbar {
   background: #f4eee9;
