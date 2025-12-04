@@ -276,7 +276,7 @@ if (file_exists(__DIR__ . '/db.php')) {
 
     <div class="quiz-step" data-step="result">
       <h2>Your fragrance match</h2>
-      <p id="quizResultText">We think you’ll love Ocean Mist.</p>
+      <p id="quizResultText">We think you’ll love Ocean Breeze.</p>
       <a href="products.html" class="quiz-shop-btn">Shop Now</a>
     </div>
   </div>
