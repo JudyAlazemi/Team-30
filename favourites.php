@@ -273,5 +273,11 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["action"])) {
     <p>© <?php echo date('Y'); ?> Sabil. All rights reserved.</p>
   </div>
 </footer>
+
+  <script src="assets/js/fav.js" defer></script>
+  <script src="assets/js/newsletter.js" defer></script>
+  <script src="assets/js/products-data.js"></script>
+  <script src="assets/js/productdetails.js"></script>
+
 </body>
 </html>

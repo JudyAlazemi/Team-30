@@ -240,6 +240,13 @@
         .empty-cart p {
             opacity: 0.7;
             margin-bottom: 1.5rem;
+
+        .cart-items img {
+             max-width: 96px; 
+             height: 96px; 
+             object-fit: cover; 
+            }
+
         }
     </style>
 </head>
@@ -342,117 +349,45 @@
 
         <div id="cart-content"></div>
     </div>
-        <script>
-    // Cart starts EMPTY every time
-    let cartItems = [];
+     
+    <div class="grid">
+  <!-- Line items render here -->
+  <div class="cart-items" id="cart-list"></div>
 
-    function updateQuantity(id, newQuantity) {
-        if (newQuantity < 1) return;
-        cartItems = cartItems.map(item => 
-            item.id === id ? { ...item, quantity: newQuantity } : item
-        );
-        renderCart();
-    }
+  <!-- Summary -->
+  <aside class="summary-box">
+    <h2>Order Summary</h2>
 
-    function removeItem(id) {
-        cartItems = cartItems.filter(item => item.id !== id);
-        renderCart();
-    }
+    <div class="summary-row">
+      <span>Subtotal</span>
+      <span id="subtotal">£0.00</span>
+    </div>
 
-    function calculateTotals() {
-        const subtotal = cartItems.reduce((sum, item) => sum + (item.price * item.quantity), 0);
-        const shipping = subtotal > 150 ? 0 : 10;
-        const tax = subtotal * 0.08;
-        const total = subtotal + shipping + tax;
-        return { subtotal, shipping, tax, total };
-    }
+    <div class="summary-row">
+      <span>Shipping</span>
+      <span id="shipping">£0.00</span>
+    </div>
 
-    function renderCart() {
-        const container = document.getElementById('cart-content');
-        const itemCount = document.getElementById('item-count');
-        itemCount.textContent = cartItems.length;
+    <div class="summary-row">
+      <span>Tax</span>
+      <span id="tax">£0.00</span>
+    </div>
 
-        if (cartItems.length === 0) {
-            container.innerHTML = `
-                <div class="empty-cart">
-                    <p>Your cart is empty</p>
-                    <button class="btn-primary" style="max-width: 300px; margin: 0 auto;" onclick="window.location.href='products.html'">
-                        Continue Shopping
-                    </button>
-                </div>
-            `;
-            return;
-        }
+    <div class="summary-row summary-total">
+      <span style="opacity:1; font-weight:500;">Total</span>
+      <span id="total" style="font-weight:500;">£0.00</span>
+    </div>
 
-        const { subtotal, shipping, tax, total } = calculateTotals();
+    <div class="free-shipping-notice" id="fsn" style="display:none;"></div>
 
-        container.innerHTML = `
-            <div class="grid">
-                <div class="cart-items">
-                    ${cartItems.map(item => `
-                        <div class="cart-item">
-                            <div class="item-image">
-                                <img src="${item.image}" alt="${item.name}">
-                            </div>
-                            <div class="item-details">
-                                <h3>${item.name}</h3>
-                                <p class="item-price">£${item.price}</p>
-                                <div class="quantity-controls">
-                                    <button class="quantity-btn" onclick="updateQuantity(${item.id}, ${item.quantity - 1})">−</button>
-                                    <span>${item.quantity}</span>
-                                    <button class="quantity-btn" onclick="updateQuantity(${item.id}, ${item.quantity + 1})">+</button>
-                                </div>
-                            </div>
-                            <div class="item-right">
-                                <p>£${(item.price * item.quantity).toFixed(2)}</p>
-                                <button class="remove-btn" onclick="removeItem(${item.id})">Remove</button>
-                            </div>
-                        </div>
-                    `).join('')}
-                </div>
+    <button class="btn-primary" id="checkoutBtn">Proceed to Checkout</button>
+    <a class="btn-secondary" href="products.html">Continue Shopping</a>
+  </aside>
+</div>
 
-                <div class="summary-box">
-                    <h2>Order Summary</h2>
-                    
-                    <div class="summary-row">
-                        <span>Subtotal</span>
-                        <span>£${subtotal.toFixed(2)}</span>
-                    </div>
-                    
-                    <div class="summary-row">
-                        <span>Shipping</span>
-                        <span>${shipping === 0 ? 'FREE' : '£' + shipping.toFixed(2)}</span>
-                    </div>
-                    
-                    <div class="summary-row">
-                        <span>Tax</span>
-                        <span>£${tax.toFixed(2)}</span>
-                    </div>
-                    
-                    <div class="summary-row summary-total">
-                        <span style="opacity: 1; font-weight: 500;">Total</span>
-                        <span style="font-weight: 500;">£${total.toFixed(2)}</span>
-                    </div>
 
-                    ${subtotal < 150 ? `
-                        <div class="free-shipping-notice">
-                            Add £${(150 - subtotal).toFixed(2)} more for free shipping!
-                        </div>
-                    ` : ''}
+<script src="assets/js/products-data.js"></script>
+<script type="module" src="assets/js/cart.js"></script>
 
-                    <button class="btn-primary" onclick="window.location.href='checkout.html'">
-                        Proceed to Checkout
-                    </button>
-
-                    <button class="btn-secondary" onclick="window.location.href='products.html'">
-                        Continue Shopping
-                    </button>
-                </div>
-            </div>
-        `;
-    }
-
-    renderCart();
-</script>
 </body>
 </html>

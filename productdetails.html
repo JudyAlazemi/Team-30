@@ -114,11 +114,7 @@
                         <div class="main-image">
                             <img id="mainProductImage" src="images/perfume9.jpg" alt="Product Image">
                         </div>
-                        <div class="image-thumbnails">
-                            <img src="images/perfume9.jpg" alt="View 1" class="thumbnail active" onclick="changeImage('images/perfume9.jpg')">
-                            <img src="images/perfume9.jpg" alt="View 2" class="thumbnail" onclick="changeImage('images/perfume9.jpg')">
-                            <img src="images/perfume9.jpg" alt="View 3" class="thumbnail" onclick="changeImage('images/perfume9.jpg')">
-                        </div>
+                        
                     </div>
 
                 
@@ -173,7 +169,8 @@
                                     <button class="qty-btn" onclick="decreaseQuantity()">-</button>
                                     <input type="number" id="quantity" value="1" min="1" max="10">
                                     <button class="qty-btn" onclick="increaseQuantity()">+</button>
-                                    <button class="hero-btn favourite-btn" onclick="addToFavouritesDetails()">♡ Favourite</button>
+                                    <button class="hero-btn favourite-btn" id="favBtnDetails">♡ Favourite</button>
+
                                 </div>
                             </div>
                             <button class="hero-btn add-to-cart-btn" onclick="addToCart()">Add to Cart</button>
@@ -183,7 +180,7 @@
                         <div class="product-features">
                             <div class="feature-item">
                                 <span class="feature-icon">✓</span>
-                                <span>Free shipping on orders over £50</span>
+                                <span>Free shipping on orders over £150</span>
                             </div>
                             <div class="feature-item">
                                 <span class="feature-icon">✓</span>
@@ -202,19 +199,19 @@
                     <h2>You May Also Like</h2>
                     <div class="related-products-grid">
                         <div class="product-card-small">
-                            <img src="images/perfume9.jpg" alt="Midnight Oud">
+                            <img src="assets/images/midnightoud.PNG" alt="Midnight Oud">
                             <h4>Midnight Oud</h4>
                             <p>£69.99</p>
                             <a href="productdetails.html?id=2" class="hero-btn">View Details</a>
                         </div>
                         <div class="product-card-small">
-                            <img src="images/perfume9.jpg" alt="Velvet Rose">
+                            <img src="assets/images/velvetmusk.JPEG" alt="Velvet Rose">
                             <h4>Velvet Rose</h4>
                             <p>£64.99</p>
                             <a href="productdetails.html?id=3" class="hero-btn">View Details</a>
                         </div>
                         <div class="product-card-small">
-                            <img src="images/perfume9.jpg" alt="Lavender Cruise">
+                            <img src="assets/images/carperfmed.png" alt="Lavender Cruise">
                             <h4>Lavender Cruise</h4>
                             <p>£18.99</p>
                             <a href="productdetails.html?id=6" class="hero-btn">View Details</a>
@@ -269,8 +266,8 @@
 </footer>
 
 <script src="assets/js/products-data.js"></script>
+<script src="assets/js/productdetails.js"></script>
 
-    <script src="assets/js/productdetails.js"></script>
 
   </body>
 </html> 

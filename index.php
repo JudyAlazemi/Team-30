@@ -3,6 +3,7 @@ if (file_exists(__DIR__ . '/db.php')) {
     require_once __DIR__ . '/db.php';
 }
 ?>
+
 <!doctype html>
 <html lang="en">
 <head>
@@ -124,6 +125,8 @@ if (file_exists(__DIR__ . '/db.php')) {
   </div>
 </section>
 
+
+
 <section class="new-collection">
   <div class="collection-header">
     <h2>Fragrances</h2>
@@ -132,18 +135,27 @@ if (file_exists(__DIR__ . '/db.php')) {
 
   <!-- Track: grid on desktop, carousel on mobile -->
   <div class="collection-track" id="collectionTrack">
-    <article class="product-card">
-      <img src="assets/images/midnightoud.png" alt="Midnight Oud">
-      <h3 class="card-title">Midnight Oud</h3>
-    </article>
-    <article class="product-card">
-      <img src="assets/images/oceanmist.png" alt="Ocean Breeze">
-      <h3 class="card-title">Ocean Breeze</h3>
-    </article>
-    <article class="product-card">
-      <img src="assets/images/velvetmusk.JPEG" alt="Velvet Rose">
-      <h3 class="card-title">Velvet Rose</h3>
-    </article>
+<article class="product-card" data-id="2">
+  <a href="productdetails.html?id=2" class="card-link">
+    <img src="assets/images/midnightoud.png" alt="Midnight Oud">
+    <h3 class="card-title">Midnight Oud</h3>
+  </a>
+</article>
+
+<article class="product-card" data-id="1">
+  <a href="productdetails.html?id=1" class="card-link">
+    <img src="assets/images/oceanmist.png" alt="Ocean Breeze">
+    <h3 class="card-title">Ocean Breeze</h3>
+  </a>
+</article>
+
+<article class="product-card" data-id="3">
+  <a href="productdetails.html?id=3" class="card-link">
+    <img src="assets/images/velvetmusk.JPEG" alt="Velvet Rose">
+    <h3 class="card-title">Velvet Rose</h3>
+  </a>
+</article>
+
 
   </div>
 
@@ -154,10 +166,12 @@ if (file_exists(__DIR__ . '/db.php')) {
   </div>
 </section>
 
+
 <!-- Full-width image section -->
 <section class="hero-image">
   <img src="assets/images/pic.png" alt="Shadow aesthetic">
 </section>
+
 
 <section class="signature-collection">
   <div class="collection-header">
@@ -167,20 +181,26 @@ if (file_exists(__DIR__ . '/db.php')) {
 
   <!-- Track: grid on desktop, carousel on mobile -->
   <div class="collection-track" id="signatureTrack">
-    <article class="product-card">
-      <img src="assets/images/candle.png" alt="Vanilla Dream">
-      <h3 class="card-title">Vanilla Dream</h3>
-    </article>
+  <article class="product-card" data-id="7">
+  <a href="productdetails.html?id=7" class="card-link">
+    <img src="assets/images/candle.png" alt="Vanilla Dream">
+    <h3 class="card-title">Vanilla Dream Candle</h3>
+  </a>
+</article>
 
-    <article class="product-card">
-      <img src="assets/images/candle.png" alt="Amber Woods">
-      <h3 class="card-title">Amber Woods</h3>
-    </article>
+<article class="product-card" data-id="8">
+  <a href="productdetails.html?id=8" class="card-link">
+    <img src="assets/images/candle.png" alt="Amber Woods">
+    <h3 class="card-title">Amber Woods Candle</h3>
+  </a>
+</article>
 
-    <article class="product-card">
-      <img src="assets/images/candle.png" alt="Cherry Blossom">
-      <h3 class="card-title">Cherry Blossom</h3>
-    </article>
+<article class="product-card" data-id="9">
+  <a href="productdetails.html?id=9" class="card-link">
+    <img src="assets/images/candle.png" alt="Cherry Blossom">
+    <h3 class="card-title">Cherry Blossom Candle</h3>
+  </a>
+</article>
 
    
 
@@ -190,6 +210,7 @@ if (file_exists(__DIR__ . '/db.php')) {
     <button class="arrow-btn next" aria-label="Next perfume">›</button>
   </div>
 </section>
+
 
 <!-- FIND YOUR FRAGRANCE (banner CTA) -->
 <section class="cta-quiz">
@@ -317,6 +338,38 @@ document.getElementById('searchForm').addEventListener('submit', function (e) {
   }
 });
 </script>
+
+<script src="assets/js/products-data.js"></script>
+<script src="assets/js/wire-products-lite.js"></script>
+<script src="assets/js/render-products.js"></script>
+
+<script>
+document.addEventListener('DOMContentLoaded', ()=>{
+  const nameToId = {
+    'Midnight Oud': 2,
+    'Ocean Breeze': 1,
+    'Velvet Rose': 3,
+    'Vanilla Dream': 7,
+    'Amber Woods': 8,
+    'Cherry Blossom': 9,
+  };
+
+  document.querySelectorAll('.collection-track .product-card').forEach(card=>{
+    const name = card.querySelector('.card-title')?.textContent.trim();
+    const id = nameToId[name] 
+      || (window.productsData||[]).find(p => p.name.toLowerCase()===name?.toLowerCase())?.id;
+    if(!id) return;
+
+    card.dataset.id = id;
+    card.style.cursor = 'pointer';
+    card.addEventListener('click', (e)=>{
+      if (e.target.closest('a,button')) return; // let real buttons/links work
+      location.href = `productdetails.html?id=${id}`;
+    });
+  });
+});
+</script>
+
 
 
 </body>

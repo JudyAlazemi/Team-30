@@ -358,22 +358,22 @@ body.drawer-open{ overflow: hidden; }
 @media (min-width: 721px){
   .collection-track{
     display: grid;
-    /* allow columns to actually shrink */
     grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: 20px;
     padding: 0 12px;
     width: 100%;
   }
 
-  .product-card{ display:flex; flex-direction:column; gap:10px; min-width: 0; }
-  .product-card img{ width:100%; height:auto; border-radius:12px; display:block; }
-  .card-title{ font-size:16px; color:var(--secondary,#4e4138); margin:6px 4px 0; }
-  .product-card:hover img{ transform:scale(1.04); transition:transform .35s ease; }
+  /* scoped to the home carousel ONLY */
+  .collection-track .product-card{ display:flex; flex-direction:column; gap:10px; min-width: 0; }
+  .collection-track .product-card img{ width:100%; height:auto; border-radius:12px; display:block; }
+  .collection-track .card-title{ font-size:16px; color:var(--secondary,#4e4138); margin:6px 4px 0; }
+  .collection-track .product-card:hover img{ transform:scale(1.04); transition:transform .35s ease; }
 }
 
-/* ---------- Mobile: horizontal carousel with center snap ---------- */
+
 @media (max-width: 720px){
-  :root{ --card-width: 78%; } /* visible size; tweak 70–85% */
+  :root{ --card-width: 78%; }
 
   .collection-track{
     display:flex;
@@ -386,14 +386,8 @@ body.drawer-open{ overflow: hidden; }
   }
   .collection-track::-webkit-scrollbar{ display:none; }
 
-  /* spacers so first/last can center 
-  .collection-track::before,
-  .collection-track::after{
-    content:"";
-    flex: 0 0 calc((100% - var(--card-width)) / 2);
-  }*/
-
-  .product-card{
+  /* scoped to the home carousel ONLY */
+  .collection-track .product-card{
     flex: 0 0 var(--card-width);
     scroll-snap-align: center;
     scroll-snap-stop: always;
@@ -402,17 +396,11 @@ body.drawer-open{ overflow: hidden; }
     opacity:.75; transform:scale(.96);
     display:flex; flex-direction:column; gap:10px;
   }
-  .product-card.is-active{ opacity:1; transform:scale(1); }
-
-  .product-card img{
-    width:100%; height:auto; display:block; border-radius:12px;
-  }
-  .card-title{
-    text-align:center;
-    font-size:15px;
-    color:var(--primary,#303c30);
-  }
+  .collection-track .product-card.is-active{ opacity:1; transform:scale(1); }
+  .collection-track .product-card img{ width:100%; height:auto; display:block; border-radius:12px; }
+  .collection-track .card-title{ text-align:center; font-size:15px; color:var(--primary,#303c30); }
 }
+
 /* Arrows container */
 .carousel-arrows {
   display: none; /* hidden on desktop, enabled on mobile */
@@ -1019,3 +1007,63 @@ body.drawer-open{ overflow: hidden; }
   opacity: 0.7;
 }
 
+/* Make product images behave inside cards (home + products pages) */
+.products-grid .product-image{
+  position: relative;
+  display: grid;
+  width: 100%;
+  height: 260px;              /* desktop-friendly frame */
+  background: #fff;
+  border-radius: 8px;
+  overflow: hidden;
+}
+@media (min-width: 720px){
+  .products-grid .product-image{ height: 320px; }
+}
+.products-grid .product-image img{
+  width: 100%;
+  height: 100%;
+  object-fit: contain;        /* keep bottle proportions */
+  display: block;
+}
+
+/* Overlay button positioning (your “View Details”) */
+.product-overlay{
+  position: absolute;
+  left: 0; right: 0; bottom: 12px;
+  display: flex; justify-content: center;
+  opacity: 0; transition: .25s ease;
+}
+.product-image:hover .product-overlay{ opacity: 1; }
+
+/* Safety fallback if a card doesn't have .product-image wrapper */
+.products-grid .product-card img{
+  max-width: 100%;
+  max-height: 320px;
+  object-fit: contain;
+  display: block;
+}
+
+/* === PRODUCTS PAGE: horizontal grid layout === */
+.page-product .products-grid{
+  display: grid !important;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)) !important;
+  gap: 24px !important;
+  padding: 16px;
+  align-items: stretch;
+}
+
+/* Optional: simple card shell on products page */
+.page-product .product-card{
+  background: #fffaf3;
+  border: 1.5px solid var(--secondary);
+  border-radius: 12px;
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+/* Ensure product tile images don’t crop */
+.page-product .product-image{ height: 300px; border-radius: 10px; overflow: hidden; background:#fff; }
+.page-product .product-image img{ width:100%; height:100%; object-fit: contain; display:block; }
