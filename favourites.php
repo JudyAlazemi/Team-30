@@ -196,6 +196,11 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["action"])) {
 </div>
 
 
+<<<<<<< HEAD
+=======
+
+
+>>>>>>> 391d6966d45ef9f4e0d1a657e1207d0e62fe24bb
   <!-- MAIN FAVOURITES CONTENT -->
 <main class="favourites-main" style="text-align:center;">
     <section class="favourites-header">
