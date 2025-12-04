@@ -1,8 +1,13 @@
 <?php
 $servername = "localhost";
+$username = "root";
+$password = "";
+$dbname = "cs2team30_db";
+
+/*
 $username = "cs2team30";
 $password = "L9xIFwamWEvGPOXogAPTOzV75";
-$dbname = "cs2team30_db";
+ */
 
 $conn = new mysqli($servername, $username, $password, $dbname);
 

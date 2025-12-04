@@ -196,21 +196,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["action"])) {
 </div>
 
 
-  <!-- SIDE MENU DRAWER -->
-  <div id="menuDrawer" class="drawer" aria-hidden="true">
-    <div class="drawer__backdrop" data-close-drawer></div>
-
-    <aside class="drawer__panel" role="dialog" aria-modal="true" aria-label="Site menu">
-      <nav class="drawer__nav">
-        <a href="products.html">Shop all</a>
-        <a href="favourites.php">Favourites</a>
-        <a href="cart.html">Cart</a>
-        <a href="aboutus.html">About us</a>
-        <a href="contactus.html">Contact us</a>
-      </nav>
-    </aside>
-  </div>
-
   <!-- MAIN FAVOURITES CONTENT -->
 <main class="favourites-main" style="text-align:center;">
     <section class="favourites-header">
@@ -277,7 +262,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["action"])) {
   <script src="assets/js/fav.js" defer></script>
   <script src="assets/js/newsletter.js" defer></script>
   <script src="assets/js/products-data.js"></script>
-  <script src="assets/js/productdetails.js"></script>
 
 </body>
 </html>
