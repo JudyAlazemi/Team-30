@@ -137,14 +137,14 @@ if (file_exists(__DIR__ . '/db.php')) {
   <div class="collection-track" id="collectionTrack">
 <article class="product-card" data-id="2">
   <a href="productdetails.html?id=2" class="card-link">
-    <img src="assets/images/midnightoud.png" alt="Midnight Oud">
+    <img src="assets/images/midnightoud.PNG" alt="Midnight Oud">
     <h3 class="card-title">Midnight Oud</h3>
   </a>
 </article>
 
 <article class="product-card" data-id="1">
   <a href="productdetails.html?id=1" class="card-link">
-    <img src="assets/images/oceanmist.png" alt="Ocean Breeze">
+    <img src="assets/images/oceanmist.PNG" alt="Ocean Breeze">
     <h3 class="card-title">Ocean Breeze</h3>
   </a>
 </article>
