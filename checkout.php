@@ -1,6 +1,7 @@
 <?php
 header("Content-Type: application/json");
 session_start();
+
 require_once "../config/db.php";
 
 $user_id = $_SESSION['user_id'] ?? ($_POST['user_id'] ?? null);
@@ -14,20 +15,17 @@ if (!$user_id || empty($cart)) {
 $conn->begin_transaction();
 
 try {
-    // 1. Create order
     $total = array_sum(array_column($cart, 'subtotal'));
     $stmt = $conn->prepare("INSERT INTO orders (user_id, total_amount, status) VALUES (?, ?, 'Pending')");
     $stmt->bind_param("id", $user_id, $total);
     $stmt->execute();
     $order_id = $conn->insert_id;
 
-    // 2. Insert order items
     $stmt_items = $conn->prepare("INSERT INTO order_items (order_id, product_id, quantity, price) VALUES (?, ?, ?, ?)");
     foreach ($cart as $item) {
         $stmt_items->bind_param("iiid", $order_id, $item['product_id'], $item['quantity'], $item['price']);
         $stmt_items->execute();
 
-        // 3. Decrease product stock
         $update = $conn->prepare("UPDATE products SET stock = stock - ? WHERE id = ?");
         $update->bind_param("ii", $item['quantity'], $item['product_id']);
         $update->execute();

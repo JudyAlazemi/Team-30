@@ -93,7 +93,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["action"])) {
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>About | Sabil</title>
+  <title>Favourites | Sabil</title>
   <link rel="stylesheet" href="assets/css/style.css" />
   <link rel="stylesheet" href="assets/css/static.css" /> 
      <script defer src="assets/js/nav.js"></script>

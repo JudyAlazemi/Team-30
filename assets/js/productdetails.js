@@ -1,591 +1,125 @@
-// Product Details Page 
+// assets/js/productdetails.js
+(function () {
+  // --- helpers --------------------------------------------------------------
+  function $(id){ return document.getElementById(id); }
+  function getParam(name){
+    const p = new URLSearchParams(location.search);
+    return p.get(name);
+  }
+  function loadLS(key, fallback){
+    try { return JSON.parse(localStorage.getItem(key)) ?? fallback; } catch { return fallback; }
+  }
+  function saveLS(key, value){
+    localStorage.setItem(key, JSON.stringify(value));
+  }
 
-const products = [
-    // PERFUMES (3 products)
-    {
-        id: 1,
-        name: "Ocean Breeze",
-        description: "A clean, refreshing scent recalls ocean waves and fresh coastal air. It's a light, everyday fragrance that will make you feel refreshed.",
-        price: 59.99,
-        image: "images/perfume9.jpg",
-        images: ["images/perfume9.jpg", "images/perfume9.jpg", "images/perfume9.jpg"],
-        notes: {
-            top: "Sea Salt, Bergamot, Marine Notes",
-            heart: "Lavender, Sage, Ocean Breeze",
-            base: "Amber, Musk, Driftwood"
-        },
-        specs: {
-            size: "100ml / 3.4 fl oz",
-            concentration: "Eau de Toilette",
-            gender: "Unisex",
-            longevity: "6-8 hours",
-            sillage: "Moderate"
-        },
-        reviews: {
-            rating: 4.7,
-            count: 156,
-            stars: "⭐⭐⭐⭐⭐"
-        }
-    },
-    {
-        id: 2,
-        name: "Midnight Oud",
-        description: "A rich, deep, luxurious fragrance with woody oud, warm spices and flowers. Perfect for evening.",
-        price: 69.99,
-        image: "images/perfume9.jpg",
-        images: ["images/perfume9.jpg", "images/perfume9.jpg", "images/perfume9.jpg"],
-        notes: {
-            top: "Bergamot, Saffron, Pink Pepper",
-            heart: "Oud Wood, Rose, Patchouli",
-            base: "Amber, Musk, Sandalwood"
-        },
-        specs: {
-            size: "100ml / 3.4 fl oz",
-            concentration: "Eau de Parfum",
-            gender: "Unisex",
-            longevity: "8-10 hours",
-            sillage: "Strong"
-        },
-        reviews: {
-            rating: 4.8,
-            count: 203,
-            stars: "⭐⭐⭐⭐⭐"
-        }
-    },
-    {
-        id: 3,
-        name: "Velvet Rose",
-        description: "A luxurious, classic floral fragrance. Warm and musky, with a hint of rose and gentle spices. A touch of luxury for everyday wear.",
-        price: 64.99,
-        image: "images/perfume9.jpg",
-        images: ["images/perfume9.jpg", "images/perfume9.jpg", "images/perfume9.jpg"],
-        notes: {
-            top: "Bulgarian Rose, Pink Pepper",
-            heart: "Velvet Musk, Peony, Jasmine",
-            base: "Sandalwood, Amber, Vanilla"
-        },
-        specs: {
-            size: "100ml / 3.4 fl oz",
-            concentration: "Eau de Parfum",
-            gender: "Women",
-            longevity: "7-9 hours",
-            sillage: "Moderate to Strong"
-        },
-        reviews: {
-            rating: 4.6,
-            count: 178,
-            stars: "⭐⭐⭐⭐⭐"
-        }
-    },
+  // --- find product by id ---------------------------------------------------
+  const id = Number(getParam('id'));
+  const products = window.productsData || [];
+  const product = products.find(p => p.id === id);
 
-    // CAR PERFUMES (3 products)
-    {
-        id: 4,
-        name: "Unleaded Petrol",
-        description: "For the true automotive enthusiast. A strong, alive car fragrance. Clean, refreshing notes with a metallic freshness. Keeps you awake while driving. Bringing the smell of petrol in your car.",
-        price: 16.99,
-        image: "images/perfume9.jpg",
-        images: ["images/perfume9.jpg", "images/perfume9.jpg", "images/perfume9.jpg"],
-        notes: {
-            top: "Citrus Zest, Metallic Notes",
-            heart: "Clean Air, Green Notes",
-            base: "Amber, Musk, Leather"
-        },
-        specs: {
-            size: "50ml / 1.7 fl oz",
-            concentration: "Car Diffuser",
-            gender: "Unisex",
-            longevity: "4-6 weeks",
-            sillage: "Strong"
-        },
-        reviews: {
-            rating: 4.4,
-            count: 189,
-            stars: "⭐⭐⭐⭐☆"
-        }
-    },
-    {
-        id: 5,
-        name: "Ionix Fresh",
-        description: "Purifies your car's air and removes odors. It's a light, everyday fragrance that will make you feel refreshed.",
-        price: 14.99,
-        image: "images/perfume9.jpg",
-        images: ["images/perfume9.jpg", "images/perfume9.jpg", "images/perfume9.jpg"],
-        notes: {
-            top: "Mountain Air, Ozone",
-            heart: "Green Tea, Bamboo",
-            base: "Clean Musk, Amber"
-        },
-        specs: {
-            size: "50ml / 1.7 fl oz",
-            concentration: "Ionizing Car Diffuser",
-            gender: "Unisex",
-            longevity: "5-7 weeks",
-            sillage: "Moderate"
-        },
-        reviews: {
-            rating: 4.5,
-            count: 234,
-            stars: "⭐⭐⭐⭐☆"
-        }
-    },
-    {
-        id: 6,
-        name: "Lavender Cruise",
-        description: "A calming car scent with soothing lavender, which is perfectly balanced with calming chamomile, turning traffic into moments of peaceful, focused relaxation.",
-        price: 18.99,
-        image: "images/perfume9.jpg",
-        images: ["images/perfume9.jpg", "images/perfume9.jpg", "images/perfume9.jpg"],
-        notes: {
-            top: "Lavender, Bergamot",
-            heart: "Chamomile, Herbal Notes",
-            base: "Musk, Amber, Vanilla"
-        },
-        specs: {
-            size: "50ml / 1.7 fl oz",
-            concentration: "Car Diffuser",
-            gender: "Unisex",
-            longevity: "4-6 weeks",
-            sillage: "Light to Moderate"
-        },
-        reviews: {
-            rating: 4.7,
-            count: 167,
-            stars: "⭐⭐⭐⭐⭐"
-        }
-    },
+  if (!product) {
+    // bad/missing id -> go back to products page
+    location.href = 'products.html';
+    return;
+  }
 
-    // CANDLES (3 products)
-    {
-        id: 7,
-        name: "Vanilla Dream Candle",
-        description: "A warm, cozy vanilla scent in a soy wax candle. This candle creates an instantly cozy and welcoming atmosphere in any room.",
-        price: 12.99,
-        image: "images/perfume9.jpg",
-        images: ["images/perfume9.jpg", "images/perfume9.jpg", "images/perfume9.jpg"],
-        notes: {
-            top: "Madagascar Vanilla, Cream",
-            heart: "Tonka Bean, Caramel",
-            base: "Sandalwood, Musk, Amber"
-        },
-        specs: {
-            size: "300g / 10.5 oz",
-            concentration: "Soy Wax Candle",
-            gender: "Unisex",
-            longevity: "50-60 hours",
-            sillage: "Room Filling"
-        },
-        reviews: {
-            rating: 4.9,
-            count: 312,
-            stars: "⭐⭐⭐⭐⭐"
-        }
-    },
-    {
-        id: 8,
-        name: "Amber Woods Candle",
-        description: "A warm, woody scent with amber. Creates a cozy and luxurious atmosphere.",
-        price: 16.99,
-        image: "images/perfume9.jpg",
-        images: ["images/perfume9.jpg", "images/perfume9.jpg", "images/perfume9.jpg"],
-        notes: {
-            top: "Amber, Cardamom",
-            heart: "Sandalwood, Cedarwood",
-            base: "Patchouli, Vanilla, Musk"
-        },
-        specs: {
-            size: "300g / 10.5 oz",
-            concentration: "Soy Wax Candle",
-            gender: "Unisex",
-            longevity: "50-60 hours",
-            sillage: "Room Filling"
-        },
-        reviews: {
-            rating: 4.8,
-            count: 189,
-            stars: "⭐⭐⭐⭐⭐"
-        }
-    },
-    {
-        id: 9,
-        name: "Cherry Blossom Candle",
-        description: "A soft, floral cherry blossom scent. Creates a fresh and uplifting atmosphere.",
-        price: 14.99,
-        image: "images/perfume9.jpg",
-        images: ["images/perfume9.jpg", "images/perfume9.jpg", "images/perfume9.jpg"],
-        notes: {
-            top: "Cherry Blossom, Green Notes",
-            heart: "Rose, Peony, Lily",
-            base: "Musk, Amber, Powder"
-        },
-        specs: {
-            size: "300g / 10.5 oz",
-            concentration: "Soy Wax Candle",
-            gender: "Women",
-            longevity: "50-60 hours",
-            sillage: "Moderate to Strong"
-        },
-        reviews: {
-            rating: 4.6,
-            count: 245,
-            stars: "⭐⭐⭐⭐⭐"
-        }
-    },
+  // --- populate details -----------------------------------------------------
+  const nameEl = $('productName');
+  const priceEl = $('productPrice');
+  const descEl = $('productDescription');
+  const imgEl = $('mainProductImage');
 
-    // HOME SPRAYS (3 products)
-    {
-        id: 10,
-        name: "Lavender Cloud Spray",
-        description: "Creates a soothing mist of relaxation throughout your home. This mist of true English lavender and a hint of herbal sage refreshes linens. Promoting rest and tranquility.",
-        price: 17.99,
-        image: "images/perfume9.jpg",
-        images: ["images/perfume9.jpg", "images/perfume9.jpg", "images/perfume9.jpg"],
-        notes: {
-            top: "Lavender, Bergamot",
-            heart: "Chamomile, Herbal Notes",
-            base: "Musk, Amber, Vanilla"
-        },
-        specs: {
-            size: "200ml / 6.7 fl oz",
-            concentration: "Room Spray",
-            gender: "Unisex",
-            longevity: "4-6 hours",
-            sillage: "Room Filling"
-        },
-        reviews: {
-            rating: 4.7,
-            count: 198,
-            stars: "⭐⭐⭐⭐⭐"
-        }
-    },
-    {
-        id: 11,
-        name: "Jasmine Home Spray",
-        description: "Instantly refreshes any room with its exotic floral fragrance. The charming nighttime bloom of jasmine, lifted by a hint of green tea, creates a luxurious and welcoming floral aura.",
-        price: 19.99,
-        image: "images/perfume9.jpg",
-        images: ["images/perfume9.jpg", "images/perfume9.jpg", "images/perfume9.jpg"],
-        notes: {
-            top: "Jasmine Sambac, Orange Blossom",
-            heart: "Ylang-Ylang, Tuberose",
-            base: "White Musk, Amber, Sandalwood"
-        },
-        specs: {
-            size: "200ml / 6.7 fl oz",
-            concentration: "Room Spray",
-            gender: "Unisex",
-            longevity: "4-6 hours",
-            sillage: "Room Filling"
-        },
-        reviews: {
-            rating: 4.5,
-            count: 167,
-            stars: "⭐⭐⭐⭐☆"
-        }
-    },
-    {
-        id: 12,
-        name: "Ocean Breeze Spray",
-        description: "A breath of coastal calm. This light, water-kissed mix of ozone, sea salt clears unwanted scents and fills your home with a clean, open, seaside feel.",
-        price: 16.99,
-        image: "images/perfume9.jpg",
-        images: ["images/perfume9.jpg", "images/perfume9.jpg", "images/perfume9.jpg"],
-        notes: {
-            top: "Sea Salt, Marine Notes",
-            heart: "Lavender, Sage, Mint",
-            base: "Amber, Musk, Driftwood"
-        },
-        specs: {
-            size: "200ml / 6.7 fl oz",
-            concentration: "Room Spray",
-            gender: "Unisex",
-            longevity: "4-6 hours",
-            sillage: "Room Filling"
-        },
-        reviews: {
-            rating: 4.6,
-            count: 223,
-            stars: "⭐⭐⭐⭐⭐"
-        }
-    },
+  if (nameEl) nameEl.textContent = product.name;
+  if (priceEl) priceEl.textContent = `£${product.price.toFixed(2)}`;
+  if (descEl) descEl.textContent = product.description || '';
+  if (imgEl) imgEl.src = product.image || 'assets/images/placeholder.png';
+  document.title = `${product.name} | SABIL Perfumes`;
 
-    // BODY WASH (3 products)
-    {
-        id: 13,
-        name: "Tropical Breeze Body Wash",
-        description: "Transports you to a paradise island with exotic fruit fusion. Leaving your skin refreshed and slightly scented with tropical bliss.",
-        price: 8.99,
-        image: "images/perfume9.jpg",
-        images: ["images/perfume9.jpg", "images/perfume9.jpg", "images/perfume9.jpg"],
-        notes: {
-            top: "Pineapple, Mango, Coconut",
-            heart: "Passion Fruit, Citrus",
-            base: "Vanilla, Musk, Amber"
-        },
-        specs: {
-            size: "300ml / 10.1 fl oz",
-            concentration: "Body Wash",
-            gender: "Unisex",
-            longevity: "On skin: 2-4 hours",
-            sillage: "Light"
-        },
-        reviews: {
-            rating: 4.8,
-            count: 276,
-            stars: "⭐⭐⭐⭐⭐"
-        }
-    },
-    {
-        id: 14,
-        name: "Strawberry Silk Body Wash",
-        description: "A sweet, berry-kissed luxury. Juicy strawberry with a whisper of whipped cream and silky proteins creates a gentle cleanse that leaves your skin supple and sweetly fragrant.",
-        price: 9.99,
-        image: "images/perfume9.jpg",
-        images: ["images/perfume9.jpg", "images/perfume9.jpg", "images/perfume9.jpg"],
-        notes: {
-            top: "Strawberry, Raspberry",
-            heart: "Cream, Vanilla",
-            base: "Musk, Sandalwood"
-        },
-        specs: {
-            size: "300ml / 10.1 fl oz",
-            concentration: "Body Wash with Silk Proteins",
-            gender: "Women",
-            longevity: "On skin: 3-5 hours",
-            sillage: "Light to Moderate"
-        },
-        reviews: {
-            rating: 4.7,
-            count: 189,
-            stars: "⭐⭐⭐⭐⭐"
-        }
-    },
-    {
-        id: 15,
-        name: "Ultra Fresh Body Wash",
-        description: "The ultimate morning wake-up call. A mix of cool mint, lively citrus, and spicy crushed ginger awakens the senses and leaves you feeling fresh, chilled, and energized.",
-        price: 7.99,
-        image: "images/perfume9.jpg",
-        images: ["images/perfume9.jpg", "images/perfume9.jpg", "images/perfume9.jpg"],
-        notes: {
-            top: "Peppermint, Eucalyptus",
-            heart: "Citrus, Green Notes",
-            base: "Clean Musk, Amber"
-        },
-        specs: {
-            size: "300ml / 10.1 fl oz",
-            concentration: "Body Wash",
-            gender: "Unisex",
-            longevity: "On skin: 2-4 hours",
-            sillage: "Light"
-        },
-        reviews: {
-            rating: 4.4,
-            count: 312,
-            stars: "⭐⭐⭐⭐☆"
-        }
-    }
-];
+  // If your thumbnails are static, they’ll keep working with changeImage().
+  // If you later add multiple images per product, you can build the thumbnail
+  // list here from product.images.
 
-function getProductIdFromURL() {
-    const urlParams = new URLSearchParams(window.location.search);
-    return urlParams.get('id') || '1';
-}
+  // --- quantity controls ----------------------------------------------------
+  const qtyInput = $('quantity');
+  function clampQty(n){
+    const num = Number(n) || 1;
+    return Math.min(10, Math.max(1, num));
+  }
+  window.increaseQuantity = function(){
+    if (!qtyInput) return;
+    qtyInput.value = clampQty(Number(qtyInput.value) + 1);
+  };
+  window.decreaseQuantity = function(){
+    if (!qtyInput) return;
+    qtyInput.value = clampQty(Number(qtyInput.value) - 1);
+  };
 
-document.addEventListener('DOMContentLoaded', function() {
-    const productId = getProductIdFromURL();
-    console.log('Loading product ID:', productId);
-    loadProductDetails(productId);
-});
-
-function loadProductDetails(productId) {
-    const product = products.find(p => p.id == productId);
-    
-    console.log('Found product:', product);
-    
-    if (product) {
-
-        document.title = `${product.name} - SABIL Perfumes`;
-        
-        //main product 
-        document.getElementById('productName').textContent = product.name;
-        document.getElementById('productPrice').textContent = `£${product.price.toFixed(2)}`;
-        document.getElementById('productDescription').textContent = product.description;
-        
-        document.getElementById('mainProductImage').src = product.image;
-        document.getElementById('mainProductImage').alt = product.name;
-        
-        if (product.reviews) {
-            const reviewsElement = document.querySelector('.product-rating');
-            if (reviewsElement) {
-                reviewsElement.innerHTML = `${product.reviews.stars} (${product.reviews.count} reviews)`;
-            }
-        }
-        
-        // fragrance notes
-        document.querySelector('[data-note="top"]').textContent = product.notes.top;
-        document.querySelector('[data-note="heart"]').textContent = product.notes.heart;
-        document.querySelector('[data-note="base"]').textContent = product.notes.base;
-        
-        // product specs
-        document.querySelector('[data-spec="size"]').textContent = product.specs.size;
-        document.querySelector('[data-spec="concentration"]').textContent = product.specs.concentration;
-        document.querySelector('[data-spec="gender"]').textContent = product.specs.gender;
-        document.querySelector('[data-spec="longevity"]').textContent = product.specs.longevity;
-        document.querySelector('[data-spec="sillage"]').textContent = product.specs.sillage;
-        
-        const thumbnails = document.querySelectorAll('.thumbnail');
-        if (product.images && product.images.length > 0) {
-            product.images.forEach((imgSrc, index) => {
-                if (thumbnails[index]) {
-                    thumbnails[index].src = imgSrc;
-                    thumbnails[index].onclick = () => changeImage(imgSrc);
-                }
-            });
-        }
-        
-        window.currentProductId = productId;
-        
-        updateRelatedProducts(productId);
-    } else {
-        console.error('Product not found for ID:', productId);
-        window.location.href = 'products.html';
-    }
-}
-
-// Change main product image
-function changeImage(imageSrc) {
-    document.getElementById('mainProductImage').src = imageSrc;
-    
-    const thumbnails = document.querySelectorAll('.thumbnail');
-    thumbnails.forEach(thumb => {
-        if (thumb.src.includes(imageSrc)) {
-            thumb.classList.add('active');
-        } else {
-            thumb.classList.remove('active');
-        }
+  // --- image swap (used by your thumbnail onclick) --------------------------
+  window.changeImage = function(src){
+    if ($('mainProductImage')) $('mainProductImage').src = src;
+    // toggle 'active' class on thumbnails (optional)
+    document.querySelectorAll('.image-thumbnails .thumbnail').forEach(t=>{
+      t.classList.toggle('active', t.getAttribute('src') === src);
     });
-}
+  };
 
-// related products 
-function updateRelatedProducts(currentProductId) {
-    // Get products from the same category
-    const currentProduct = products.find(p => p.id == currentProductId);
-    const relatedProducts = products.filter(p => 
-        p.id != currentProductId
-    ).slice(0, 3); // Get max 3 related products (any category)
-    
-    // related products section
-    const relatedContainer = document.querySelector('.related-products-grid');
-    if (relatedContainer && relatedProducts.length > 0) {
-        relatedContainer.innerHTML = relatedProducts.map(product => `
-            <div class="product-card-small">
-                <img src="${product.image}" alt="${product.name}">
-                <h4>${product.name}</h4>
-                <p>£${product.price.toFixed(2)}</p>
-                <a href="productdetails.html?id=${product.id}" class="hero-btn">View Details</a>
-            </div>
-        `).join('');
-    }
-}
+  // --- cart + favourites (localStorage) -------------------------------------
+  function getCart(){ return loadLS('cart', []); }               // [{id, qty}]
+  function setCart(c){ saveLS('cart', c); updateCartCount(); }
 
-function increaseQuantity() {
-    const quantityInput = document.getElementById('quantity');
-    let currentValue = parseInt(quantityInput.value);
-    if (currentValue < 10) {
-        quantityInput.value = currentValue + 1;
-    }
-}
+  function addToCartLS(prodId, qty){
+    const cart = getCart();
+    const i = cart.findIndex(x => x.id === prodId);
+    if (i > -1) cart[i].qty += qty;
+    else cart.push({ id: prodId, qty });
+    setCart(cart);
+  }
 
-function decreaseQuantity() {
-    const quantityInput = document.getElementById('quantity');
-    let currentValue = parseInt(quantityInput.value);
-    if (currentValue > 1) {
-        quantityInput.value = currentValue - 1;
-    }
-}
+  function updateCartCount(){
+    const count = getCart().reduce((a,b)=> a + (b.qty||0), 0);
+    // If you add a badge somewhere, update it here. Example:
+    // document.querySelector('#bagBtn')?.setAttribute('data-count', String(count));
+  }
 
-// Add to cart 
-function addToCart() {
-    const productId = window.currentProductId;
-    const quantity = parseInt(document.getElementById('quantity').value);
-    
-    let cart = JSON.parse(localStorage.getItem('cart')) || [];
-    
-    const product = products.find(p => p.id == productId);
-    
-    if (product) {
-        const existingItem = cart.find(item => item.id == productId);
-        
-        if (existingItem) {
-            existingItem.quantity += quantity;
-        } else {
-            cart.push({
-                id: product.id,
-                name: product.name,
-                price: product.price,
-                image: product.image,
-                quantity: quantity
-            });
-        }
-        
-        localStorage.setItem('cart', JSON.stringify(cart));
-        
-        alert(`${quantity} x ${product.name} has been added to your cart!`);
-        
-        document.getElementById('quantity').value = 1;
-        
-        updateCartCount();
-    }
-}
+  function getFavs(){ return loadLS('favs', []); }               // [id, id, ...]
+  function setFavs(f){ saveLS('favs', f); }
+  function toggleFavLS(prodId){
+    let favs = getFavs();
+    favs = favs.includes(prodId) ? favs.filter(id => id !== prodId) : favs.concat(prodId);
+    setFavs(favs);
+    return favs.includes(prodId);
+  }
 
-// Buy now 
-function buyNow() {
-    addToCart();
-    // Redirect to cart page
-    window.location.href = 'cart.html';
-}
+  // --- wire buttons ---------------------------------------------------------
+  window.addToCart = function(){
+    const qty = clampQty(qtyInput ? qtyInput.value : 1);
+    addToCartLS(product.id, qty);
+    // Tiny feedback (replace with your toast/snackbar if you have one)
+    alert(`${product.name} ×${qty} added to cart`);
+  };
 
-// Update cart 
-function updateCartCount() {
-    const cart = JSON.parse(localStorage.getItem('cart')) || [];
-    const count = cart.reduce((total, item) => total + item.quantity, 0);
-    
-    const counter = document.querySelector('.cart-count');
-    if (counter) {
-        counter.textContent = count;
-        counter.style.display = count > 0 ? 'flex' : 'none';
-    }
-}
+  window.buyNow = function(){
+    const qty = clampQty(qtyInput ? qtyInput.value : 1);
+    addToCartLS(product.id, qty);
+    location.href = 'cart.html';
+  };
 
-updateCartCount();
+  window.addToFavouritesDetails = function(){
+    const isFav = toggleFavLS(product.id);
+    // Update the button text/state if you want
+    const btn = document.querySelector('.favourite-btn');
+    if (btn) btn.textContent = isFav ? '♥ Favourited' : '♡ Favourite';
+  };
 
-// -------------------------------
-// FAVOURITE SYSTEM FOR DETAILS PAGE
-// -------------------------------
-function addToFavouritesDetails() {
-    const productId = Number(window.currentProductId);
+  // Initial UI state for favourite button
+  (function initFavBtn(){
+    const btn = document.querySelector('.favourite-btn');
+    if (!btn) return;
+    const isFav = getFavs().includes(product.id);
+    btn.textContent = isFav ? '♥ Favourited' : '♡ Favourite';
+  })();
 
-    let favourites = JSON.parse(localStorage.getItem("favourites")) || [];
-
-    if (!favourites.includes(productId)) {
-        favourites.push(productId);
-        localStorage.setItem("favourites", JSON.stringify(favourites));
-        showFavouriteToast("Added to favourites!");
-    } else {
-        showFavouriteToast("Already in favourites!");
-    }
-}
-
-// Toast popup
-function showFavouriteToast(message) {
-    let toast = document.createElement("div");
-    toast.className = "favourite-toast";
-    toast.innerText = message;
-
-    document.body.appendChild(toast);
-
-    setTimeout(() => {
-        toast.remove();
-    }, 2500);
-}
+  // Ensure cart count is initialised on load
+  updateCartCount();
+})();

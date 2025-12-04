@@ -90,24 +90,6 @@ if (file_exists(__DIR__ . '/db.php')) {
   </div>
 </header>
 
-<!-- MENU DRAWER (left-side) -->
-<div id="menuDrawer" class="drawer" aria-hidden="true">
-  <div class="drawer__backdrop" data-close-drawer></div>
-
-  <aside class="drawer__panel" role="dialog" aria-modal="true" aria-label="Site menu">
-    <nav class="drawer__nav">
-      <a href="products.html">Shop all</a>
-      <a href="cart.html">Cart</a>
-      <a href="favourites.php">Favourites</a>
-      <a href="contactus.php">Contact us</a>
-      <a href="faq.php">FAQ</a>
-      <a href="aboutus.php">About us</a>
-      <a href="terms.php">Terms</a>
-      <a href="privacypolicy.php">Privacy Policy</a>
-  
-    </nav>
-  </aside>
-</div>
 
 <!-- MENU DRAWER (left-side) -->
 <div id="menuDrawer" class="drawer" aria-hidden="true">
@@ -144,7 +126,7 @@ if (file_exists(__DIR__ . '/db.php')) {
 
 <section class="new-collection">
   <div class="collection-header">
-    <h2>New Collection</h2>
+    <h2>Fragrances</h2>
     <a href="products.html" class="view-more-btn">View More</a>
   </div>
 
@@ -179,7 +161,7 @@ if (file_exists(__DIR__ . '/db.php')) {
 
 <section class="signature-collection">
   <div class="collection-header">
-    <h2>Signature Collection</h2>
+    <h2>Candles</h2>
     <a href="products.html" class="view-more-btn">View More</a>
   </div>
 
