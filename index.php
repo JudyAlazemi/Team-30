@@ -10,7 +10,7 @@ if (file_exists(__DIR__ . '/db.php')) {
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1" />
     <title>Sabil</title>
-    <link rel="stylesheet" href="/Team-30/assets/css/style.css" />
+    <link rel="stylesheet" href="assets/css/style.css" />
 
     <script defer src="assets/js/nav.js"></script>
     <script defer src="assets/js/home.js"></script>

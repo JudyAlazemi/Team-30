@@ -19,7 +19,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Load favourites for current user/session
     function loadFavourites() {
-        fetch('favourites.php', {
+        fetch('/~cs2team30/favourites.php', {
             method: 'POST',
             headers: { "Content-Type": "application/x-www-form-urlencoded" },
             body: new URLSearchParams({ action: "list" })
@@ -40,7 +40,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const productId = btn.dataset.productId;
 
-        fetch('favourites.php', {
+        fetch('/~cs2team30/favourites.php', {
             method: 'POST',
             headers: { "Content-Type": "application/x-www-form-urlencoded" },
             body: new URLSearchParams({
