@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Details - SABIL Perfumes</title>
+     <link rel="stylesheet" href="css/style.css">
+    <link rel ="icon" type="image/png" href="images/logo.png">
+    <script defer src ="nav.js"></script>
+    <link rel="stylesheet" href="styles/globals.css">
+    <link rel="stylesheet" href="styles/product.css">
+</head>
+<body class ="page-home">
+
+    <header class="topbar">
+        <div class="topbar-inner">
+
+        <!-- Menu button (left) -->
+        <button class="icon-btn menu-toggle" aria-label="Open menu" aria-expanded="false">
+          
+          <img class="icon icon--menu" src="images/menu.png" alt="" />
+          <img class="icon icon--close" src="images/close.png" alt="" />
+        </button>
+
+        <!-- Sabil Logo -->
+        <a class="brand" href="index.html">
+          <img class="brand-logo" src="images/logo.png" alt="Sabil" />
+        </a>
+
+        <nav class="actions" aria-label="Account & tools">
+
+            <!-- User -->
+      <a id="userBtn" class="action" href="login.html" role="button" aria-pressed="false">
+        <img
+          id="userIcon"
+          class="icon"
+          src="images/sign-in.png"
+          alt="User"
+          data-src-inactive="images/sign-in.png"
+          data-src-active="images/user-shaded.png"
+        />
+        <span id="userText" class="action-text">Sign in</span>
+      </a>
+
+    <!-- search  -->
+    <div class="search-group">
+      <a id="searchBtn" class="action" href="#" aria-expanded="false" aria-controls="navSearchInput">
+        <img class="icon" src="images/search.png" alt="Search" />
+      </a>
+      <input
+        type="text"
+        id="navSearchInput"
+        class="nav-search-input"
+        placeholder="Search..."
+        autocomplete="off"
+      />
+    </div>
+
+
+      <!-- favourite -->
+      <a id="favBtn" class="action" href="favourites.html" role="button" aria-pressed="false">
+        <img
+          id="favIcon"
+          class="icon"
+          src="images/favorite.png"
+          alt="Favourite"
+          data-src-inactive="images/favorite.png"
+          data-src-active="images/favorite-shaded.png"
+        />
+      </a>
+           <!-- bag -->
+      <a id="bagBtn" class="action" href="cart.html" role="button" aria-pressed="false">
+        <img
+          id="bagIcon"
+          class="icon"
+          src="images/shopping-bag.png"
+          alt="Shopping bag"
+          data-src-inactive="images/shopping-bag.png"
+          data-src-active="images/shopping-bag-filled.png"
+        />
+      </a>
+        </nav>
+      </div>
+    </header>
+
+    <!-- menu section (left-side) -->
+    <div id="menuDrawer" class="drawer" aria-hidden="true">
+      <div class="drawer__backdrop" data-close-drawer></div>
+
+      <aside class="drawer__panel" role="dialog" aria-modal="true" aria-label="Site menu">
+        <nav class="drawer__nav">
+          <a href="products.html">Shop all</a>
+          <a href="favourites.html">Favourites</a>
+          <a href="cart.html">Cart</a>
+          <a href="aboutus.html">About us</a>
+          <a href="contactus.html">Contact us</a>
+        </nav>
+      </aside>
+    </div>
+
+    <main>
+        <section class="product-details-section">
+            <div class="container">
+                <a href="products.html" class="back-link">&larr; Back to Products</a>
+                
+                <div class="product-details-grid">
+                    <div class="product-images">
+                        <div class="main-image">
+                            <img id="mainProductImage" src="images/oceanmist.png" alt="Product Image">
+                        </div>
+                        <div class="image-thumbnails">
+                            <img src="images/oceanmist.png" alt="View 1" class="thumbnail active" onclick="changeImage('images/oceanmist.png')">
+                            <img src="images/oceanmist.png" alt="View 2" class="thumbnail" onclick="changeImage('images/oceanmist.png')">
+                            <img src="images/oceanmist.png" alt="View 3" class="thumbnail" onclick="changeImage('images/oceanmist.png')">
+                        </div>
+                    </div>
+
+                
+                    
+                    <div class="product-details-content">
+                        <h1 id="productName">Ocean Breeze</h1>
+                        <p class="product-rating">⭐⭐⭐⭐⭐ (199 reviews)</p>
+                        <p class="product-price-large" id="productPrice">£59.99</p>
+                        
+                        <div class="product-description-section">
+                            <h3>Description</h3>
+                            <p id="productDescription">
+                                A clean, refreshing scent recalls ocean waves and fresh coastal air. It's a light, everyday fragrance that will make you feel refreshed.
+                            </p>
+                        </div>
+
+                        <!-- Fragrance notes section -->
+                        <div class="product-notes">
+                            <h3>Fragrance Notes</h3>
+                            <div class="notes-grid">
+                                <div class="note-item">
+                                    <strong>Top Notes:</strong>
+                                    <p data-note="top">Sea Salt, Bergamot, Marine Notes</p>
+                                </div>
+                                <div class="note-item">
+                                    <strong>Heart Notes:</strong>
+                                    <p data-note="heart">Lavender, Sage, Ocean Breeze</p>
+                                </div>
+                                <div class="note-item">
+                                    <strong>Base Notes:</strong>
+                                    <p data-note="base">Amber, Musk, Driftwood</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Product specs section -->
+                        <div class="product-specs">
+                            <h3>Product Information</h3>
+                            <ul>
+                                <li><strong>Size:</strong> <span data-spec="size">100ml / 3.4 fl oz</span></li>
+                                <li><strong>Concentration:</strong> <span data-spec="concentration">Eau de Toilette</span></li>
+                                <li><strong>Gender:</strong> <span data-spec="gender">Unisex</span></li>
+                                <li><strong>Longevity:</strong> <span data-spec="longevity">6-8 hours</span></li>
+                                <li><strong>Sillage:</strong> <span data-spec="sillage">Moderate</span></li>
+                            </ul>
+                        </div>
+
+                        <div class="product-actions">
+                            <div class="quantity-selector">
+                                <label for="quantity">Quantity:</label>
+                                <div class="quantity-controls">
+                                    <button class="qty-btn" onclick="decreaseQuantity()">-</button>
+                                    <input type="number" id="quantity" value="1" min="1" max="10">
+                                    <button class="qty-btn" onclick="increaseQuantity()">+</button>
+                                    <button class="hero-btn favourite-btn" onclick="addToFavouritesDetails()">♡ Favourite</button>
+                                </div>
+                            </div>
+                            <button class="hero-btn add-to-cart-btn" onclick="addToCart()">Add to Cart</button>
+                            <button class="hero-btn buy-now-btn" onclick="buyNow()">Buy Now</button>
+                        </div>
+
+                        <div class="product-features">
+                            <div class="feature-item">
+                                <span class="feature-icon">✓</span>
+                                <span>Free shipping on orders over £50</span>
+                            </div>
+                            <div class="feature-item">
+                                <span class="feature-icon">✓</span>
+                                <span>30-day money-back guarantee</span>
+                            </div>
+                            <div class="feature-item">
+                                <span class="feature-icon">✓</span>
+                                <span>Authentic & cruelty-free</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Related Products Section -->
+                <div class="related-products">
+                    <h2>You May Also Like</h2>
+                    <div class="related-products-grid">
+                        <div class="product-card-small">
+                            <img src="images/midnightoud.png" alt="Midnight Oud">
+                            <h4>Midnight Oud</h4>
+                            <p>£69.99</p>
+                            <a href="productdetails.html?id=2" class="hero-btn">View Details</a>
+                        </div>
+                        <div class="product-card-small">
+                            <img src="images/velvetmusk.png" alt="Velvet Rose">
+                            <h4>Velvet Rose</h4>
+                            <p>£64.99</p>
+                            <a href="productdetails.html?id=3" class="hero-btn">View Details</a>
+                        </div>
+                        <div class="product-card-small">
+                            <img src="images/homesprayblue.png" alt="ocean breeze spray">
+                            <h4>Ocean Breeze Spray</h4>
+                            <p>£16.99</p>
+                            <a href="productdetails.html?id=6" class="hero-btn">View Details</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="site-footer">
+        <div class="container">
+            <p>© 2025 Sabil . All rights reserved. </p>
+        </div>
+    </footer>
+
+    <script src="productdetails.js"></script>
+</body>
+</html>
