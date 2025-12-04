@@ -7,7 +7,7 @@ window.productsData = [
     name: "Ocean Breeze",
     description: "Fresh aquatic fragrance with marine notes",
     price: 59.99,
-    image: "assets/images/oceanmist.png",   // use your real Ocean Breeze image
+    image: "assets/images/oceanmist.PNG",   // use your real Ocean Breeze image
     category: "perfume"
   },
   {
@@ -15,7 +15,7 @@ window.productsData = [
     name: "Midnight Oud",
     description: "Deep and mysterious oriental fragrance",
     price: 69.99,
-    image: "assets/images/midnightoud.png",   // replace with your real Midnight Oud image
+    image: "assets/images/midnightoud.PNG",   // replace with your real Midnight Oud image
     category: "perfume"
   },
   {
@@ -49,7 +49,7 @@ window.productsData = [
     name: "Lavender Cruise",
     description: "Calming lavender for relaxed drives",
     price: 18.99,
-    image: "assets/images/carperfmed.jpeg",  // no image yet
+    image: "assets/images/carperfmed.png",  // no image yet
     category: "car-perfume"
   },
 
@@ -85,7 +85,7 @@ window.productsData = [
     name: "Lavender Cloud Spray",
     description: "Soothing lavender mist for relaxation",
     price: 17.99,
-    image: "assets/images/homespraysilver.jpeg",  // no image yet
+    image: "assets/images/homespraysilver.png",  // no image yet
     category: "home-spray"
   },
   {
