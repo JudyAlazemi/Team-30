@@ -32,7 +32,8 @@ if (!$stmt->bind_param("sss", $name, $email, $hash)) {
 }
 
 if ($stmt->execute()) {
-    echo "Registration successful!";
+    header("Location: /index.php");
+    exit;
 } else {
     echo "Execute failed: " . $stmt->error;
 }
