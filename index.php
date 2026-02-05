@@ -120,7 +120,7 @@ if (file_exists(__DIR__ . '/db.php')) {
   <div class="hero-overlay"></div>
 
   <div class="hero-content">
-    <h1>Let your scent<br>guide your journey.</h1>
+    <h1>test Let your scent<br>guide your journey.</h1>
     <a href="products.html" class="hero-btn">Shop now</a>
   </div>
 </section>
