@@ -116,6 +116,21 @@
 
         <h1>Welcome back</h1>
         <p class="subtitle">Log in to continue your shopping experience</p>
+        <p id="loginError" class="error" style="display:none;"></p>
+
+<script>
+  const err = new URLSearchParams(window.location.search).get('error');
+  const el = document.getElementById('loginError');
+
+  if (err === 'missing') {
+    el.textContent = 'Please fill in all fields.';
+    el.style.display = 'block';
+  } else if (err === 'invalid') {
+    el.textContent = 'Invalid email or password.';
+    el.style.display = 'block';
+  }
+</script>
+
 
         
         <form class="auth-form" 

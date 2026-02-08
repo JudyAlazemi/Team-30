@@ -1,36 +1,35 @@
 <?php
 session_start();
-require_once"../config/db.php";
+require_once __DIR__ . "/../config/db.php";
 
-$email = $_POST["email"] ?? '';
-$password = $_POST['password'] ?? '';
+$email = trim($_POST["email"] ?? '');
+$password = $_POST["password"] ?? '';
 
-if (!$email || !$password) {
-    echo "Please fill in all fields.";
+if ($email === '' || $password === '') {
+    header("Location: ../../login.html?error=missing");
     exit;
 }
 
-$stmt = $conn->prepare("SELECT * FROM users WHERE email = ?");
+$stmt = $conn->prepare("SELECT id, name, password FROM users WHERE email = ? LIMIT 1");
 $stmt->bind_param("s", $email);
 $stmt->execute();
 $result = $stmt->get_result();
 
-if ($result->num_rows === 1) {
-    $user = $result->fetch_assoc();
+if ($result->num_rows !== 1) {
+    header("Location: ../../login.html?error=invalid");
+    exit;
+}
 
-    if (password_verify($password, $user['password'])) {
-        $_SESSION['user_id'] = $user['id'];
-        $_SESSION['user_name'] = $user['name'];
+$user = $result->fetch_assoc();
 
-        header("Location: ../../index.php");
-        exit;
-    } else {    
-        echo "Incorrect password.";
-        exit;
-    }
-    } else {
-        echo "Email not found.";
-        exit;
+if (!password_verify($password, $user['password'])) {
+    header("Location: ../../login.html?error=invalid");
+    exit;
+}
 
-    }
-    ?>
+session_regenerate_id(true);
+$_SESSION['user_id'] = (int)$user['id'];
+$_SESSION['user_name'] = $user['name'];
+
+header("Location: ../../index.php");
+exit;
