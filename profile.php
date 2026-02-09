@@ -19,9 +19,27 @@ exit;
 </head>
 <body>
 
-<h1>Profile</h1>
-<p>Name: <?= htmlspecialchars($_SESSION['user_name'] ?? 'User') ?></p>
-<p>User ID: <? (int)($_SESSION['user_id'] ?? 0) ?> </p>
-<a href="logout.php">Sign out</a>
+<h1>Hi, <?= htmlspecialchars($_SESSION['user_name'] ?? 'User') ?></h1>
+
+<section>
+    <h2>Account details</h2>
+    <p><strong>Name:</strong> <?= htmlspecialchars($_SESSION['user_name']) ?></p>
+    <p><strong>Email:</strong> <?= htmlspecialchars($_SESSION['user_email'] ?? 'Not available') ?></p>
+
+</section>
+
+<section>
+    <h2>My account</h2>
+    <ul>
+        <li><a href="orders.php">My Orders</a></li>
+      <li><a href="favourites.php">My Favourites</a></li>
+
+    </ul>
+</section>
+<section>
+    <a href="logout.php">Sign out</a>
+</section>
+
+
 </body>
 </html>
