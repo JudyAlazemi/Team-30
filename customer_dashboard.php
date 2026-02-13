@@ -2,7 +2,6 @@
 session_start();
 require_once __DIR__ . "/config/db.php";
 
-// Must be logged in
 if (!isset($_SESSION['user_id'])) {
   header("Location: login.html");
   exit;
@@ -11,49 +10,39 @@ if (!isset($_SESSION['user_id'])) {
 $userId = (int)$_SESSION['user_id'];
 $userName = $_SESSION['user_name'] ?? "Customer";
 
-// Stats
 $totalOrders = 0;
 $pendingOrders = 0;
 $totalSpent = 0.0;
 $favCount = 0;
-
-// Recent orders
 $recentOrders = [];
 
 try {
-  // total orders
   $stmt = $conn->prepare("SELECT COUNT(*) AS c FROM orders WHERE user_id = ?");
   $stmt->bind_param("i", $userId);
   $stmt->execute();
   $totalOrders = (int)($stmt->get_result()->fetch_assoc()['c'] ?? 0);
 
-  // pending orders (you can change statuses anytime)
   $stmt = $conn->prepare("SELECT COUNT(*) AS c FROM orders WHERE user_id = ? AND status IN ('pending','processing')");
   $stmt->bind_param("i", $userId);
   $stmt->execute();
   $pendingOrders = (int)($stmt->get_result()->fetch_assoc()['c'] ?? 0);
 
-  // total spent
   $stmt = $conn->prepare("SELECT COALESCE(SUM(total_amount),0) AS s FROM orders WHERE user_id = ?");
   $stmt->bind_param("i", $userId);
   $stmt->execute();
   $totalSpent = (float)($stmt->get_result()->fetch_assoc()['s'] ?? 0);
 
-  // favourites count
   $stmt = $conn->prepare("SELECT COUNT(*) AS c FROM favourites WHERE user_id = ?");
   $stmt->bind_param("i", $userId);
   $stmt->execute();
   $favCount = (int)($stmt->get_result()->fetch_assoc()['c'] ?? 0);
 
-  // recent orders
   $stmt = $conn->prepare("SELECT id, total_amount, status, created_at FROM orders WHERE user_id = ? ORDER BY created_at DESC LIMIT 5");
   $stmt->bind_param("i", $userId);
   $stmt->execute();
   $recentOrders = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
 
-} catch (Exception $e) {
-  // dashboard will still load even if a query fails
-}
+} catch (Exception $e) {}
 ?>
 <!doctype html>
 <html lang="en">
@@ -67,10 +56,10 @@ try {
 
 <div class="layout">
   <aside class="sidebar">
-    <div class="brand">Sabil</div>
+    <div class="brand">SABIL</div>
 
     <div class="userbox">
-      <div class="avatar"><?= strtoupper(substr($userName, 0, 1)) ?></div>
+      <div class="avatar"><?= strtoupper(substr($userName,0,1)) ?></div>
       <div>
         <div class="name"><?= htmlspecialchars($userName) ?></div>
         <div class="role">Customer</div>
@@ -78,18 +67,16 @@ try {
     </div>
 
     <nav class="nav">
-      <a class="navlink active" href="customer_dashboard.php">🏠 Dashboard</a>
-      <a class="navlink" href="customer_orders.php">🧾 My Orders</a>
-      <a class="navlink" href="logout.php">🚪 Logout</a>
+      <a class="navlink active" href="customer_dashboard.php">Dashboard</a>
+      <a class="navlink" href="customer_orders.php">My Orders</a>
+      <a class="navlink" href="logout.php">Logout</a>
     </nav>
   </aside>
 
   <main class="content">
     <div class="topbar">
-      <div>
-        <div class="title">Welcome, <?= htmlspecialchars($userName) ?> 👋</div>
-        <div class="small">Your account summary</div>
-      </div>
+      <div class="title">Welcome, <?= htmlspecialchars($userName) ?></div>
+      <div class="small">This is your customer dashboard</div>
     </div>
 
     <div class="grid">
@@ -137,7 +124,7 @@ try {
               <?php foreach ($recentOrders as $o): ?>
                 <tr>
                   <td>#<?= htmlspecialchars($o['id']) ?></td>
-                  <td>£<?= number_format((float)$o['total_amount'], 2) ?></td>
+                  <td>£<?= number_format((float)$o['total_amount'],2) ?></td>
                   <td><span class="badge"><?= htmlspecialchars($o['status']) ?></span></td>
                   <td><?= htmlspecialchars($o['created_at']) ?></td>
                 </tr>
