@@ -31,6 +31,6 @@ session_regenerate_id(true);
 $_SESSION['user_id'] = (int)$user['id'];
 $_SESSION['user_name'] = $user['name'];
 
-header("Location: ../../customer_dashboard.php");
+header("Location: ../../profile.php");
 exit;
 

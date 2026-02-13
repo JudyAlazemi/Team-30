@@ -1,98 +1,84 @@
 <?php
 session_start();
+require_once __DIR__ . "/config/db.php";
 
-if (empty($_SESSION['user_id'])) {
-header("Location: login.html");
-exit;
+if (!isset($_SESSION['user_id'])) {
+  header("Location: login.html");
+  exit;
 }
 
+$userId = (int)$_SESSION['user_id'];
+$userName = $_SESSION['user_name'] ?? "Customer";
+$email = "Not available";
+
+$stmt = $conn->prepare("SELECT email, name FROM users WHERE id = ? LIMIT 1");
+$stmt->bind_param("i", $userId);
+$stmt->execute();
+$res = $stmt->get_result();
+if ($row = $res->fetch_assoc()) {
+  $email = $row['email'] ?? $email;
+  if (!empty($row['name'])) {
+    $userName = $row['name'];
+    $_SESSION['user_name'] = $userName; // keep session updated
+  }
+}
 ?>
 <!doctype html>
 <html lang="en">
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Profile</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>My Account</title>
 
-    <link rel="stylesheet" href="assets/css/style.css"/>
-    <link rel="stylesheet" href="assets/css/registerlogin.css"/>
+  <!-- your existing site CSS -->
+  <link rel="stylesheet" href="style.css">
 
-   <script defer src="assets/js/nav.js"></script>
-   <script defer src="assets/js/home.js"></script>
-   <script defer src="assets/js/newsletter.js"></script>
-
-   <link rel="icon" type="image/png" href="assets/images/logo.png">
-
+  <!-- dashboard add-on -->
+  <link rel="stylesheet" href="account-dashboard.css">
 </head>
 
-<body class="page-home">
+<body class="account-page">
 
-<header class="topbar">
-    <div class="topbar-inner">
+<!-- ✅ Keep your normal topbar if this page already has it -->
+<!-- If you already include a topbar via PHP include, leave it as-is. -->
 
-    <button class="icon-btn menu-toggle" aria-label="Open menu" aria-expanded="false">
-    <img class="icon icon--menu" src="assets/images/menu.png" alt="" />
-    <img class="icon icon--close" src="assets/images/close.png" alt="" />
-     
-</button>
-     <a class="brand" href="index.php">
-     <img class="brand-logo" src="assets/images/logo.png" alt="Sabil" />
-</a>
+<div class="account-shell">
 
-<nav class="actions" aria-label="Account & tools">
-    <?php include __DIR__ . "/partials/navbar.php"; ?>
+  <!-- Sidebar -->
+  <aside class="account-side">
+    <h3 class="side-title">Sabil Account</h3>
+    <p class="side-sub">Welcome, <?= htmlspecialchars($userName) ?></p>
 
-    <div class="search-group">
-        <a id="searchBtn" class="action" href="#">
-            <img class="icon" src="assets/images/search.png" alt="Search" />
-        </a>
-        <input
-        type="text"
-        id="navSearchInput"
-        class="nav-search-input"
-        placeholder="Search..."
-        />
+    <nav class="side-nav">
+      <a class="side-link active" href="profile.php">📌 Dashboard</a>
+      <a class="side-link" href="my_orders.php">🧾 My Orders</a>
+      <a class="side-link" href="favourites.php">🤍 Favourites</a>
+      <a class="side-link logout" href="logout.php">🚪 Logout</a>
+    </nav>
+  </aside>
 
-    </div>
-    <a id="favBtn" class="action" href="favourites.php">
-        <img class="icon" src="assets/images/favorite.png" alt="Favourites" />
+  <!-- Main content -->
+  <main class="account-main">
 
-    </a>
+    <section class="panel">
+      <h1 class="panel-title">Hi, <?= htmlspecialchars($userName) ?></h1>
 
-     <a id="bagBtn" class="action" href="cart.html">
-        <img class="icon" src="assets/images/shopping-bag.png" alt="Shopping bag" />
-      </a>
-   </nav>
+      <div class="info-grid">
+        <div class="kv"><b>Name:</b> <?= htmlspecialchars($userName) ?></div>
+        <div class="kv"><b>Email:</b> <?= htmlspecialchars($email) ?></div>
+      </div>
 
-   </div>
-</header>
+      <div class="action-row">
+        <a class="btn-sabil btn-outline" href="index.php">Back to Home</a>
+        <a class="btn-sabil" href="my_orders.php">My Orders</a>
+        <a class="btn-sabil" href="favourites.php">Favourites</a>
+        <a class="btn-sabil btn-outline" href="logout.php">Sign out</a>
+      </div>
+    </section>
 
+  </main>
 
-
-<main class="content profile-page">
-    <h1>Hi, <?= htmlspecialchars($_SESSION['user_name'] ?? 'User') ?></h1>
-
-<a href="index.php" class="btn-primary back-btn"> Back to Home</a>
-<section>
-    <h2>Account details</h2>
-    <p><strong>Name:</strong> <?= htmlspecialchars($_SESSION['user_name'] ?? 'User') ?></p>
-    <p><strong>Email:</strong> <?= htmlspecialchars($_SESSION['user_email'] ?? 'Not available') ?></p>
-
-</section>
-
-<section>
-    <h2>My account</h2>
-    
-      <div class="profile-actions">
-      <a href="orders.php" class="btn-primary">My Orders</a>
-      <a href="favourites.php" class="btn-primary">Favourites</a>
-     <a href="logout.php" class="btn-primary">Sign out</a>
-    </div>
-    
-</section>
-
-
-</main>
+</div>
 
 </body>
 </html>
