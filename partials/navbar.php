@@ -4,7 +4,7 @@ if (session_status() === PHP_SESSION_NONE) session_start();
 
 <?php if (!empty($_SESSION['user_id'])): ?>
   <a class="action" href="profile.php" role="button">
-    <img class="icon" src="assets/images/user-shaded.png" alt="Profile" />
+    <img class="icon" src="assets/images/user.png" alt="Profile" />
     <span class="action-text"><?= htmlspecialchars($_SESSION['user_name'] ?? 'User') ?></span>
   </a>
 

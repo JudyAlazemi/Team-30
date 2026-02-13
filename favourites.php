@@ -124,17 +124,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["action"])) {
     <nav class="actions" aria-label="Account & tools">
 
       <!-- USER -->
-      <a id="userBtn" class="action" href="login.html" role="button" aria-pressed="false">
-        <img
-          id="userIcon"
-          class="icon"
-          src="assets/images/sign-in.png"
-          alt="User"
-          data-src-inactive="assets/images/sign-in.png"
-          data-src-active="assets/images/user-shaded.png"
-        />
-        <span id="userText" class="action-text">Sign in</span>
-      </a>
+      <?php include __DIR__ . "/partials/navbar.php"; ?>
+
 
       <!-- SEARCH GROUP (one flex item) -->
       <div class="search-group">
