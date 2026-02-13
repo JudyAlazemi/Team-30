@@ -34,7 +34,7 @@ if ($row = $res->fetch_assoc()) {
   <link rel="stylesheet" href="style.css">
 
   <!-- dashboard add-on -->
-  <link rel="stylesheet" href="account-dashboard.css">
+  <link rel="stylesheet" href="customer_dashboard.css">
 </head>
 
 <body class="account-page">
