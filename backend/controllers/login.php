@@ -6,7 +6,7 @@ $email = trim($_POST["email"] ?? '');
 $password = $_POST["password"] ?? '';
 
 if ($email === '' || $password === '') {
-    header("Location: ../../login.html?error=missing");
+    header("Location: /login.html?error=missing");
     exit;
 }
 
@@ -16,14 +16,14 @@ $stmt->execute();
 $result = $stmt->get_result();
 
 if ($result->num_rows !== 1) {
-    header("Location: ../../login.html?error=invalid");
+    header("Location: /login.html?error=invalid");
     exit;
 }
 
 $user = $result->fetch_assoc();
 
 if (!password_verify($password, $user['password'])) {
-    header("Location: ../../login.html?error=invalid");
+    header("Location: /login.html?error=invalid");
     exit;
 }
 
@@ -31,6 +31,6 @@ session_regenerate_id(true);
 $_SESSION['user_id'] = (int)$user['id'];
 $_SESSION['user_name'] = $user['name'];
 
-header("Location: ../../profile.php");
+// ✅ go straight to customer dashboard
+header("Location: /customer_dashboard.php");
 exit;
-
