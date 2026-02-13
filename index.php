@@ -1,15 +1,22 @@
 <?php
-
-echo "<pre>";
-print_r($_SESSION);
-echo "</pre>";
-
 session_start();
 
-
-if (file_exists(__DIR__ . '/db.php')) {
-    require_once __DIR__ . '/db.php';
+/**
+ * ✅ Use the correct DB include (your project uses backend/config/db.php)
+ * If index.php doesn't need DB, you can remove this require, but it's safe to keep.
+ */
+if (file_exists(__DIR__ . "/backend/config/db.php")) {
+    require_once __DIR__ . "/backend/config/db.php";
 }
+
+/**
+ * ✅ Debug (optional)
+ * If you want to see session contents, uncomment these lines.
+ * IMPORTANT: Keep it AFTER session_start()
+ */
+// echo "<pre>";
+// print_r($_SESSION);
+// echo "</pre>";
 ?>
 
 <!doctype html>
@@ -47,9 +54,8 @@ if (file_exists(__DIR__ . '/db.php')) {
     <nav class="actions" aria-label="Account & tools">
 
       <!-- USER -->
-     <?php include __DIR__ . "/partials/navbar.php"; ?>
+      <?php include __DIR__ . "/partials/navbar.php"; ?>
 
-  
       <!-- SEARCH GROUP (one flex item) -->
       <div class="search-group">
         <a id="searchBtn" class="action" href="#">
@@ -105,7 +111,6 @@ if (file_exists(__DIR__ . '/db.php')) {
       <a href="aboutus.php">About us</a>
       <a href="terms.php">Terms</a>
       <a href="privacypolicy.php">Privacy Policy</a>
-  
     </nav>
   </aside>
 </div>
@@ -368,8 +373,6 @@ document.addEventListener('DOMContentLoaded', ()=>{
   });
 });
 </script>
-
-
 
 </body>
 </html>
