@@ -1,0 +1,53 @@
+*{box-sizing:border-box;font-family:Arial,Helvetica,sans-serif}
+body{margin:0;background:#f6f7fb;color:#111}
+
+.layout{display:flex;min-height:100vh}
+
+.sidebar{width:260px;background:#111827;color:#fff;padding:20px;display:flex;flex-direction:column;gap:16px}
+.brand{font-size:22px;font-weight:900}
+
+.userbox{display:flex;align-items:center;gap:12px;background:rgba(255,255,255,.06);padding:12px;border-radius:14px}
+.avatar{width:44px;height:44px;border-radius:50%;background:#4f46e5;display:grid;place-items:center;font-weight:900}
+.name{font-weight:800}
+.role{font-size:12px;opacity:.75}
+
+.nav{display:flex;flex-direction:column;gap:8px}
+.navlink{text-decoration:none;color:#fff;padding:10px 12px;border-radius:12px;background:rgba(255,255,255,.06)}
+.navlink:hover{background:rgba(255,255,255,.12)}
+.navlink.active{background:rgba(79,70,229,.35)}
+.navlink.danger{background:rgba(239,68,68,.22)}
+.navlink.danger:hover{background:rgba(239,68,68,.32)}
+
+.content{flex:1;padding:22px}
+.topbar{margin-bottom:16px}
+.title{font-size:22px;font-weight:900}
+.small{font-size:12px;opacity:.7}
+
+.grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-bottom:14px}
+.card{background:#fff;padding:16px;border-radius:16px;box-shadow:0 10px 25px rgba(17,24,39,.06)}
+.card.wide{grid-column:1/-1}
+
+.label{font-size:12px;opacity:.7;margin-bottom:6px}
+.big{font-size:28px;font-weight:900}
+
+.cardhead{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
+.h{font-weight:900}
+
+.tablewrap{overflow-x:auto}
+table{width:100%;border-collapse:collapse}
+th,td{padding:12px;border-bottom:1px solid #eee;text-align:left}
+th{font-size:12px;opacity:.7;background:#fafafa}
+.badge{padding:6px 10px;border-radius:999px;background:#eef2ff;font-size:12px;display:inline-block}
+
+.btn{display:inline-block;text-decoration:none;border:0;padding:10px 14px;border-radius:12px;background:#4f46e5;color:#fff;font-weight:800;cursor:pointer}
+.btn:hover{opacity:.96}
+.btn.danger{background:#ef4444}
+
+.simplewrap{max-width:980px;margin:0 auto;padding:22px}
+.simpletop{display:flex;align-items:center;justify-content:space-between;gap:12px}
+
+@media(max-width:900px){
+  .sidebar{width:220px}
+  .grid{grid-template-columns:1fr}
+  .card.wide{grid-column:auto}
+}
