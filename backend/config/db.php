@@ -7,7 +7,7 @@ $dbname = "cs2team30_db";
 /*
 $username = "cs2team30";
 $password = "L9xIFwamWEvGPOXogAPTOzV75";
- */
+*/
 
 $conn = new mysqli($servername, $username, $password, $dbname);
 
