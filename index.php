@@ -1,4 +1,5 @@
 <?php
+
 session_start();
 
 if (file_exists(__DIR__ . "/backend/config/db.php")) {
@@ -21,6 +22,10 @@ if (file_exists(__DIR__ . "/backend/config/db.php")) {
     <link rel="icon" type="image/png" href="assets/images/logo.png">
 </head>
 
+
+
+
+
 <body class="page-home">
 
 <header class="topbar">
@@ -39,6 +44,16 @@ if (file_exists(__DIR__ . "/backend/config/db.php")) {
 
     <!-- Right: actions -->
     <nav class="actions" aria-label="Account & tools">
+     <button id="theme-switch" class="icon-btn" type="button" aria-label="Toggle theme" aria-pressed="false">
+  <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="currentColor">
+    <path d="M480-120q-150 0-255-105T120-480q0-150 105-255t255-105q14 0 27.5 1t26.5 3q-41 29-65.5 75.5T444-660q0 90 63 153t153 63q55 0 101-24.5t75-65.5q2 13 3 26.5t1 27.5q0 150-105 255T480-120Z"/>
+  </svg>
+  <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="currentColor">
+    <path d="M338.5-338.5Q280-397 280-480t58.5-141.5Q397-680 480-680t141.5 58.5Q680-563 680-480t-58.5 141.5Q563-280 480-280t-141.5-58.5ZM200-440H40v-80h160v80Zm720 0H760v-80h160v80ZM440-760v-160h80v160h-80Zm0 720v-160h80v160h-80ZM256-650l-101-97 57-59 96 100-52 56Zm492 496-97-101 53-55 101 97-57 59Zm-98-550 97-101 59 57-100 96-56-52ZM154-212l101-97 55 53-97 101-59-57Z"/>
+  </svg>
+</button>
+
+
 
     <!-- USER -->
     <a id="userBtn" class="action" href="login.html" role="button" aria-pressed="false">
@@ -202,6 +217,9 @@ if (file_exists(__DIR__ . "/backend/config/db.php")) {
   </a>
 </article>
 
+
+</div>
+
    
 
   <!-- Mobile arrows -->
@@ -285,8 +303,7 @@ if (file_exists(__DIR__ . "/backend/config/db.php")) {
 <footer class="site-footer">
   <div class="footer-container">
 
-  <footer class="site-footer">
-  <div class="footer-container">
+  
 
     <!-- Newsletter -->
     <div class="footer-newsletter">
@@ -328,16 +345,7 @@ if (file_exists(__DIR__ . "/backend/config/db.php")) {
   </div>
 </footer>
 
-<script>
-document.getElementById('searchForm').addEventListener('submit', function (e) {
-  e.preventDefault(); // stop the default reload
-  const query = document.getElementById('searchInput').value.trim();
-  if (query) {
-    // redirect to your search results page
-    window.location.href = `/search.html?q=${encodeURIComponent(query)}`;
-  }
-});
-</script>
+
 
 <script src="assets/js/products-data.js"></script>
 <script src="assets/js/wire-products-lite.js"></script>

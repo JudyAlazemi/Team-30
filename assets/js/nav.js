@@ -113,6 +113,35 @@ navSearchInput?.addEventListener("keydown", (e) => {
   }
 });
 
-document.addEventListener("click", () => {
-  if (navSearchInput?.classList.contains("open")) closeSearch();
-});
+//Dark Mode
+(function () {
+  const toggleBtn = document.getElementById("theme-switch");
+  const STORAGE_KEY = "darkmode";
+
+  function applyTheme(isDark) {
+    document.body.classList.toggle("darkmode", isDark);
+    localStorage.setItem(STORAGE_KEY, isDark ? "active" : "inactive");
+
+    if (toggleBtn) {
+      toggleBtn.setAttribute("aria-pressed", isDark ? "true" : "false");
+    }
+  }
+
+  // Apply saved theme immediately
+  const saved = localStorage.getItem(STORAGE_KEY);
+  applyTheme(saved === "active");
+
+  // If no button on this page, stop here (prevents errors)
+  if (!toggleBtn) return;
+
+  toggleBtn.addEventListener("click", function () {
+    const isDark = document.body.classList.contains("darkmode");
+    applyTheme(!isDark);
+  });
+})();
+
+
+
+
+
+
