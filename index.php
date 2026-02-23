@@ -377,6 +377,6 @@ document.addEventListener('DOMContentLoaded', ()=>{
   });
 });
 </script>
-
+<?php include __DIR__ . "/chatbot.php"; ?>
 </body>
 </html>
