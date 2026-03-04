@@ -155,10 +155,7 @@ if (file_exists(__DIR__ . '/db.php')) {
       <p><strong>Hours</strong><br> Mon-Thu:   10:00–16:00 &nbsp;&nbsp; <br> Fri–Sat:   10:00–14:00</p>
   
 
-    <!-- Right: optional large image (hides on small screens) -->
-    <aside class="static-media">
-      <img src="assets/images/flower.png" alt="Sabil studio" />
-    </aside>
+   
   </main>
 
 <footer class="site-footer">
