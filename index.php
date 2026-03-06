@@ -151,21 +151,21 @@ if (file_exists(__DIR__ . "/backend/config/db.php")) {
   <!-- Track: grid on desktop, carousel on mobile -->
   <div class="collection-track" id="collectionTrack">
 <article class="product-card" data-id="2">
-  <a href="productdetails.html?id=2" class="card-link">
+  <a href="productdetails.php?id=2" class="card-link">
     <img src="assets/images/midnightoud.PNG" alt="Midnight Oud">
     <h3 class="card-title">Midnight Oud</h3>
   </a>
 </article>
 
 <article class="product-card" data-id="1">
-  <a href="productdetails.html?id=1" class="card-link">
+  <a href="productdetails.php?id=1" class="card-link">
     <img src="assets/images/oceanmist.PNG" alt="Ocean Breeze">
     <h3 class="card-title">Ocean Breeze</h3>
   </a>
 </article>
 
 <article class="product-card" data-id="3">
-  <a href="productdetails.html?id=3" class="card-link">
+  <a href="productdetails.php?ID=3" class="card-link">
     <img src="assets/images/velvetmusk.JPEG" alt="Velvet Rose">
     <h3 class="card-title">Velvet Rose</h3>
   </a>
@@ -197,21 +197,21 @@ if (file_exists(__DIR__ . "/backend/config/db.php")) {
   <!-- Track: grid on desktop, carousel on mobile -->
   <div class="collection-track" id="signatureTrack">
   <article class="product-card" data-id="7">
-  <a href="productdetails.html?id=7" class="card-link">
+  <a href="productdetails.php?ID=7" class="card-link">
     <img src="assets/images/candle.png" alt="Vanilla Dream">
     <h3 class="card-title">Vanilla Dream Candle</h3>
   </a>
 </article>
 
 <article class="product-card" data-id="8">
-  <a href="productdetails.html?id=8" class="card-link">
+  <a href="productdetails.php?ID=8" class="card-link">
     <img src="assets/images/candle.png" alt="Amber Woods">
     <h3 class="card-title">Amber Woods Candle</h3>
   </a>
 </article>
 
 <article class="product-card" data-id="9">
-  <a href="productdetails.html?id=9" class="card-link">
+  <a href="productdetails.php?ID=9" class="card-link">
     <img src="assets/images/candle.png" alt="Cherry Blossom">
     <h3 class="card-title">Cherry Blossom Candle</h3>
   </a>
@@ -300,6 +300,98 @@ if (file_exists(__DIR__ . "/backend/config/db.php")) {
   </div>
 </div>
 
+
+<!-- REVIEWS SECTION -->
+<section class="home-reviews-section" id="reviews">
+  <div class="container">
+
+    <div class="home-reviews-header">
+      <div class="home-reviews-title">
+        <h2>Customer Reviews</h2>
+        <p>See what customers think about Sabil.</p>
+      </div>
+
+      <button type="button" class="home-add-review-btn" id="openReviewForm" aria-label="Add a review">
+        +
+      </button>
+    </div>
+
+    <div class="home-review-form-wrapper" id="reviewFormWrapper" aria-hidden="true">
+<form class="review-form" action="submit_review.php" method="POST">
+  <input type="hidden" name="product_id" value="<?= $productId ?>">        <div class="home-review-form-grid">
+
+          <div class="home-form-row">
+            <label for="reviewName">Name</label>
+            <input id="reviewName" type="text" placeholder="Enter your name">
+          </div>
+
+          <div class="home-form-row">
+            <label>Rating</label>
+            <div class="home-star-input" aria-label="Select a rating">
+              <input type="radio" id="homeStar5" name="homeRating" value="5" required>
+              <label for="homeStar5" title="5 stars">★</label>
+
+              <input type="radio" id="homeStar4" name="homeRating" value="4">
+              <label for="homeStar4" title="4 stars">★</label>
+
+              <input type="radio" id="homeStar3" name="homeRating" value="3">
+              <label for="homeStar3" title="3 stars">★</label>
+
+              <input type="radio" id="homeStar2" name="homeRating" value="2">
+              <label for="homeStar2" title="2 stars">★</label>
+
+              <input type="radio" id="homeStar1" name="homeRating" value="1">
+              <label for="homeStar1" title="1 star">★</label>
+            </div>
+          </div>
+
+          <div class="home-form-row home-form-row--full">
+            <label for="reviewText">Your Review</label>
+            <textarea id="reviewText" name="comment" rows="4" placeholder="Write your review..." required></textarea>
+          </div>
+
+        </div>
+
+        <div class="home-review-form-actions">
+          <button type="submit" class="hero-btn home-submit-review-btn">Submit Review</button>
+        </div>
+      </form>
+    </div>
+
+    <div class="home-reviews-grid">
+
+      <article class="home-review-card">
+        <h3 class="home-review-name">Sarah M.</h3>
+        <span class="home-review-date">04 Mar 2026</span>
+        <div class="home-review-stars">★★★★★</div>
+        <p class="home-review-text">
+          Beautiful fragrance and long lasting. The packaging also feels very premium.
+        </p>
+      </article>
+
+      <article class="home-review-card">
+        <h3 class="home-review-name">Layla A.</h3>
+        <span class="home-review-date">02 Mar 2026</span>
+        <div class="home-review-stars">★★★★☆</div>
+        <p class="home-review-text">
+          Very elegant scent and perfect for daily wear.
+        </p>
+      </article>
+
+      <article class="home-review-card">
+        <h3 class="home-review-name">Huda K.</h3>
+        <span class="home-review-date">28 Feb 2026</span>
+        <div class="home-review-stars">★★★★★</div>
+        <p class="home-review-text">
+          One of my favourite perfumes so far. Highly recommend!
+        </p>
+      </article>
+
+    </div>
+
+  </div>
+</section>
+
 <footer class="site-footer">
   <div class="footer-container">
 
@@ -372,11 +464,27 @@ document.addEventListener('DOMContentLoaded', ()=>{
     card.style.cursor = 'pointer';
     card.addEventListener('click', (e)=>{
       if (e.target.closest('a,button')) return; // let real buttons/links work
-      location.href = `productdetails.html?id=${id}`;
+      location.href = `productdetails.php?id=${id}`;
     });
   });
 });
 </script>
+
+<script>
+const homeOpenBtn = document.getElementById("openReviewForm");
+const homeFormWrap = document.getElementById("reviewFormWrapper");
+
+if (homeOpenBtn && homeFormWrap) {
+  homeOpenBtn.addEventListener("click", () => {
+    homeFormWrap.classList.toggle("active");
+    homeFormWrap.setAttribute(
+      "aria-hidden",
+      homeFormWrap.classList.contains("active") ? "false" : "true"
+    );
+  });
+}
+</script>
+
 <?php include __DIR__ . "/chatbot.php"; ?>
 </body>
 </html>
