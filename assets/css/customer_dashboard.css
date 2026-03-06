@@ -1,194 +1,705 @@
-/* account-dashboard.css — Sabil dashboard look (sidebar + card) using your theme */
 
-:root{
-  --bg: #f4eee9;
-  --primary: #303c30;
-  --secondary: #4e4138;
-  --border: #d4c5ba;
-  --text-dark: #2c2420;
-  --text-light: #6b5d54;
-}
-.dash-cards{
-  display:grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 14px;
-  margin-top: 14px;
+/* Page background */
+.account-page .dash-page{
+  background: var(--background);
+  padding: 34px 0 70px;
 }
 
-.dash-card{
-  border: 1.5px solid var(--border);
-  background: #fff;
-  padding: 16px;
-  box-shadow: 0 10px 25px rgba(44,36,32,0.08);
-}
-
-.dash-card.wide{
-  grid-column: 1 / -1;
-}
-
-.panel-head{
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap: 12px;
-}
-
-.panel-h2{
-  margin:0;
-  font-size: 20px;
-  font-weight: 600;
-}
-@media (max-width: 900px){
-  .dash-cards{ grid-template-columns:1fr; }
-  .dash-card.wide{ grid-column:auto; }
-}
-
-
-.account-page{
-  background: var(--bg);
-  color: var(--primary);
-  font-family: "Meshed Display", sans-serif;
-}
-
-/* layout under your topbar */
-.account-shell{
-  max-width: 1200px;
+/* Center content width */
+.account-page .dash-frame{
+  max-width: 1180px;
   margin: 0 auto;
-  padding: 18px 24px 60px;
+  padding: 0 22px;
+}
+
+/* Two column layout */
+.account-page .dash-grid{
   display: grid;
-  grid-template-columns: 260px 1fr;
-  gap: 22px;
+  grid-template-columns: 320px 1fr;
+  gap: 50px;
+  align-items: start;
 }
 
-/* Sidebar */
-.account-side{
-  background: var(--primary);
-  color: var(--bg);
-  border: 1.5px solid rgba(244,238,233,0.25);
-  padding: 22px;
-  height: fit-content;
-  position: sticky;
-  top: 110px; /* stays below your topbar */
+/* ----------------------------------------------------------
+   LEFT (Hello + Menu)
+---------------------------------------------------------- */
+.dash-bottom{
+  display:flex;
+  justify-content:center;
+  gap:14px;
+  flex-wrap:wrap;
+  margin-top: 28px;
 }
 
-.account-side .side-title{
-  font-size: 22px;
+.dash-secondary{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  padding: 12px 22px;
+  border-radius: 999px;
+  border: 1px solid currentColor;
+  text-decoration:none;
+  line-height:1;
+}
+.account-page .dash-left{
+  padding-top: 10px;
+}
+
+.account-page .dash-hello h3{
+  font-family: "Meshed Display", serif;
+  font-size: 48px;
   font-weight: 600;
-  margin: 0 0 6px;
-}
-
-.account-side .side-sub{
-  margin: 0 0 18px;
-  opacity: 0.9;
-  font-size: 14px;
-}
-
-.side-nav{
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  margin-top: 8px;
-}
-
-.side-link{
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  text-decoration: none;
-  color: var(--bg);
-  padding: 12px 12px;
-  border-radius: 6px;
-  opacity: 0.95;
-}
-
-.side-link:hover{ opacity: 0.8; }
-
-.side-link.active{
-  background: rgba(244,238,233,0.15);
-  border-left: 3px solid var(--bg);
-  padding-left: 10px;
-  opacity: 1;
-}
-
-.side-link.logout{
-  margin-top: 10px;
-  background: rgba(78,65,56,0.35);
-}
-
-/* Main */
-.account-main{
-  display: grid;
-  gap: 18px;
-}
-
-.panel{
-  background: #fff;
-  border: 1.5px solid var(--border);
-  box-shadow: 0 10px 25px rgba(44,36,32,0.08);
-  padding: 22px;
-}
-
-.panel-title{
-  margin: 0 0 12px;
-  font-size: 28px;
-  font-weight: 600;
-  color: var(--primary);
-}
-
-/* profile info card */
-.info-grid{
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 12px 24px;
-  margin-top: 8px;
-}
-
-.kv{
-  font-size: 16px;
-  color: var(--text-dark);
-}
-
-.kv b{
-  color: var(--primary);
-  font-weight: 600;
-}
-
-/* action buttons like your site */
-.action-row{
-  display: flex;
-  gap: 10px;
-  flex-wrap: wrap;
-  margin-top: 16px;
-}
-
-.btn-sabil{
-  display: inline-block;
-  border: 1.5px solid var(--secondary);
-  background: var(--secondary);
-  color: var(--bg);
-  padding: 10px 14px;
-  text-decoration: none;
-  border-radius: 6px;
-  font-size: 16px;
-  font-weight: 500;
-}
-
-.btn-sabil:hover{ opacity: 0.9; }
-
-.btn-outline{
-  background: transparent;
+  line-height: 1.05;
+  letter-spacing: -0.5px;
+  margin: 0 0 4px;
   color: var(--secondary);
 }
 
+/* Welcome back! */
+.account-page .dash-hello p{
+  font-family: "Meshed Display", serif;
+  font-size: 32px;
+  font-weight: 400;
+  line-height: 1.1;
+  letter-spacing: 0;
+  margin: 0 0 28px;
+  color: #907867; /* Different Color */
+}
+
+/* Menu container  */
+.account-page .dash-menu{
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  width: 270px;
+  border: none;
+  margin-top: 18px;
+}
+
+/* Menu items */
+.account-page a.dash-link{
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+
+  padding: 14px 14px;
+  text-decoration: none !important;
+  color: var(--secondary) !important;
+
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid var(--border);
+
+  transition: background .2s ease;
+}
+
+.account-page a.dash-link:last-child{
+  border-bottom: 1px solid var(--border);
+}
+
+/* hover */
+.account-page a.dash-link:hover{
+  background: rgba(212,197,186,0.25); /* soft border tint */
+}
+
+/* Active row */
+.account-page a.dash-link.is-active{
+  background: rgba(212,197,186,0.40);
+}
+
+/* icon block */
+.account-page .dash-ico{
+  width: 22px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.account-page .dash-ico img{
+  width: 16px;
+  height: 16px;
+  display: block;
+  opacity: .9;
+}
+
+/* menu text */
+.account-page a.dash-link > span:nth-child(2){
+  flex: 1;
+  font-size: 14px;
+  color: var(--secondary);
+}
+
+/* Arrow (›) */
+.account-page .dash-arrow{
+  margin-left: auto;
+  font-size: 18px;
+  opacity: .75;
+  line-height: 1;
+  transform: translateY(-1px);
+  color: var(--secondary);
+}
+
+/* ----------------------------------------------------------
+   RIGHT (Title + Bars)
+---------------------------------------------------------- */
+
+.account-page .dash-right{
+  padding-top: 0;
+}
+
+.account-page .dash-title{
+  font-family: "Meshed Display", serif;
+  font-size: 60px;
+  font-weight: 600;
+  margin: 0;
+  color: var(--secondary);
+}
+
+.account-page .dash-rule{
+  height: 1px;
+  background: var(--border);
+  margin: 18px 0 18px;
+  border: 0;
+  width: 100%;
+}
+
+/* 3 small flat bars */
+.account-page .dash-bars{
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 18px;
+  margin-bottom: 12px;
+}
+
+.account-page .dash-bar{
+  background: rgba(212,197,186,0.35); /* soft like Figma */
+  padding: 10px 12px;
+}
+
+.account-page .dash-bar-label{
+  font-size: 12px;
+  color: var(--text-light);
+  margin-bottom: 3px;
+  text-transform: none;
+}
+
+.account-page .dash-bar-value{
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-dark);
+}
+
+/* Total spent long flat bar */
+.account-page .dash-long{
+  background: rgba(212,197,186,0.35);
+  padding: 10px 12px;
+  margin-bottom: 14px;
+}
+
+.account-page .dash-long-label{
+  font-size: 12px;
+  color: var(--text-light);
+  margin-bottom: 3px;
+}
+
+.account-page .dash-long-value{
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-dark);
+}
+
+/* Email + phone flat bars */
+.account-page .dash-two{
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 18px;
+  margin-bottom: 14px;
+}
+
+.account-page .dash-field{
+  background: rgba(212,197,186,0.35);
+  padding: 10px 12px;
+}
+
+.account-page .dash-field-label{
+  font-size: 12px;
+  color: var(--text-light);
+  margin-bottom: 3px;
+}
+
+.account-page .dash-field-value{
+  font-size: 13px;
+  color: var(--text-dark);
+  font-weight: 500;
+  word-break: break-word;
+}
+
+/* ----------------------------------------------------------
+   Recent Orders
+---------------------------------------------------------- */
+
+.account-page .dash-recent{
+  background: rgba(212,197,186,0.35);
+  padding: 12px 12px;
+  margin-top: 2px;
+}
+
+.account-page .dash-recent-head{
+  display:flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+}
+
+.account-page .dash-recent-title{
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-dark);
+  margin-bottom: 2px;
+}
+
+.account-page .dash-recent-sub{
+  font-size: 11px;
+  color: var(--text-light);
+  opacity: .9;
+}
+
+/* View all button */
+.account-page a.dash-viewall{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+
+  padding: 6px 16px;
+  border: 1.5px solid var(--secondary);
+  border-radius: 16px;
+
+  text-decoration: none !important;
+  color: var(--secondary) !important;
+  background: transparent;
+
+  font-size: 12px;
+  transition: .2s ease;
+  white-space: nowrap;
+}
+
+.account-page a.dash-viewall:hover{
+  background: var(--secondary);
+  color: var(--background) !important;
+}
+
+/* Rows */
+.account-page .dash-recent-body{
+  margin-top: 8px;
+  border-top: 1px solid rgba(78,65,56,0.18);
+  padding-top: 8px;
+}
+
+.account-page .dash-row{
+  display:grid;
+  grid-template-columns: 120px 120px 140px 1fr;
+  gap: 10px;
+  padding: 8px 0;
+  border-bottom: 1px solid rgba(78,65,56,0.10);
+}
+
+.account-page .dash-row:last-child{
+  border-bottom: none;
+}
+
+.account-page .dash-cell{
+  font-size: 12px;
+  color: var(--text-dark);
+}
+
+/* Status badge */
+.account-page .dash-badge{
+  display:inline-block;
+  padding: 4px 10px;
+  border-radius: 999px;
+  border: 1px solid rgba(78,65,56,0.25);
+  background: rgba(255,255,255,0.35);
+  font-size: 11px;
+  color: var(--secondary);
+}
+
+.account-page .dash-muted{
+  font-size: 12px;
+  color: var(--text-light);
+  padding: 10px 0 2px;
+}
+
+/* Back to home centered */
+.account-page .dash-bottom{
+  display:flex;
+  justify-content: center;
+  margin-top: 24px;
+}
+
+.account-page a.dash-back{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+
+  padding: 7px 18px;
+  border: 1.5px solid var(--secondary);
+  border-radius: 18px;
+
+  text-decoration:none !important;
+  color: var(--secondary) !important;
+  background: transparent;
+
+  font-size: 12px;
+  transition: .2s ease;
+}
+
+.account-page a.dash-back:hover{
+  background: var(--secondary);
+  color: var(--background) !important;
+}
+
 /* Responsive */
+@media (max-width: 980px){
+  .account-page .dash-frame{ padding: 0 16px; }
+  .account-page .dash-grid{ grid-template-columns: 1fr; gap: 26px; }
+  .account-page .dash-title{ font-size: 46px; }
+  .account-page .dash-bars{ grid-template-columns: 1fr; }
+  .account-page .dash-two{ grid-template-columns: 1fr; }
+  .account-page .dash-row{ grid-template-columns: 1fr 1fr; }
+  .account-page .dash-menu{ width: 100%; }
+}
+
+/* Mobile */
+@media (max-width: 600px){
+  .account-page .dash-title{ font-size: 32px; }
+  .account-page .dash-hello h3{ font-size: 32px; }
+  .account-page .dash-hello p{ font-size: 20px; }
+  .account-page .dash-row{ grid-template-columns: 1fr; }
+  .account-page .dash-row > .dash-cell:nth-child(2){ display: none; }
+  .account-page .dash-row > .dash-cell:nth-child(3){ display: none; }
+  .account-page .dash-row > .dash-cell:nth-child(4){
+    grid-column: 1 / -1;
+    font-size: 11px;
+  }
+  .account-page .dash-menu{ flex-direction: row; overflow-x: auto; }
+  .account-page .dash-menu a.dash-link{ flex-direction: column; gap: 6px; padding: 10px 12px; }
+  .account-page .dash-menu a.dash-link > span:nth-child(2){ font-size: 11px; }
+  .account-page .dash-ico img{ width: 14px; height: 14px; }  
+  .account-page .dash-arrow{ display: none; }
+  .account-page .dash-bars{ grid-template-columns: repeat(2, 1fr); }
+  .account-page .dash-two{ grid-template-columns: 1fr; }  
+  .account-page .dash-row{ grid-template-columns: 1fr; }
+  .account-page .dash-row > .dash-cell:nth-child(2){ display: none; }
+  .account-page .dash-row > .dash-cell:nth-child(3){ display: none; }
+  .account-page .dash-row > .dash-cell:nth-child(4){
+    grid-column: 1 / -1;
+    font-size: 11px;
+  } 
+  .account-page .dash-recent-head{
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 6px;
+  }
+  .account-page a.dash-viewall{
+    padding: 6px 12px;
+    font-size: 11px;
+  }
+  .account-page .dash-bottom{
+    margin-top: 18px;
+  }
+  .account-page a.dash-back{
+    padding: 6px 12px;
+    font-size: 11px;
+  }
+} 
+/* ==========================================================
+   TOPBAR (Account pages) — keep box on mobile + center logo
+   + hide "My Account" text so icons don’t clash
+========================================================== */
+
+.account-page .topbar{
+  background: var(--background);
+  border: 1.5px solid var(--secondary);
+  margin: 16px;
+}
+
+.account-page .topbar-inner{
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 100px;  /* desktop like style.css */
+}
+
+/* ✅ Tablet */
 @media (max-width: 900px){
-  .account-shell{
-    grid-template-columns: 1fr;
+  .account-page .topbar-inner{
+    padding: 14px 24px !important;
   }
-  .account-side{
-    position: static;
+}
+
+/* ✅ Mobile — keep the box, center logo, hide account text */
+@media (max-width: 720px){
+
+  /* keep framed box */
+  .account-page .topbar{
+    margin: 12px !important;
   }
-  .info-grid{
-    grid-template-columns: 1fr;
+
+  /* fix huge desktop padding */
+  .account-page .topbar-inner{
+    padding: 12px 16px !important;
+    position: relative;   /* needed for absolute centering */
+  }
+
+  /* center logo perfectly */
+  .account-page .brand{
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+
+  .account-page .brand-logo{
+    height: 46px;
+  }
+
+  /* keep menu button clickable */
+  .account-page .menu-toggle{
+    position: relative;
+    z-index: 2;
+  }
+
+  /* keep right icons on the right */
+  .account-page .actions{
+    margin-left: auto;
+    gap: 14px;
+  }
+
+  /* hide search input on mobile */
+  .account-page .nav-search-input{
+    display: none !important;
+  }
+
+  /* hide ALL action text like "My Account" / "Logout" */
+  .account-page .action-text,
+  .account-page .actions span,
+  .account-page .actions .label,
+  .account-page .actions .text{
+    display: none !important;
+  }
+}
+
+/* ✅ Very small phones */
+@media (max-width: 480px){
+  .account-page .topbar{
+    margin: 10px !important;
+  }
+
+  .account-page .topbar-inner{
+    padding: 10px 12px !important;
+  }
+
+  .account-page .brand-logo{
+    height: 42px;
+  }
+
+  .account-page .actions{
+    gap: 12px;
+  }
+}
+  
+/* Customer Order Styles */
+
+/* Empty state (No orders) */
+.account-page .dash-empty{
+  padding: 20px 0 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.account-page .dash-place-btn{
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 8px 20px;
+  border-radius: 20px;
+  border: 1.5px solid var(--secondary);
+
+  text-decoration: none !important;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--secondary) !important;
+  background: transparent;
+  transition: 0.2s ease;
+  width: fit-content;
+}
+
+.account-page .dash-place-btn:hover{
+  background: var(--secondary);
+  color: var(--background) !important;
+}
+/* ================================
+   Customer dashboard - favourites
+================================ */
+/* ================================
+   Customer dashboard - favourites
+================================ */
+
+/* Stack View + Remove buttons vertically */
+.account-page .dash-row .dash-cell:last-child {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  align-items: flex-start;
+}
+
+/* RESET ALL BUTTON STYLES FIRST */
+.account-page .dash-cell button.dash-back {
+  all: unset !important; /* This removes all default button styles */
+}
+
+/* Base styles for BOTH View and Remove */
+.account-page .dash-cell .dash-back,
+.account-page .dash-cell button.dash-back {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  min-width: 92px !important;
+  width: auto !important;
+  height: auto !important;
+  padding: 7px 18px !important;
+  border: 1.5px solid var(--secondary) !important;
+  border-radius: 18px !important;
+  font-size: 12px !important;
+  line-height: 1 !important;
+  font-family: inherit !important;
+  font-weight: normal !important;
+  text-decoration: none !important;
+  background: transparent !important;
+  color: var(--secondary) !important;
+  cursor: pointer !important;
+  box-sizing: border-box !important;
+  margin: 0 !important;
+  text-align: center !important;
+  letter-spacing: normal !important;
+  word-spacing: normal !important;
+  text-transform: none !important;
+  text-indent: 0 !important;
+  text-shadow: none !important;
+}
+
+/* Hover effect for both */
+.account-page .dash-cell .dash-back:hover,
+.account-page .dash-cell button.dash-back:hover {
+  background: var(--secondary) !important;
+  color: var(--background) !important;
+  border-color: var(--secondary) !important;
+}
+
+/* Remove any default button focus styles */
+.account-page .dash-cell button.dash-back:focus {
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+/* Ensure the dash-secondary class doesn't override */
+.account-page .dash-cell .dash-back.dash-secondary,
+.account-page .dash-cell button.dash-back.dash-secondary {
+  /* Same as base styles */
+  min-width: 92px !important;
+  padding: 7px 18px !important;
+  border-radius: 18px !important;
+  font-size: 12px !important;
+}
+/* ================================
+   PROFILE (Login & Security) page
+================================ */
+
+.profile-page .profile-card{
+  margin-top: 14px;
+}
+
+/* Alerts */
+.profile-page .dash-alert{
+  border: 1.5px solid var(--secondary);
+  border-radius: 14px;
+  padding: 10px 14px;
+  margin: 12px 0 6px;
+  font-size: 14px;
+  background: var(--background);
+  color: var(--text);
+}
+
+/* Success */
+.profile-page .dash-alert--success{
+  border-color: var(--secondary);
+}
+
+/* Error */
+.profile-page .dash-alert--error{
+  border-color: #b45a5a;
+}
+
+/* Form layout */
+.profile-page .profile-form{
+  display: grid;
+  gap: 12px;
+  max-width: 560px;
+}
+
+/* Field wrapper */
+.profile-page .profile-field{
+  display: grid;
+  gap: 6px;
+}
+
+.profile-page .profile-field span{
+  font-size: 12px;
+  opacity: .85;
+  color: var(--text);
+}
+
+/* Inputs */
+.profile-page .profile-field input{
+  padding: 10px 12px;
+  border: 1.5px solid var(--secondary);
+  border-radius: 12px;
+  background: var(--background);   /* ← no white background */
+  font-family: inherit;
+  font-size: 14px;
+  color: var(--text);
+}
+
+/* Input focus */
+.profile-page .profile-field input:focus{
+  outline: none;
+  border-color: var(--primary);
+  box-shadow: 0 0 0 2px rgba(0,0,0,0.05);
+}
+
+/* Buttons */
+.profile-page .profile-actions{
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-top: 4px;
+}
+
+/* Tip text */
+.profile-page .profile-tip{
+  font-size: 12px;
+  opacity: .7;
+  margin: 0;
+  line-height: 1.4;
+  color: var(--text);
+}
+
+/* Mobile */
+@media (max-width: 700px){
+  .profile-page .profile-form{
+    max-width: 100%;
   }
 }

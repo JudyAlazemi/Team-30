@@ -1,3 +1,71 @@
+<?php
+session_start();
+require_once __DIR__ . "/backend/config/db.php";
+
+$productId = isset($_GET['id']) ? (int) $_GET['id'] : 0;
+
+$reviews = [];
+$reviewCount = 0;
+$avgRating = 0;
+
+if ($productId > 0) {
+    // Check first if reviews table exists
+    $tableExists = false;
+    $checkTable = $conn->query("SHOW TABLES LIKE 'reviews'");
+
+    if ($checkTable && $checkTable->num_rows > 0) {
+        $tableExists = true;
+    }
+
+    if ($tableExists) {
+        // Get reviews
+        $sql = "
+            SELECT r.rating, r.comment, r.created_at, u.name
+            FROM `reviews` r
+            INNER JOIN `users` u ON r.user_id = u.id
+            WHERE r.product_id = ?
+            ORDER BY r.created_at DESC
+        ";
+
+        $stmt = $conn->prepare($sql);
+
+        if ($stmt) {
+            $stmt->bind_param("i", $productId);
+            $stmt->execute();
+            $result = $stmt->get_result();
+
+            while ($row = $result->fetch_assoc()) {
+                $reviews[] = $row;
+            }
+
+            $stmt->close();
+        }
+
+        // Get review count and average rating
+        $avgSql = "
+            SELECT COUNT(*) AS total_reviews, AVG(rating) AS avg_rating
+            FROM `reviews`
+            WHERE product_id = ?
+        ";
+
+        $avgStmt = $conn->prepare($avgSql);
+
+        if ($avgStmt) {
+            $avgStmt->bind_param("i", $productId);
+            $avgStmt->execute();
+            $avgData = $avgStmt->get_result()->fetch_assoc();
+
+            $reviewCount = (int)($avgData['total_reviews'] ?? 0);
+            $avgRating = !empty($avgData['avg_rating']) ? round($avgData['avg_rating']) : 0;
+
+            $avgStmt->close();
+        }
+    }
+}
+?>
+
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -116,13 +184,21 @@
                         </div>
                         
                     </div>
+                    <div class="product-details-content">
+
+                    
 
                 
                     
-                    <div class="product-details-content">
-                        <h1 id="productName">Ocean Breeze</h1>
-                        <p class="product-rating">⭐⭐⭐⭐⭐ (199 reviews)</p>
-                        <p class="product-price-large" id="productPrice">£59.99</p>
+                        <a class="product-rating-link" href="#reviews">
+                              <span class="rating-stars" aria-label="<?= $avgRating ?> out of 5 stars">
+                                <?php for ($i = 1; $i <= 5; $i++): ?>
+                                  <?= $i <= $avgRating ? '★' : '☆' ?>
+                                <?php endfor; ?>
+                              </span>
+                              <span class="rating-count">(<?= $reviewCount ?> reviews)</span>
+                            </a>                
+                       <p class="product-price-large" id="productPrice">£59.99</p>
                         
                         <div class="product-description-section">
                             <h3>Description</h3>
@@ -202,27 +278,124 @@
                             <img src="assets/images/midnightoud.PNG" alt="Midnight Oud">
                             <h4>Midnight Oud</h4>
                             <p>£69.99</p>
-                            <a href="productdetails.html?id=2" class="hero-btn">View Details</a>
+                            <a href="productdetails.php?id=2" class="hero-btn">View Details</a>
                         </div>
                         <div class="product-card-small">
                             <img src="assets/images/velvetmusk.JPEG" alt="Velvet Rose">
                             <h4>Velvet Rose</h4>
                             <p>£64.99</p>
-                            <a href="productdetails.html?id=3" class="hero-btn">View Details</a>
+                            <a href="productdetails.php?id=3" class="hero-btn">View Details</a>
                         </div>
                         <div class="product-card-small">
                             <img src="assets/images/carperfmed.png" alt="Lavender Cruise">
                             <h4>Lavender Cruise</h4>
                             <p>£18.99</p>
-                            <a href="productdetails.html?id=6" class="hero-btn">View Details</a>
+                            <a href="productdetails.php?id=6" class="hero-btn">View Details</a>
                         </div>
                     </div>
                 </div>
             </div>
         </section>
-    </main>
 
-    <footer class="site-footer">
+<!-- REVIEWS SECTION -->
+<section class="reviews-section" id="reviews">
+  <div class="container">
+
+    <div class="reviews-header">
+      <div class="reviews-title">
+        <h2>Customer Reviews</h2>
+        <p>See what customers think about this fragrance.</p>
+      </div>
+
+      <button type="button" class="add-review-btn" id="openReviewForm" aria-label="Add a review">
+        +
+      </button>
+    </div>
+
+    <div class="review-form-wrapper" id="reviewFormWrapper" aria-hidden="true">
+      <form class="review-form" action="submit_review.php" method="POST">
+        <input type="hidden" name="product_id" value="<?= $productId ?>">
+
+        <div class="review-form-grid">
+          <div class="form-row">
+            <label for="reviewName">Name</label>
+            <input
+              id="reviewName"
+              type="text"
+              value="<?= htmlspecialchars($_SESSION['user_name'] ?? '') ?>"
+              readonly
+            >
+          </div>
+
+          <div class="form-row">
+            <label>Rating</label>
+            <div class="star-input" aria-label="Select a rating">
+              <input type="radio" id="star5" name="rating" value="5" required>
+              <label for="star5" title="5 stars">★</label>
+
+              <input type="radio" id="star4" name="rating" value="4">
+              <label for="star4" title="4 stars">★</label>
+
+              <input type="radio" id="star3" name="rating" value="3">
+              <label for="star3" title="3 stars">★</label>
+
+              <input type="radio" id="star2" name="rating" value="2">
+              <label for="star2" title="2 stars">★</label>
+
+              <input type="radio" id="star1" name="rating" value="1">
+              <label for="star1" title="1 star">★</label>
+            </div>
+          </div>
+
+          <div class="form-row form-row--full">
+            <label for="reviewText">Your Review</label>
+            <textarea
+              id="reviewText"
+              name="comment"
+              rows="4"
+              placeholder="Write your review..."
+              required
+            ></textarea>
+          </div>
+        </div>
+
+        <div class="review-form-actions">
+          <button type="submit" class="hero-btn submit-review-btn">Submit Review</button>
+        </div>
+      </form>
+    </div>
+
+    <div class="reviews-grid">
+      <?php if (!empty($reviews)): ?>
+        <?php foreach ($reviews as $review): ?>
+          <article class="review-card">
+            <div class="review-card-head">
+              <h3 class="review-name"><?= htmlspecialchars($review['name']) ?></h3>
+              <span class="review-date"><?= date("d M Y", strtotime($review['created_at'])) ?></span>
+            </div>
+
+            <div class="review-stars" aria-label="<?= (int)$review['rating'] ?> out of 5 stars">
+              <?php for ($i = 1; $i <= 5; $i++): ?>
+                <?= $i <= (int)$review['rating'] ? '★' : '☆' ?>
+              <?php endfor; ?>
+            </div>
+
+            <p class="review-text"><?= htmlspecialchars($review['comment']) ?></p>
+          </article>
+        <?php endforeach; ?>
+      <?php else: ?>
+        <p class="no-reviews">No reviews yet. Be the first to review this product.</p>
+      <?php endif; ?>
+    </div>
+
+  </div>
+</section>
+
+</main>
+
+
+<footer class="site-footer">
+
   <div class="footer-container">
 
     <!-- Newsletter -->
@@ -264,6 +437,31 @@
     <p>© 2025 Sabil. All rights reserved.</p>
   </div>
 </footer>
+
+<script>
+const openBtn = document.getElementById("openReviewForm");
+const wrap = document.getElementById("reviewFormWrapper");
+const reviewsSection = document.getElementById("reviews");
+
+function openFormAndScroll() {
+  if (!wrap || !reviewsSection) return;
+
+  wrap.classList.add("active");
+  wrap.setAttribute("aria-hidden", "false");
+  reviewsSection.scrollIntoView({ behavior: "smooth", block: "start" });
+
+  setTimeout(() => {
+    const firstInput = wrap.querySelector("input, textarea");
+    if (firstInput) firstInput.focus();
+  }, 400);
+}
+
+if (openBtn) {
+  openBtn.addEventListener("click", openFormAndScroll);
+}
+
+
+</script>
 
 <script src="assets/js/products-data.js"></script>
 <script src="assets/js/productdetails.js"></script>

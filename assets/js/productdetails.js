@@ -12,7 +12,7 @@
   const products = window.productsData || [];
   const product = products.find(p => p.id === pid);
 
-  if (!product) { location.replace('products.html'); return; }
+  if (!product) { location.replace('products.php'); return; }
 
   // ----- fill UI -----
   const elName  = $('#productName');
@@ -67,10 +67,10 @@
   window.buyNow = () => {
     const q = clamp(qtyIn ? qtyIn.value : 1);
     addToCartInternal(product.id, q);
-    location.href = 'cart.html';
+    location.href = 'cart.php';
   };
 
- // ----- FAVOURITES (server-backed via favourites.php) -----
+// ----- FAVOURITES (server-backed via favourites.php) -----
 const FAV_ENDPOINT = 'favourites.php';
 const favBtn = document.getElementById('favBtnDetails');
 
@@ -78,56 +78,67 @@ function setFavUI(on){
   if (!favBtn) return;
   favBtn.textContent = on ? '♥ Favourited' : '♡ Favourite';
   favBtn.setAttribute('aria-pressed', on ? 'true' : 'false');
-  favBtn.classList.toggle('is-on', on);
+  favBtn.classList.toggle('is-on', on); // for styling/highlight
 }
 
-async function favList(){
-  const r = await fetch(FAV_ENDPOINT, {
-    method: 'POST',
-    headers: {'Content-Type': 'application/x-www-form-urlencoded'},
-    body: new URLSearchParams({ action: 'list' })
-  });
-  if (!r.ok) throw new Error('HTTP ' + r.status);
-  const j = await r.json();
-  return j.favourites || [];
+function toast(msg){
+  // simple 1-message toast (no duplicates)
+  const old = document.querySelector('.fav-toast');
+  if (old) old.remove();
+
+  const t = document.createElement('div');
+  t.className = 'fav-toast';
+  t.textContent = msg;
+  document.body.appendChild(t);
+
+  setTimeout(()=> t.remove(), 1800);
 }
 
-async function favToggle(productId){
-  const r = await fetch(FAV_ENDPOINT, {
+async function postFav(payload){
+  const res = await fetch(FAV_ENDPOINT, {
     method: 'POST',
     headers: {'Content-Type': 'application/x-www-form-urlencoded'},
-    body: new URLSearchParams({ action: 'toggle', product_id: productId })
+    body: new URLSearchParams(payload),
+    credentials: 'same-origin'
   });
-  if (!r.ok) throw new Error('HTTP ' + r.status);
-  return await r.json(); // {status:'success', favourited:true/false}
+  const text = await res.text();
+  try { return JSON.parse(text); }
+  catch { return { status: "error", message: "Data is not valid" }; }
 }
 
 // Initialise current state
 if (favBtn){
   (async () => {
-    try {
-      const ids = await favList();
-      setFavUI(ids.includes(product.id));
-    } catch (e) {
-      console.warn('Fav init failed:', e);
-      setFavUI(false);
-    }
+    const data = await postFav({ action: 'list' });
+    if (data.requireLogin) { setFavUI(false); return; }
+
+    const ids = data.favourites || [];
+    setFavUI(ids.map(Number).includes(product.id));
   })();
 
   favBtn.addEventListener('click', async (e) => {
-    e.preventDefault();          // <-- stop accidental navigation
-    e.stopPropagation();         // <-- stop bubbling into parent links/overlays
+    e.preventDefault();
+    e.stopPropagation();
+
     favBtn.disabled = true;
     try {
-      const res = await favToggle(product.id);
-      if (res.status === 'success') setFavUI(!!res.favourited);
-      else alert(res.message || 'Could not update favourites.');
-    } catch (err){
-      alert('Could not update favourites. Please try again.');
-      console.error(err);
+      const res = await postFav({ action: 'toggle', product_id: product.id });
+
+      if (res.requireLogin) {
+        toast("Please login to add products to favourites.");
+        window.location.href = res.loginUrl || 'login.html';
+        return;
+      }
+
+      if (res.status === 'success') {
+        setFavUI(!!res.favourited);
+        toast(res.message || (res.favourited ? "Saved as favourite." : "Removed from favourites."));
+      } else {
+        toast(res.message || "Could not update favourites.");
+      }
     } finally {
       favBtn.disabled = false;
     }
   });
 }
-})(); 
+})();

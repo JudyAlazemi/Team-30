@@ -1,19 +1,20 @@
 <?php
 require_once __DIR__ . "/includes/account_layout.php";
-$active = "orders";
+$active = "favourites";
 
-/* Fetch orders for this user */
-$orders = [];
+$favs = [];
 try {
   $stmt = $conn->prepare("
-    SELECT id, total_amount, status, created_at
-    FROM orders
-    WHERE user_id = ?
-    ORDER BY created_at DESC
+    SELECT p.id, p.name, p.description, p.price, p.image_url
+    FROM favourites f
+    JOIN products p ON p.id = f.product_id
+    WHERE f.user_id = ?
+    ORDER BY f.created_at DESC, f.id DESC
   ");
   $stmt->bind_param("i", $userId);
   $stmt->execute();
-  $orders = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
+  $favs = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
+  $stmt->close();
 } catch (Exception $e) {}
 ?>
 <!doctype html>
@@ -21,15 +22,14 @@ try {
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>My Orders</title>
+  <title>My Favourites</title>
 
-  <!-- SAME THEME -->
+  <!-- SAME THEME AS DASHBOARD/ORDERS -->
   <link rel="stylesheet" href="assets/css/style.css">
   <link rel="stylesheet" href="assets/css/customer_dashboard.css">
 
   <script defer src="assets/js/nav.js"></script>
   <link rel="icon" type="image/png" href="assets/images/logo.png">
-
 </head>
 
 <body class="account-page">
@@ -85,7 +85,7 @@ try {
   </aside>
 </div>
 
-<!-- PAGE BODY (uses your dashboard layout & CSS) -->
+<!-- PAGE BODY (same dashboard layout) -->
 <div class="dash-page">
   <div class="dash-frame">
     <div class="dash-grid">
@@ -105,13 +105,13 @@ try {
             <span class="dash-arrow">›</span>
           </a>
 
-          <a class="dash-link is-active" href="customer_orders.php">
+          <a class="dash-link" href="customer_orders.php">
             <span class="dash-ico"><img src="assets/images/shopping-bag-filled.png" alt=""></span>
             <span>Orders</span>
             <span class="dash-arrow">›</span>
           </a>
 
-          <a class="dash-link" href="customer_favourites.php">
+          <a class="dash-link is-active" href="customer_favourites.php">
             <span class="dash-ico"><img src="assets/images/favorite-shaded.png" alt=""></span>
             <span>Favourites</span>
             <span class="dash-arrow">›</span>
@@ -129,44 +129,55 @@ try {
       <!-- RIGHT CONTENT -->
       <main class="dash-right">
 
-        <h1 class="dash-title">My Orders</h1>
+        <h1 class="dash-title">My Favourites</h1>
         <div class="dash-rule"></div>
 
         <section class="dash-recent">
           <div class="dash-recent-head">
             <div>
-              <div class="dash-recent-title">Order History</div>
-              <div class="dash-recent-sub">Order&nbsp;&nbsp;Total&nbsp;&nbsp;Status&nbsp;&nbsp;Date</div>
+              <div class="dash-recent-title">Saved Items</div>
+              <div class="dash-recent-sub">Product&nbsp;&nbsp;Price&nbsp;&nbsp;Action</div>
             </div>
+
+            <a class="dash-viewall" href="products.php">Shop all</a>
           </div>
 
-          <?php if (empty($orders)): ?>
+          <?php if (empty($favs)): ?>
             <div class="dash-empty">
-              <p class="dash-muted">You haven’t placed any orders yet.</p>
-              <a href="cart.php" class="dash-place-btn">Place an order</a>
+              <p class="dash-muted">No favourites yet.</p>
+              <a href="products.php" class="dash-place-btn">Go to Products</a>
             </div>
           <?php else: ?>
-            <?php foreach ($orders as $o): ?>
-              <div class="dash-row">
-                <div class="dash-cell">#<?= htmlspecialchars($o['id']) ?></div>
-                <div class="dash-cell">£<?= number_format((float)$o['total_amount'], 2) ?></div>
-                <div class="dash-cell">
-                  <span class="dash-badge"><?= htmlspecialchars($o['status']) ?></span>
+            <div class="dash-recent-body">
+              <?php foreach ($favs as $p): ?>
+                <div class="dash-row" style="grid-template-columns: 1fr 120px 140px;">
+                  <div class="dash-cell">
+                    <strong><?= htmlspecialchars($p['name']) ?></strong><br>
+                    <span style="opacity:.8;font-size:11px;">
+                      <?= htmlspecialchars($p['description'] ?? '') ?>
+                    </span>
+                  </div>
+
+                  <div class="dash-cell">
+                    £<?= number_format((float)$p['price'], 2) ?>
+                  </div>
+
+                  <div class="dash-cell">
+                    <a class="dash-back" href="productdetails.php?id=<?= (int)$p['id'] ?>">View</a>
+                    <button class="dash-back dash-secondary js-remove-fav" data-product-id="<?= (int)$p['id'] ?>">
+                      Remove
+                    </button>
+                  </div>
                 </div>
-                <div class="dash-cell"><?= htmlspecialchars($o['created_at']) ?></div>
-              </div>
-            <?php endforeach; ?>
+              <?php endforeach; ?>
+            </div>
           <?php endif; ?>
 
         </section>
 
-        <!-- ✅ Bottom buttons -->
         <div class="dash-bottom">
           <a class="dash-back" href="customer_dashboard.php">Back to dashboard</a>
-
-          <!-- NEW button -->
-          <a class="dash-back dash-secondary" href="products.php">Place More Orders</a>
-
+          <a class="dash-back dash-secondary" href="products.php">Add more favourites</a>
         </div>
 
       </main>
@@ -174,6 +185,42 @@ try {
     </div>
   </div>
 </div>
+<script>
+  async function postFav(payload) {
+    const res = await fetch('favourites.php', {   // ✅ correct backend endpoint
+      method: 'POST',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      body: new URLSearchParams(payload),
+      credentials: 'same-origin'
+    });
 
+    const text = await res.text();
+    try { return JSON.parse(text); }
+    catch { return { status: "error", message: "Data is not valid" }; }
+  }
+
+  document.addEventListener('click', async (e) => {
+    const btn = e.target.closest('.js-remove-fav');
+    if (!btn) return;
+
+    btn.disabled = true;
+    try {
+      const productId = btn.dataset.productId;
+      const r = await postFav({ action: 'toggle', product_id: productId });
+
+      if (r.requireLogin) {
+        window.location.href = r.loginUrl || 'login.html';
+        return;
+      }
+      if (r.status !== 'success') {
+        alert(r.message || 'Could not update favourites');
+        return;
+      }
+      window.location.reload();
+    } finally {
+      btn.disabled = false;
+    }
+  });
+</script>
 </body>
 </html>
