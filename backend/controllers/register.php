@@ -1,6 +1,5 @@
 <?php
-require_once "/../config/db.php";
-
+require_once __DIR__ . "/../config/db.php";
 
 $name = trim($_POST["name"] ?? "");
 $email = trim($_POST["email"] ?? "");
@@ -28,6 +27,10 @@ if (
 }
 
 $stmt = $conn->prepare("SELECT id FROM users WHERE email = ?");
+if (!$stmt) {
+    die("Prepare failed (email check): " . $conn->error);
+}
+
 $stmt->bind_param("s", $email);
 $stmt->execute();
 $stmt->store_result();
@@ -44,9 +47,8 @@ $stmt = $conn->prepare("
     INSERT INTO users (name, email, password, security_question, security_answer_hash)
     VALUES (?, ?, ?, ?, ?)
 ");
-
 if (!$stmt) {
-    die("Prepare failed: " . $conn->error);
+    die("Prepare failed (insert): " . $conn->error);
 }
 
 if (!$stmt->bind_param("sssss", $name, $email, $passwordHash, $securityQuestion, $securityAnswerHash)) {
