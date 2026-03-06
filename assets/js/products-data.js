@@ -1,89 +1,133 @@
-// assets/js/render-products.js
-document.addEventListener("DOMContentLoaded", () => {
-  const list = document.getElementById("products-list");
-  if (!list) return;
+// Single source of truth for all products
 
-  // --- state from URL (optional) ---
-  const params = new URLSearchParams(location.search);
-  let activeCategory = params.get("category") || "all";
-  const searchTerm = (params.get("search") || "").toLowerCase().trim();
+window.productsData = [
+  // ---------------- PERFUMES ----------------
+  {
+    id: 1,
+    name: "Ocean Breeze",
+    description: "Fresh aquatic fragrance with marine notes",
+    price: 59.99,
+    image: "assets/images/oceanmist.PNG",   // use your real Ocean Breeze image
+    category: "perfume"
+  },
+  {
+    id: 2,
+    name: "Midnight Oud",
+    description: "Deep and mysterious oriental fragrance",
+    price: 69.99,
+    image: "assets/images/midnightoud.PNG",   // replace with your real Midnight Oud image
+    category: "perfume"
+  },
+  {
+    id: 3,
+    name: "Velvet Rose",
+    description: "Luxurious rose with velvety undertones",
+    price: 64.99,
+    image: "assets/images/velvetmusk.JPEG",   // replace with your real Velvet Rose image
+    category: "perfume"
+  },
 
-  // --- LS helpers (same shape as cart.js) ---
-  const LS = {
-    get(k, fb){ try { return JSON.parse(localStorage.getItem(k)) ?? fb; } catch { return fb; } },
-    set(k, v){ localStorage.setItem(k, JSON.stringify(v)); }
-  };
-  const CART_KEY = "cart";
-  const getCart = () => LS.get(CART_KEY, []);          // [{id, qty}]
-  const setCart = (c) => LS.set(CART_KEY, c);
-  const addToCart = (id, qty=1) => {
-    const cart = getCart();
-    const i = cart.findIndex(x => x.id === id);
-    if (i > -1) cart[i].qty += qty;
-    else cart.push({ id, qty });
-    setCart(cart);
-  };
+  // ---------------- CAR PERFUMES ----------------
+  {
+    id: 4,
+    name: "Unleaded Petrol",
+    description: "Energetic and bold car fragrance",
+    price: 16.99,
+    image: "assets/images/carperfdark.jpeg",  // no image yet
+    category: "car-perfume"
+  },
+  {
+    id: 5,
+    name: "Ionix Fresh",
+    description: "Air-purifying fresh car scent",
+    price: 14.99,
+    image: "assets/images/carperflight.jpeg",  // no image yet
+    category: "car-perfume"
+  },
+  {
+    id: 6,
+    name: "Lavender Cruise",
+    description: "Calming lavender for relaxed drives",
+    price: 18.99,
+    image: "assets/images/carperfmed.png",  // no image yet
+    category: "car-perfume"
+  },
 
-  // --- filter + render ---
-  function filteredProducts(){
-    return (window.productsData || []).filter(p => {
-      const catOK = (activeCategory === "all") || (p.category === activeCategory);
-      const textOK = !searchTerm ||
-        p.name.toLowerCase().includes(searchTerm) ||
-        (p.description || "").toLowerCase().includes(searchTerm);
-      return catOK && textOK;
-    });
+  // ---------------- CANDLES ----------------
+  {
+    id: 7,
+    name: "Vanilla Dream Candle",
+    description: "Warm vanilla and cream scented candle",
+    price: 12.99,
+    image: "assets/images/candle.png",   // replace with your Vanilla Dream candle image
+    category: "candle"
+  },
+  {
+    id: 8,
+    name: "Amber Woods Candle",
+    description: "Earthy amber with woody undertones",
+    price: 16.99,
+    image: "assets/images/candle.png",   // replace with your Amber Woods candle image
+    category: "candle"
+  },
+  {
+    id: 9,
+    name: "Cherry Blossom Candle",
+    description: "Delicate floral cherry blossom scent",
+    price: 14.99,
+    image: "assets/images/candle.png",   // replace with your Cherry Blossom candle image
+    category: "candle"
+  },
+
+  // ---------------- HOME SPRAYS ----------------
+  {
+    id: 10,
+    name: "Lavender Cloud Spray",
+    description: "Soothing lavender mist for relaxation",
+    price: 17.99,
+    image: "assets/images/homespraysilver.png",  // no image yet
+    category: "home-spray"
+  },
+  {
+    id: 11,
+    name: "Jasmine Home Spray",
+    description: "Exotic jasmine room freshener",
+    price: 19.99,
+    image: "assets/images/homespraygold.jpeg",  // no image yet
+    category: "home-spray"
+  },
+  {
+    id: 12,
+    name: "Ocean Breeze Spray",
+    description: "Fresh coastal air room spray",
+    price: 16.99,
+    image: "assets/images/homesprayblue.jpeg",  // no image yet
+    category: "home-spray"
+  },
+
+  // ---------------- BODY WASH ----------------
+  {
+    id: 13,
+    name: "Tropical Breeze Body Wash",
+    description: "Exotic tropical fruit cleansing wash",
+    price: 8.99,
+    image: "assets/images/tropicalbreeze.JPEG",  // no image yet
+    category: "body-wash"
+  },
+  {
+    id: 14,
+    name: "Strawberry Silk Body Wash",
+    description: "Sweet strawberry with silk proteins",
+    price: 9.99,
+    image: "assets/images/strawbsilk.JPEG",  // no image yet
+    category: "body-wash"
+  },
+  {
+    id: 15,
+    name: "Ultra Fresh Body Wash",
+    description: "Deep cleansing with mint freshness",
+    price: 7.99,
+    image: "assets/images/ultrafresh.JPEG",  // no image yet
+    category: "body-wash"
   }
-
-  function render(){
-    const items = filteredProducts();
-    if (!items.length){
-      list.innerHTML = `<p style="opacity:.7;">No products found.</p>`;
-      return;
-    }
-    list.innerHTML = items.map(p => `
-      <div class="product-card" data-category="${p.category}">
-        <div class="product-image">
-          <img src="${p.image}" alt="${p.name}">
-          <div class="product-overlay">
-            <a href="productdetails.php?id=${p.id}" class="hero-btn">View Details</a>
-          </div>
-        </div>
-        <div class="product-info">
-          <h3>${p.name}</h3>
-          <p class="product-description">${p.description}</p>
-          <p class="product-price">£${p.price.toFixed(2)}</p>
-          <button class="hero-btn add-to-cart" data-id="${p.id}">Add to Cart</button>
-        </div>
-      </div>
-    `).join("");
-
-    // add-to-cart buttons
-    list.querySelectorAll(".add-to-cart").forEach(btn=>{
-      btn.addEventListener("click", () => {
-        const id = Number(btn.dataset.id);
-        addToCart(id, 1);
-        alert("Added to cart"); // swap for your toast/snackbar if you have one
-      });
-    });
-  }
-
-  // --- category buttons (use your existing buttons) ---
-  const catButtons = document.querySelectorAll(".category-btn");
-  catButtons.forEach(btn => {
-    btn.addEventListener("click", (e) => {
-      e.preventDefault();
-      catButtons.forEach(b => b.classList.remove("active"));
-      btn.classList.add("active");
-      activeCategory = btn.dataset.category || "all";
-      render();
-    });
-    // set initial active state from URL
-    if ((btn.dataset.category || "all") === activeCategory){
-      btn.classList.add("active");
-    }
-  });
-
-  // initial render
-  render();
-});
+];
