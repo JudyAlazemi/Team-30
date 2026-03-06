@@ -33,8 +33,7 @@ document.addEventListener('keydown', (e) => {
   if (e.key === 'Escape' && menuDrawer?.classList.contains('is-open')) closeDrawer();
 });
 
-
-// USER BUTTON LOGIC (simple)
+// USER BUTTON LOGIC (session-based)
 (function () {
   const $ = (sel) => document.querySelector(sel);
 
@@ -47,38 +46,37 @@ document.addEventListener('keydown', (e) => {
     imgEl.src = active ? imgEl.dataset.srcActive : imgEl.dataset.srcInactive;
   }
 
-  // Replace your current "let userName = localStorage.getItem('userName') || '';" with this:
-function getSavedName(){
-  const raw = localStorage.getItem("userName") || "";
-  // try JSON.parse first (handles values saved via JSON.stringify)
-  try {
-    const parsed = JSON.parse(raw);
-    if (typeof parsed === "string") return parsed.trim();
-  } catch {}
-  // fallback: strip surrounding quotes if present
-  return raw.replace(/^"(.*)"$/, "$1").trim();
-}
-
-let userName = getSavedName();
-// optional: write back the cleaned value so it stays fixed
-if (userName) localStorage.setItem("userName", userName);
-
-  function updateUserUI() {
+  async function updateUserUI() {
     if (!userBtn || !userIcon || !userText) return;
-    const signedIn = !!userName;
-    userBtn.setAttribute("aria-pressed", signedIn ? "true" : "false");
-    setIcon(userIcon, signedIn);
-    userText.textContent = signedIn ? userName : "Sign in";
+
+    try {
+      const res = await fetch("check_login.php", {
+        cache: "no-store",
+        credentials: "same-origin"
+      });
+      const data = await res.json();
+
+      if (data.loggedIn) {
+        userBtn.href = "customer_dashboard.php";
+        userText.textContent = "My Account";
+        userBtn.setAttribute("aria-pressed", "true");
+        setIcon(userIcon, true);
+      } else {
+        userBtn.href = "login.html";
+        userText.textContent = "Sign in";
+        userBtn.setAttribute("aria-pressed", "false");
+        setIcon(userIcon, false);
+      }
+    } catch (err) {
+      userBtn.href = "login.html";
+      userText.textContent = "Sign in";
+      userBtn.setAttribute("aria-pressed", "false");
+      setIcon(userIcon, false);
+    }
   }
 
   updateUserUI();
-
-  userBtn?.addEventListener("click", () => {
-    // no popup logic anymore
-  });
-
 })();
-  
 
 // --- SEARCH SLIDE-IN ---
 const searchBtn      = document.getElementById("searchBtn");
@@ -109,39 +107,86 @@ navSearchInput?.addEventListener("keydown", (e) => {
   if (e.key === "Escape") closeSearch();
   if (e.key === "Enter") {
     const q = navSearchInput.value.trim();
-    if (q) window.location.href = `products.html?search=${encodeURIComponent(q)}`;
+    if (q) window.location.href = `products.php?search=${encodeURIComponent(q)}`;
   }
 });
 
-//Dark Mode
+document.addEventListener("click", () => {
+  if (navSearchInput?.classList.contains("open")) closeSearch();
+});
+
+/// FAVOURITES LINK (heart icon + drawer menu link) ✅ always correct, even if clicked fast
 (function () {
-  const toggleBtn = document.getElementById("theme-switch");
-  const STORAGE_KEY = "darkmode";
+  const favBtn  = document.getElementById("favBtn");
+  const favIcon = document.getElementById("favIcon");
 
-  function applyTheme(isDark) {
-    document.body.classList.toggle("darkmode", isDark);
-    localStorage.setItem(STORAGE_KEY, isDark ? "active" : "inactive");
+  // track state so click can redirect correctly
+  let loginState = null; // null = unknown, true/false = known
 
-    if (toggleBtn) {
-      toggleBtn.setAttribute("aria-pressed", isDark ? "true" : "false");
+  function getDrawerFavLinks() {
+    return document.querySelectorAll(
+      '#menuDrawer .drawer__nav a[href="favourites.php"], #menuDrawer .drawer__nav a[href="customer_favourites.php"]'
+    );
+  }
+
+  function applyFavUI(loggedIn) {
+    const targetHref = loggedIn ? "customer_favourites.php" : "favourites.php";
+
+    if (favBtn) {
+      favBtn.href = targetHref;
+      favBtn.setAttribute("aria-pressed", loggedIn ? "true" : "false");
+    }
+
+    if (favIcon) {
+      const src = loggedIn ? favIcon.dataset.srcActive : favIcon.dataset.srcInactive;
+      if (src) favIcon.src = src;
+    }
+
+    getDrawerFavLinks().forEach(a => a.href = targetHref);
+  }
+
+  async function updateFavLinks() {
+    try {
+      const res = await fetch("check_login.php", {
+        cache: "no-store",
+        credentials: "same-origin"
+      });
+      const data = await res.json();
+
+      loginState = !!data.loggedIn;
+      applyFavUI(loginState);
+      return loginState;
+    } catch (err) {
+      loginState = false; // safest fallback
+      applyFavUI(false);
+      return false;
     }
   }
 
-  // Apply saved theme immediately
-  const saved = localStorage.getItem(STORAGE_KEY);
-  applyTheme(saved === "active");
+  // ✅ IMPORTANT: intercept click so it never goes to the wrong page
+  if (favBtn) {
+    favBtn.addEventListener("click", async (e) => {
+      // if state not ready yet, prevent wrong navigation and redirect correctly
+      if (loginState === null) {
+        e.preventDefault();
+        const loggedIn = await updateFavLinks();
+        window.location.href = loggedIn ? "customer_favourites.php" : "favourites.php";
+        return;
+      }
 
-  // If no button on this page, stop here (prevents errors)
-  if (!toggleBtn) return;
+      // if state known, force correct href just before navigating
+      favBtn.href = loginState ? "customer_favourites.php" : "favourites.php";
+    });
+  }
 
-  toggleBtn.addEventListener("click", function () {
-    const isDark = document.body.classList.contains("darkmode");
-    applyTheme(!isDark);
-  });
+  // run on load + when coming back (bfcache)
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", updateFavLinks);
+  } else {
+    updateFavLinks();
+  }
+  window.addEventListener("pageshow", updateFavLinks);
+
+  // optional: allow manual refresh
+  window.updateFavButton = updateFavLinks;
 })();
-
-
-
-
-
-
