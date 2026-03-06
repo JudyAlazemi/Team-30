@@ -117,7 +117,7 @@ try {
             <span class="dash-arrow">›</span>
           </a>
 
-          <a class="dash-link" href="profile.php">
+          <a class="dash-link" href="customer_security.php">
             <span class="dash-ico"><img src="assets/images/security-icon.png" alt=""></span>
             <span>Login &amp; Security</span>
             <span class="dash-arrow">›</span>

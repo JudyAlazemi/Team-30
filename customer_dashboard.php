@@ -248,7 +248,7 @@ if (empty($userEmail) && $userId > 0 && isset($conn) && !$conn->connect_error) {
             <span class="dash-arrow" aria-hidden="true">›</span>
           </a>
 
-          <a class="dash-link" href="profile.php">
+          <a class="dash-link" href="customer_security.php">
             <span class="dash-ico">
               <img src="assets/images/security-icon.png" alt="">
             </span>

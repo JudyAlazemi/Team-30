@@ -77,7 +77,7 @@ $ordersRes = $stmt->get_result();
   <?php endwhile; ?>
 <?php endif; ?>
 
-<p><a href="profile.php">Back to profile</a></p>
+<p><a href="customer_dashboard.php">Back to Dashboard</a></p>
 
 </body>
 </html>
