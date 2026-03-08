@@ -489,7 +489,7 @@ if (homeOpenBtn && homeFormWrap) {
 
 
 <div id="newsletterPopup" class="newsletter-toast" role="status" aria-live="polite">
-  You're now subscribed to our newsletter.
+  Thanks! You're now subscribed to the Sabil newsletter.
 </div>
 </body>
 </html>
