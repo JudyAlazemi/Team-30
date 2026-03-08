@@ -25,6 +25,7 @@ document.addEventListener("DOMContentLoaded", () => {
         }, 5000);
 
         form.reset();
+        emailInput.blur();
     });
 
 });
