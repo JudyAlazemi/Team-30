@@ -1499,4 +1499,161 @@ body.drawer-open{ overflow: hidden; }
   }
 }
 
+/* ============================================================
+   FAVOURITES PAGE 
+   ============================================================ */
+
+.page-favourites .favourites-main {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 40px 24px 60px;
+}
+
+/* Header section */
+.page-favourites .favourites-header {
+  text-align: center;
+  margin-bottom: 32px;
+}
+.page-favourites .favourites-header h1 {
+  font-size: 32px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.page-favourites .favourites-header p {
+  margin-top: 8px;
+  font-size: 14px;
+}
+
+/* Empty state */
+.page-favourites .favourites-empty {
+  text-align: center;
+  font-size: 16px;
+  margin-top: 24px;
+}
+
+/* Grid layout */
+.page-favourites .favourites-grid {
+  margin-top: 32px;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 24px;
+}
+
+/* Single favourite card */
+.page-favourites .fav-card {
+  background: #ffffff;
+  border: 1.5px solid #4e4138;
+  border-radius: 12px;
+  padding: 16px;
+  text-align: center;
+}
+
+/* Placeholder image */
+.page-favourites .fav-image {
+  width: 100%;
+  height: 220px;
+  background-color: #f4eee9;
+  border-radius: 8px;
+  margin-bottom: 12px;
+}
+
+/* Text inside the card */
+.page-favourites .fav-name {
+  font-size: 18px;
+  margin-bottom: 4px;
+}
+.page-favourites .fav-brand {
+  font-size: 14px;
+  opacity: 0.8;
+  margin-bottom: 8px;
+}
+.page-favourites .fav-notes {
+  font-size: 13px;
+  opacity: 0.9;
+  margin-bottom: 8px;
+}
+.page-favourites .fav-price {
+  font-size: 14px;
+  font-weight: 600;
+  margin-bottom: 10px;
+}
+
+/* Remove Favourite button (heart) */
+.page-favourites .fav-remove-btn,
+.page-favourites .fav-toggle {
+  border: none;
+  background: none;
+  cursor: pointer;
+  font-size: 20px;
+  color: #303c30;
+  margin-top: 8px;
+  transition: opacity .2s ease;
+}
+
+.page-favourites .fav-remove-btn:hover,
+.page-favourites .fav-toggle:hover {
+  opacity: 0.7;
+}
+
+/* Make product images behave inside cards (home + products pages) */
+.products-grid .product-image{
+  position: relative;
+  display: grid;
+  width: 100%;
+  height: 260px;              /* desktop-friendly frame */
+  background: #fff;
+  border-radius: 8px;
+  overflow: hidden;
+}
+@media (min-width: 720px){
+  .products-grid .product-image{ height: 320px; }
+}
+.products-grid .product-image img{
+  width: 100%;
+  height: 100%;
+  object-fit: contain;        /* keep bottle proportions */
+  display: block;
+}
+
+/* Overlay button positioning (your “View Details”) */
+.product-overlay{
+  position: absolute;
+  left: 0; right: 0; bottom: 12px;
+  display: flex; justify-content: center;
+  opacity: 0; transition: .25s ease;
+}
+.product-image:hover .product-overlay{ opacity: 1; }
+
+/* Safety fallback if a card doesn't have .product-image wrapper */
+.products-grid .product-card img{
+  max-width: 100%;
+  max-height: 320px;
+  object-fit: contain;
+  display: block;
+}
+
+/* === PRODUCTS PAGE: horizontal grid layout === */
+.page-product .products-grid{
+  display: grid !important;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)) !important;
+  gap: 24px !important;
+  padding: 16px;
+  align-items: stretch;
+}
+
+/* Optional: simple card shell on products page */
+.page-product .product-card{
+  background: #fffaf3;
+  border: 1.5px solid var(--secondary);
+  border-radius: 12px;
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+/* Ensure product tile images don’t crop */
+.page-product .product-image{ height: 300px; border-radius: 10px; overflow: hidden; background:#fff; }
+.page-product .product-image img{ width:100%; height:100%; object-fit: contain; display:block; }
+
 
