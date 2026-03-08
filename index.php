@@ -63,7 +63,7 @@ if (file_exists(__DIR__ . "/backend/config/db.php")) {
           src="assets/images/sign-in.png"
           alt="User"
           data-src-inactive="assets/images/sign-in.png"
-          data-src-active="assets/images/user-shaded.png"
+          data-src-active="assets/images/user.png"
         />
         <span id="userText" class="action-text">Sign in</span>
     </a>
@@ -93,7 +93,7 @@ if (file_exists(__DIR__ . "/backend/config/db.php")) {
       </a>
 
       <!-- BAG -->
-      <a id="bagBtn" class="action" href="cart.html" role="button" aria-pressed="false">
+      <a id="bagBtn" class="action" href="cart.php" role="button" aria-pressed="false">
         <img
           id="bagIcon"
           class="icon"
@@ -114,8 +114,8 @@ if (file_exists(__DIR__ . "/backend/config/db.php")) {
 
   <aside class="drawer__panel" role="dialog" aria-modal="true" aria-label="Site menu">
     <nav class="drawer__nav">
-      <a href="products.html">Shop all</a>
-      <a href="cart.html">Cart</a>
+      <a href="products.php">Shop all</a>
+      <a href="cart.php">Cart</a>
       <a href="favourites.php">Favourites</a>
       <a href="contactus.php">Contact us</a>
       <a href="faq.php">FAQ</a>
@@ -136,7 +136,7 @@ if (file_exists(__DIR__ . "/backend/config/db.php")) {
 
   <div class="hero-content">
     <h1>Let your scent<br>guide your journey.</h1>
-    <a href="products.html" class="hero-btn">Shop now</a>
+    <a href="products.php" class="hero-btn">Shop now</a>
   </div>
 </section>
 
@@ -145,7 +145,7 @@ if (file_exists(__DIR__ . "/backend/config/db.php")) {
 <section class="new-collection">
   <div class="collection-header">
     <h2>Fragrances</h2>
-    <a href="products.html" class="view-more-btn">View More</a>
+    <a href="products.php" class="view-more-btn">View More</a>
   </div>
 
   <!-- Track: grid on desktop, carousel on mobile -->
@@ -191,7 +191,7 @@ if (file_exists(__DIR__ . "/backend/config/db.php")) {
 <section class="signature-collection">
   <div class="collection-header">
     <h2>Candles</h2>
-    <a href="products.html" class="view-more-btn">View More</a>
+    <a href="products.php" class="view-more-btn">View More</a>
   </div>
 
   <!-- Track: grid on desktop, carousel on mobile -->
@@ -295,7 +295,7 @@ if (file_exists(__DIR__ . "/backend/config/db.php")) {
     <div class="quiz-step" data-step="result">
       <h2>Your fragrance match</h2>
       <p id="quizResultText">We think you’ll love Ocean Breeze.</p>
-      <a href="products.html" class="quiz-shop-btn">Shop Now</a>
+      <a href="products.php" class="quiz-shop-btn">Shop Now</a>
     </div>
   </div>
 </div>
@@ -426,8 +426,8 @@ if (file_exists(__DIR__ . "/backend/config/db.php")) {
 
     <!-- Column 2 -->
     <div class="footer-links">
-      <a href="products.html">Order</a>
-      <a href="cart.html">Shopping Cart</a>
+      <a href="products.php">Order</a>
+      <a href="cart.php">Shopping Cart</a>
       <a href="favourites.php">Favourites</a>
     </div>
   </div>
