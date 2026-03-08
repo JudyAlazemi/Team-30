@@ -1674,7 +1674,7 @@ body.drawer-open{ overflow: hidden; }
 
   opacity: 0;
   transform: translateX(-20px); /* slide from left */
-  transition: all .35s ease;
+  transition: opacity .35s ease, transform .35s ease;
 
   z-index: 2000;
 
