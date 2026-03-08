@@ -8,6 +8,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
     form.addEventListener("submit", (e) => {
         e.preventDefault(); // stop page reload
+        const button = form.querySelector("button");
+        button.disabled = true;
 
         const email = emailInput.value.trim();
 
@@ -19,6 +21,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         setTimeout(() => {
             popup.classList.remove("show");
+            button.disabled = false;
         }, 5000);
 
         form.reset();
