@@ -107,7 +107,7 @@ if ($productId > 0) {
           src="assets/images/sign-in.png"
           alt="User"
           data-src-inactive="assets/images/sign-in.png"
-          data-src-active="assets/images/user-shaded.png"
+          data-src-active="assets/images/user.png"
         />
         <span id="userText" class="action-text">Sign in</span>
       </a>
