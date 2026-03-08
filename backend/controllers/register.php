@@ -1,24 +1,40 @@
 <?php
-require_once "../config/db.php";          //imports db connection 
-require_once "../models/User.php";
+require_once "../config/db.php";
 
-$user = new User();                      // creates a new User from model class
+$name = $_POST["name"] ?? '';
+$email = $_POST['email'] ?? '';
+$password = $_POST['password'] ?? '';
 
-$name  = $_POST['name']          ?? '';
-$email  = $_POST['email']        ?? '';
-$password  = $_POST['password']  ?? '';
+if (!$name || !$email || !$password) {
+    echo "All fields are required.";
+    exit;
+}
 
-if (!empty($name) && !empty($email) && !empty($password)) {   // checks if the user filled all fields
-    $result - $user->register($conn, $name, $email, $password);
+$stmt = $conn->prepare("SELECT id FROM users WHERE email = ?");
+$stmt->bind_param("s", $email);
+$stmt->execute();
+$stmt->store_result();
 
-    if ($result === "success") {
-        echo "User registerd successfully!";
+if ($stmt->num_rows > 0) {
+    echo "Email already exists.";
+    exit;
+}
 
-    } else {
-        echo $result;
-    }
+$hash = password_hash($password, PASSWORD_DEFAULT);
+
+$stmt = $conn->prepare("INSERT INTO users (name, email, password) VALUES (?, ?, ?)");
+if (!$stmt) {
+    die("Prepare failed: " . $conn->error);
+}
+
+if (!$stmt->bind_param("sss", $name, $email, $hash)) {
+    die("Bind failed: " . $stmt->error);
+}
+
+if ($stmt->execute()) {
+    header("Location: /index.php");
+    exit;
 } else {
-    echo "Please fill in all fields";
-
+    echo "Execute failed: " . $stmt->error;
 }
 ?>
