@@ -1656,4 +1656,49 @@ body.drawer-open{ overflow: hidden; }
 .page-product .product-image{ height: 300px; border-radius: 10px; overflow: hidden; background:#fff; }
 .page-product .product-image img{ width:100%; height:100%; object-fit: contain; display:block; }
 
+/* Newsletter popup */
+.newsletter-toast{
+  position: fixed;
+  bottom: 30px;
+  left: 30px; /* moved from right to left */
 
+  background: var(--white);
+  color: var(--secondary);
+
+  border: 1.5px solid var(--border);
+  border-radius: 10px;
+
+  padding: 14px 18px;
+  font-size: 15px;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+
+  opacity: 0;
+  transform: translateX(-20px); /* slide from left */
+  transition: all .35s ease;
+
+  z-index: 2000;
+
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.newsletter-toast.show{
+  opacity: 1;
+  transform: translateX(0);
+}
+
+/* checkmark animation */
+.newsletter-toast::before{
+  content: "✓";
+  color: var(--accent);
+  font-weight: bold;
+  font-size: 16px;
+  animation: popCheck .4s ease;
+}
+
+@keyframes popCheck{
+  0% { transform: scale(0); }
+  70% { transform: scale(1.2); }
+  100% { transform: scale(1); }
+}

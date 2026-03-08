@@ -486,5 +486,10 @@ if (homeOpenBtn && homeFormWrap) {
 </script>
 
 <?php include __DIR__ . "/chatbot.php"; ?>
+
+
+<div id="newsletterPopup" class="newsletter-toast">
+  You're now subscribed to our newsletter.
+</div>
 </body>
 </html>
