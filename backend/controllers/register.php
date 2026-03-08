@@ -1,24 +1,64 @@
 <?php
-require_once "../config/db.php";          //imports db connection 
-require_once "../models/User.php";
+require_once __DIR__ . "/../config/db.php";
 
-$user = new User();                      // creates a new User from model class
+$name = trim($_POST["name"] ?? "");
+$email = trim($_POST["email"] ?? "");
+$password = $_POST["password"] ?? "";
+$securityQuestion = trim($_POST["security_question"] ?? "");
+$securityAnswer = trim($_POST["security_answer"] ?? "");
 
-$name  = $_POST['name']          ?? '';
-$email  = $_POST['email']        ?? '';
-$password  = $_POST['password']  ?? '';
+if (!$name || !$email || !$password || !$securityQuestion || !$securityAnswer) {
+    echo "All fields are required.";
+    exit;
+}
 
-if (!empty($name) && !empty($email) && !empty($password)) {   // checks if the user filled all fields
-    $result - $user->register($conn, $name, $email, $password);
+if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+    echo "Invalid email address.";
+    exit;
+}
 
-    if ($result === "success") {
-        echo "User registerd successfully!";
+if (
+    strlen($password) < 8 ||
+    !preg_match('/[A-Za-z]/', $password) ||
+    !preg_match('/[0-9]/', $password)
+) {
+    echo "Password must be at least 8 characters and include at least one letter and one number.";
+    exit;
+}
 
-    } else {
-        echo $result;
-    }
+$stmt = $conn->prepare("SELECT id FROM users WHERE email = ?");
+if (!$stmt) {
+    die("Prepare failed (email check): " . $conn->error);
+}
+
+$stmt->bind_param("s", $email);
+$stmt->execute();
+$stmt->store_result();
+
+if ($stmt->num_rows > 0) {
+    echo "Email already exists.";
+    exit;
+}
+
+$passwordHash = password_hash($password, PASSWORD_DEFAULT);
+$securityAnswerHash = password_hash($securityAnswer, PASSWORD_DEFAULT);
+
+$stmt = $conn->prepare("
+    INSERT INTO users (name, email, password, security_question, security_answer_hash)
+    VALUES (?, ?, ?, ?, ?)
+");
+if (!$stmt) {
+    die("Prepare failed (insert): " . $conn->error);
+}
+
+if (!$stmt->bind_param("sssss", $name, $email, $passwordHash, $securityQuestion, $securityAnswerHash)) {
+    die("Bind failed: " . $stmt->error);
+}
+
+if ($stmt->execute()) {
+    header("Location: ../../login.html");
+    exit;
 } else {
-    echo "Please fill in all fields";
-
+    echo "Execute failed: " . $stmt->error;
 }
 ?>
