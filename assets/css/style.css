@@ -1663,6 +1663,7 @@ body.drawer-open{ overflow: hidden; }
   left: 30px; /* moved from right to left */
   max-width: 320px;
   line-height: 1.4;
+  cursor: default;
 
   background: var(--white);
   color: var(--secondary);
