@@ -2,6 +2,8 @@
 session_start();
 require_once __DIR__ . "/../config/db.php";
 
+$conn->select_db("cs2team30_db");
+
 $email = trim($_POST["email"] ?? "");
 $password = $_POST["password"] ?? "";
 
@@ -31,6 +33,6 @@ session_regenerate_id(true);
 $_SESSION["user_id"] = (int)$user["id"];
 $_SESSION["user_name"] = $user["name"] ?? "Customer";
 
-/** ✅ correct redirect from backend/controllers -> project root */
+
 header("Location: ../../customer_dashboard.php");
 exit;
