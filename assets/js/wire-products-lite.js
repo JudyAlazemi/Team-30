@@ -25,7 +25,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         // 4) update view details link
         const link = card.querySelector(".product-overlay a");
-        if (link) link.href = `productdetails.html?id=${p.id}`;
+        if (link) link.href = `productdetails.php?id=${p.id}`;
 
         // 5) ensure add-to-cart button uses correct ID
         const addBtn = card.querySelector(".add-to-cart");
@@ -34,7 +34,7 @@ document.addEventListener("DOMContentLoaded", () => {
         // 6) OPTIONAL: make whole card clickable except buttons
         card.addEventListener("click", (e) => {
             if (e.target.closest("button") || e.target.closest("a")) return;
-            window.location.href = `productdetails.html?id=${p.id}`;
+            window.location.href = `productdetails.php?id=${p.id}`;
         });
     });
 });

@@ -1,4 +1,5 @@
 <?php
+
 session_start();
 
 if (file_exists(__DIR__ . "/backend/config/db.php")) {
@@ -21,6 +22,10 @@ if (file_exists(__DIR__ . "/backend/config/db.php")) {
     <link rel="icon" type="image/png" href="assets/images/logo.png">
 </head>
 
+
+
+
+
 <body class="page-home">
 
 <header class="topbar">
@@ -39,6 +44,16 @@ if (file_exists(__DIR__ . "/backend/config/db.php")) {
 
     <!-- Right: actions -->
     <nav class="actions" aria-label="Account & tools">
+     <button id="theme-switch" class="icon-btn" type="button" aria-label="Toggle theme" aria-pressed="false">
+  <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="currentColor">
+    <path d="M480-120q-150 0-255-105T120-480q0-150 105-255t255-105q14 0 27.5 1t26.5 3q-41 29-65.5 75.5T444-660q0 90 63 153t153 63q55 0 101-24.5t75-65.5q2 13 3 26.5t1 27.5q0 150-105 255T480-120Z"/>
+  </svg>
+  <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="currentColor">
+    <path d="M338.5-338.5Q280-397 280-480t58.5-141.5Q397-680 480-680t141.5 58.5Q680-563 680-480t-58.5 141.5Q563-280 480-280t-141.5-58.5ZM200-440H40v-80h160v80Zm720 0H760v-80h160v80ZM440-760v-160h80v160h-80Zm0 720v-160h80v160h-80ZM256-650l-101-97 57-59 96 100-52 56Zm492 496-97-101 53-55 101 97-57 59Zm-98-550 97-101 59 57-100 96-56-52ZM154-212l101-97 55 53-97 101-59-57Z"/>
+  </svg>
+</button>
+
+
 
     <!-- USER -->
     <a id="userBtn" class="action" href="login.html" role="button" aria-pressed="false">
@@ -48,7 +63,7 @@ if (file_exists(__DIR__ . "/backend/config/db.php")) {
           src="assets/images/sign-in.png"
           alt="User"
           data-src-inactive="assets/images/sign-in.png"
-          data-src-active="assets/images/user-shaded.png"
+          data-src-active="assets/images/user.png"
         />
         <span id="userText" class="action-text">Sign in</span>
     </a>
@@ -78,7 +93,7 @@ if (file_exists(__DIR__ . "/backend/config/db.php")) {
       </a>
 
       <!-- BAG -->
-      <a id="bagBtn" class="action" href="cart.html" role="button" aria-pressed="false">
+      <a id="bagBtn" class="action" href="cart.php" role="button" aria-pressed="false">
         <img
           id="bagIcon"
           class="icon"
@@ -99,8 +114,8 @@ if (file_exists(__DIR__ . "/backend/config/db.php")) {
 
   <aside class="drawer__panel" role="dialog" aria-modal="true" aria-label="Site menu">
     <nav class="drawer__nav">
-      <a href="products.html">Shop all</a>
-      <a href="cart.html">Cart</a>
+      <a href="products.php">Shop all</a>
+      <a href="cart.php">Cart</a>
       <a href="favourites.php">Favourites</a>
       <a href="contactus.php">Contact us</a>
       <a href="faq.php">FAQ</a>
@@ -120,8 +135,8 @@ if (file_exists(__DIR__ . "/backend/config/db.php")) {
   <div class="hero-overlay"></div>
 
   <div class="hero-content">
-    <h1>test Let your scent<br>guide your journey.</h1>
-    <a href="products.html" class="hero-btn">Shop now</a>
+    <h1>Let your scent<br>guide your journey.</h1>
+    <a href="products.php" class="hero-btn">Shop now</a>
   </div>
 </section>
 
@@ -130,27 +145,27 @@ if (file_exists(__DIR__ . "/backend/config/db.php")) {
 <section class="new-collection">
   <div class="collection-header">
     <h2>Fragrances</h2>
-    <a href="products.html" class="view-more-btn">View More</a>
+    <a href="products.php" class="view-more-btn">View More</a>
   </div>
 
   <!-- Track: grid on desktop, carousel on mobile -->
   <div class="collection-track" id="collectionTrack">
 <article class="product-card" data-id="2">
-  <a href="productdetails.html?id=2" class="card-link">
+  <a href="productdetails.php?id=2" class="card-link">
     <img src="assets/images/midnightoud.PNG" alt="Midnight Oud">
     <h3 class="card-title">Midnight Oud</h3>
   </a>
 </article>
 
 <article class="product-card" data-id="1">
-  <a href="productdetails.html?id=1" class="card-link">
+  <a href="productdetails.php?id=1" class="card-link">
     <img src="assets/images/oceanmist.PNG" alt="Ocean Breeze">
     <h3 class="card-title">Ocean Breeze</h3>
   </a>
 </article>
 
 <article class="product-card" data-id="3">
-  <a href="productdetails.html?id=3" class="card-link">
+  <a href="productdetails.php?ID=3" class="card-link">
     <img src="assets/images/velvetmusk.JPEG" alt="Velvet Rose">
     <h3 class="card-title">Velvet Rose</h3>
   </a>
@@ -176,31 +191,34 @@ if (file_exists(__DIR__ . "/backend/config/db.php")) {
 <section class="signature-collection">
   <div class="collection-header">
     <h2>Candles</h2>
-    <a href="products.html" class="view-more-btn">View More</a>
+    <a href="products.php" class="view-more-btn">View More</a>
   </div>
 
   <!-- Track: grid on desktop, carousel on mobile -->
   <div class="collection-track" id="signatureTrack">
   <article class="product-card" data-id="7">
-  <a href="productdetails.html?id=7" class="card-link">
+  <a href="productdetails.php?ID=7" class="card-link">
     <img src="assets/images/candle.png" alt="Vanilla Dream">
     <h3 class="card-title">Vanilla Dream Candle</h3>
   </a>
 </article>
 
 <article class="product-card" data-id="8">
-  <a href="productdetails.html?id=8" class="card-link">
+  <a href="productdetails.php?ID=8" class="card-link">
     <img src="assets/images/candle.png" alt="Amber Woods">
     <h3 class="card-title">Amber Woods Candle</h3>
   </a>
 </article>
 
 <article class="product-card" data-id="9">
-  <a href="productdetails.html?id=9" class="card-link">
+  <a href="productdetails.php?ID=9" class="card-link">
     <img src="assets/images/candle.png" alt="Cherry Blossom">
     <h3 class="card-title">Cherry Blossom Candle</h3>
   </a>
 </article>
+
+
+</div>
 
    
 
@@ -277,16 +295,107 @@ if (file_exists(__DIR__ . "/backend/config/db.php")) {
     <div class="quiz-step" data-step="result">
       <h2>Your fragrance match</h2>
       <p id="quizResultText">We think you’ll love Ocean Breeze.</p>
-      <a href="products.html" class="quiz-shop-btn">Shop Now</a>
+      <a href="products.php" class="quiz-shop-btn">Shop Now</a>
     </div>
   </div>
 </div>
 
+
+<!-- REVIEWS SECTION -->
+<section class="home-reviews-section" id="reviews">
+  <div class="container">
+
+    <div class="home-reviews-header">
+      <div class="home-reviews-title">
+        <h2>Customer Reviews</h2>
+        <p>See what customers think about Sabil.</p>
+      </div>
+
+      <button type="button" class="home-add-review-btn" id="openReviewForm" aria-label="Add a review">
+        +
+      </button>
+    </div>
+
+    <div class="home-review-form-wrapper" id="reviewFormWrapper" aria-hidden="true">
+<form class="review-form" action="submit_review.php" method="POST">
+  <input type="hidden" name="product_id" value="<?= $productId ?>">        <div class="home-review-form-grid">
+
+          <div class="home-form-row">
+            <label for="reviewName">Name</label>
+            <input id="reviewName" type="text" placeholder="Enter your name">
+          </div>
+
+          <div class="home-form-row">
+            <label>Rating</label>
+            <div class="home-star-input" aria-label="Select a rating">
+              <input type="radio" id="homeStar5" name="homeRating" value="5" required>
+              <label for="homeStar5" title="5 stars">★</label>
+
+              <input type="radio" id="homeStar4" name="homeRating" value="4">
+              <label for="homeStar4" title="4 stars">★</label>
+
+              <input type="radio" id="homeStar3" name="homeRating" value="3">
+              <label for="homeStar3" title="3 stars">★</label>
+
+              <input type="radio" id="homeStar2" name="homeRating" value="2">
+              <label for="homeStar2" title="2 stars">★</label>
+
+              <input type="radio" id="homeStar1" name="homeRating" value="1">
+              <label for="homeStar1" title="1 star">★</label>
+            </div>
+          </div>
+
+          <div class="home-form-row home-form-row--full">
+            <label for="reviewText">Your Review</label>
+            <textarea id="reviewText" name="comment" rows="4" placeholder="Write your review..." required></textarea>
+          </div>
+
+        </div>
+
+        <div class="home-review-form-actions">
+          <button type="submit" class="hero-btn home-submit-review-btn">Submit Review</button>
+        </div>
+      </form>
+    </div>
+
+    <div class="home-reviews-grid">
+
+      <article class="home-review-card">
+        <h3 class="home-review-name">Sarah M.</h3>
+        <span class="home-review-date">04 Mar 2026</span>
+        <div class="home-review-stars">★★★★★</div>
+        <p class="home-review-text">
+          Beautiful fragrance and long lasting. The packaging also feels very premium.
+        </p>
+      </article>
+
+      <article class="home-review-card">
+        <h3 class="home-review-name">Layla A.</h3>
+        <span class="home-review-date">02 Mar 2026</span>
+        <div class="home-review-stars">★★★★☆</div>
+        <p class="home-review-text">
+          Very elegant scent and perfect for daily wear.
+        </p>
+      </article>
+
+      <article class="home-review-card">
+        <h3 class="home-review-name">Huda K.</h3>
+        <span class="home-review-date">28 Feb 2026</span>
+        <div class="home-review-stars">★★★★★</div>
+        <p class="home-review-text">
+          One of my favourite perfumes so far. Highly recommend!
+        </p>
+      </article>
+
+    </div>
+
+  </div>
+</section>
+
 <footer class="site-footer">
   <div class="footer-container">
 
-  <footer class="site-footer">
-  <div class="footer-container">
+  
 
     <!-- Newsletter -->
     <div class="footer-newsletter">
@@ -317,8 +426,8 @@ if (file_exists(__DIR__ . "/backend/config/db.php")) {
 
     <!-- Column 2 -->
     <div class="footer-links">
-      <a href="products.html">Order</a>
-      <a href="cart.html">Shopping Cart</a>
+      <a href="products.php">Order</a>
+      <a href="cart.php">Shopping Cart</a>
       <a href="favourites.php">Favourites</a>
     </div>
   </div>
@@ -328,16 +437,7 @@ if (file_exists(__DIR__ . "/backend/config/db.php")) {
   </div>
 </footer>
 
-<script>
-document.getElementById('searchForm').addEventListener('submit', function (e) {
-  e.preventDefault(); // stop the default reload
-  const query = document.getElementById('searchInput').value.trim();
-  if (query) {
-    // redirect to your search results page
-    window.location.href = `/search.html?q=${encodeURIComponent(query)}`;
-  }
-});
-</script>
+
 
 <script src="assets/js/products-data.js"></script>
 <script src="assets/js/wire-products-lite.js"></script>
@@ -364,11 +464,27 @@ document.addEventListener('DOMContentLoaded', ()=>{
     card.style.cursor = 'pointer';
     card.addEventListener('click', (e)=>{
       if (e.target.closest('a,button')) return; // let real buttons/links work
-      location.href = `productdetails.html?id=${id}`;
+      location.href = `productdetails.php?id=${id}`;
     });
   });
 });
 </script>
 
+<script>
+const homeOpenBtn = document.getElementById("openReviewForm");
+const homeFormWrap = document.getElementById("reviewFormWrapper");
+
+if (homeOpenBtn && homeFormWrap) {
+  homeOpenBtn.addEventListener("click", () => {
+    homeFormWrap.classList.toggle("active");
+    homeFormWrap.setAttribute(
+      "aria-hidden",
+      homeFormWrap.classList.contains("active") ? "false" : "true"
+    );
+  });
+}
+</script>
+
+<?php include __DIR__ . "/chatbot.php"; ?>
 </body>
 </html>
