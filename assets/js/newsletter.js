@@ -14,8 +14,11 @@ document.addEventListener("DOMContentLoaded", () => {
         const email = emailInput.value.trim();
 
         const valid = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email);
+        if (!valid) {
+    emailInput.focus();
+    return;
+        }
 
-        if (!valid) return;
 
         popup.classList.add("show");
 
