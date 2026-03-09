@@ -467,7 +467,7 @@ if ($isApi) {
   <div class="drawer__backdrop" data-close-drawer></div>
   <aside class="drawer__panel" role="dialog" aria-modal="true" aria-label="Site menu">
     <nav class="drawer__nav">
-      <a href="product.php">Shop all</a>
+      <a href="products.php">Shop all</a>
       <a href="cart.php">Cart</a>
       <a href="favourites.php">Favourites</a>
       <a href="contactus.php">Contact us</a>
@@ -517,7 +517,7 @@ if ($isApi) {
         Proceed to Checkout
       </button>
 
-      <a class="btn-secondary" href="product.php">Continue Shopping</a>
+      <a class="btn-secondary" href="products.php">Continue Shopping</a>
     </aside>
   </div>
 </div>

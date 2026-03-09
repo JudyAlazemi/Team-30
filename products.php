@@ -64,8 +64,8 @@
 
     <aside class="drawer__panel" role="dialog" aria-modal="true" aria-label="Site menu">
       <nav class="drawer__nav">
-        <!-- ✅ changed products.html -> product.php -->
-        <a href="product.php">Shop all</a>
+   
+        <a href="products.php">Shop all</a>
 
         <a href="cart.php">Cart</a>
         <a href="favourites.php">Favourites</a>
@@ -373,8 +373,8 @@
 
       <!-- Column 2 -->
       <div class="footer-links">
-        <!-- ✅ changed products.html -> product.php -->
-        <a href="product.php">Order</a>
+    
+        <a href="products.php">Order</a>
         <a href="cart.php">Shopping Cart</a>
         <a href="favourites.php">Favourites</a>
       </div>
