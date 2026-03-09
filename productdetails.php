@@ -138,7 +138,7 @@ if ($productId > 0) {
       </a>
 
       <!-- BAG -->
-      <a id="bagBtn" class="action" href="cart.html" role="button" aria-pressed="false">
+      <a id="bagBtn" class="action" href="cart.php" role="button" aria-pressed="false">
         <img
           id="bagIcon"
           class="icon"
@@ -158,8 +158,8 @@ if ($productId > 0) {
 
   <aside class="drawer__panel" role="dialog" aria-modal="true" aria-label="Site menu">
     <nav class="drawer__nav">
-      <a href="products.html">Shop all</a>
-      <a href="cart.html">Cart</a>
+      <a href="products.php">Shop all</a>
+      <a href="cart.php">Cart</a>
       <a href="favourites.php">Favourites</a>
       <a href="contactus.php">Contact us</a>
       <a href="faq.php">FAQ</a>
@@ -175,7 +175,7 @@ if ($productId > 0) {
         <main>
         <section class="product-details-section">
             <div class="container">
-                <a href="products.html" class="back-link">&larr; Back to Products</a>
+                <a href="products.php" class="back-link">&larr; Back to Products</a>
                 
                 <div class="product-details-grid">
                     <div class="product-images">
@@ -427,8 +427,8 @@ if ($productId > 0) {
 
     <!-- Column 2 -->
     <div class="footer-links">
-      <a href="products.html">Order</a>
-      <a href="cart.html">Shopping Cart</a>
+      <a href="products.php">Order</a>
+      <a href="cart.php">Shopping Cart</a>
       <a href="favourites.php">Favourites</a>
     </div>
   </div>
