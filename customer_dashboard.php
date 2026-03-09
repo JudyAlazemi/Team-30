@@ -152,39 +152,26 @@ if (empty($userEmail) && $userId > 0 && isset($conn) && !$conn->connect_error) {
 
     <!-- Right: actions -->
     <nav class="actions" aria-label="Account & tools">
+  
+      <a href="customer_dashboard.php" class="my-account-link">
+        <img class="icon" src="assets/images/user.png" alt="My Account">
+        <span>My Account</span>
+      </a>
 
-      <!-- USER (Sign in / My Account etc.) -->
-      <?php include __DIR__ . "/partials/navbar.php"; ?>
+      <a href="logout.php">Logout</a>
 
-      <!-- Search -->
-      <div class="search-group">
-        <a id="searchBtn" class="action" href="#">
-          <img class="icon" src="assets/images/search.png" alt="Search" />
-        </a>
-        <input
-          type="text"
-          id="navSearchInput"
-          class="nav-search-input"
-          placeholder="Search..."
-        />
-      </div>
+      <a id="searchBtn" class="action" href="#">
+        <img class="icon" src="assets/images/search.png" alt="Search">
+      </a>
 
-      <!-- Favourite -->
       <a id="favBtn" class="action" href="customer_favourites.php">
-        <img id="favIcon" class="icon" src="assets/images/favorite.png" alt="Favourite" />
+        <img class="icon" src="assets/images/favorite.png" alt="Favourites">
       </a>
 
-      <!-- Bag -->
-      <a id="bagBtn" class="action" href="cart.php" role="button" aria-pressed="false">
-        <img
-          id="bagIcon"
-          class="icon"
-          src="assets/images/shopping-bag.png"
-          alt="Shopping bag"
-          data-src-inactive="assets/images/shopping-bag.png"
-          data-src-active="assets/images/shopping-bag-filled.png"
-        />
+      <a id="bagBtn" class="action" href="basket.php">
+        <img class="icon" src="assets/images/shopping-bag.png" alt="Bag">
       </a>
+
     </nav>
   </div>
 </header>

@@ -417,7 +417,33 @@
    TOPBAR (Account pages) — keep box on mobile + center logo
    + hide "My Account" text so icons don’t clash
 ========================================================== */
+/* My Account + Logout style */
+.account-page .actions a{
+  text-decoration: none !important;
+  color: var(--secondary) !important;
+  font-size: 16px;
+  font-weight: 400;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
 
+/* hover */
+.account-page .actions a:hover{
+  opacity: 0.8;
+}
+
+/* user icon */
+.account-page .actions a img{
+  width: 26px;
+  height: 26px;
+  object-fit: contain;
+}
+
+/* spacing between My Account and Logout */
+.account-page .actions a + a{
+  margin-left: 10px;
+}
 .account-page .topbar{
   background: var(--background);
   border: 1.5px solid var(--secondary);
@@ -541,9 +567,8 @@
   background: var(--secondary);
   color: var(--background) !important;
 }
-/* ================================
-   Customer dashboard - favourites
-================================ */
+
+
 /* ================================
    Customer dashboard - favourites
 ================================ */
@@ -701,5 +726,257 @@
 @media (max-width: 700px){
   .profile-page .profile-form{
     max-width: 100%;
+  }
+}
+/* =========================================
+   MOBILE TOPBAR FIX
+========================================= */
+@media (max-width: 768px){
+
+  .account-page .topbar{
+    margin: 10px !important;
+  }
+
+  .account-page .topbar-inner{
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    min-height: 64px;
+    padding: 10px 12px !important;
+  }
+
+  /* left menu button */
+  .account-page .menu-toggle{
+    flex: 0 0 auto;
+    z-index: 3;
+  }
+
+  .account-page .menu-toggle .icon{
+    width: 24px;
+    height: 24px;
+  }
+
+  /* centered logo */
+  .account-page .brand{
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1;
+  }
+
+  .account-page .brand-logo{
+    height: 42px !important;
+    width: auto;
+    max-width: 110px;
+    object-fit: contain;
+  }
+
+  /* right side icons */
+  .account-page .actions{
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+    gap: 10px !important;
+    z-index: 3;
+  }
+
+  /* hide text links on mobile so nothing crashes */
+  .account-page .actions a span,
+  .account-page .actions .action-text,
+  .account-page .actions .label,
+  .account-page .actions .text{
+    display: none !important;
+  }
+
+  /* hide logout text link completely on mobile */
+  .account-page .actions a[href*="logout"]{
+    display: none !important;
+  }
+
+  /* if My Account is a normal text link, show only icon */
+  .account-page .actions a{
+    text-decoration: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    min-width: auto !important;
+  }
+
+  .account-page .actions .icon,
+  .account-page .actions a img{
+    width: 22px !important;
+    height: 22px !important;
+    object-fit: contain;
+    display: block;
+  }
+
+  /* search input must disappear */
+  .account-page .nav-search-input,
+  .account-page .search-group input{
+    display: none !important;
+  }
+
+  .account-page .search-group{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+}
+
+/* extra small phones */
+@media (max-width: 480px){
+
+  .account-page .topbar-inner{
+    min-height: 58px;
+    padding: 8px 10px !important;
+  }
+
+  .account-page .brand-logo{
+    height: 36px !important;
+    max-width: 90px;
+  }
+
+  .account-page .actions{
+    gap: 8px !important;
+  }
+
+  .account-page .actions .icon,
+  .account-page .actions a img{
+    width: 20px !important;
+    height: 20px !important;
+  }
+
+  .account-page .menu-toggle .icon{
+    width: 22px;
+    height: 22px;
+  }
+}
+.account-page .actions a{
+  text-decoration: none !important;
+  color: var(--secondary) !important;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  white-space: nowrap;
+}
+/* ===== FINAL HEADER FIX ===== */
+.account-page .topbar{
+  background: var(--background);
+  border: 1.5px solid var(--secondary);
+  margin: 16px;
+}
+
+.account-page .topbar-inner{
+  width: 100%;
+  min-height: 82px;
+  display: grid;
+  grid-template-columns: 56px 1fr auto;
+  align-items: center;
+  padding: 10px 28px;
+  box-sizing: border-box;
+  column-gap: 18px;
+}
+
+.account-page .menu-toggle{
+  display: inline-flex;
+  align-items: center;
+  justify-content: flex-start;
+  background: transparent;
+  border: 0;
+  padding: 0;
+  margin: 0;
+}
+
+.account-page .brand{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.account-page .brand-logo{
+  height: 64px;
+  width: auto;
+  display: block;
+}
+
+.account-page .actions{
+  display: flex !important;
+  align-items: center !important;
+  justify-content: flex-end;
+  gap: 18px !important;
+  margin-left: auto;
+}
+
+.account-page .actions a{
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+  text-decoration: none !important;
+  color: var(--secondary) !important;
+  font-size: 16px;
+  font-weight: 400;
+  white-space: nowrap;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+.account-page .actions a:hover{
+  opacity: .8;
+}
+
+.account-page .actions .icon,
+.account-page .actions a img{
+  width: 24px !important;
+  height: 24px !important;
+  object-fit: contain;
+  display: block;
+}
+
+.account-page .my-account-link{
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+}
+
+/* mobile */
+@media (max-width: 768px){
+  .account-page .topbar{
+    margin: 10px !important;
+  }
+
+  .account-page .topbar-inner{
+    min-height: 60px;
+    grid-template-columns: 40px 1fr auto;
+    padding: 10px 12px !important;
+    column-gap: 10px;
+  }
+
+  .account-page .brand{
+    justify-content: center;
+  }
+
+  .account-page .brand-logo{
+    height: 42px !important;
+  }
+
+  .account-page .actions{
+    gap: 10px !important;
+  }
+
+  .account-page .actions a span{
+    display: none !important;
+  }
+
+  .account-page .actions a[href*="logout"]{
+    display: none !important;
+  }
+
+  .account-page .actions .icon,
+  .account-page .actions a img{
+    width: 22px !important;
+    height: 22px !important;
   }
 }

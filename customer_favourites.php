@@ -26,7 +26,7 @@ try {
 
   <!-- SAME THEME AS DASHBOARD/ORDERS -->
   <link rel="stylesheet" href="assets/css/style.css">
-  <link rel="stylesheet" href="assets/css/customer_dashboard.css">
+  <link rel="stylesheet" href="assets/css/customer_dashboard.css?v=<?= time() ?>">
 
   <script defer src="assets/js/nav.js"></script>
   <link rel="icon" type="image/png" href="assets/images/logo.png">
@@ -34,41 +34,46 @@ try {
 
 <body class="account-page">
 
-<!-- SAME TOPBAR -->
 <header class="topbar">
   <div class="topbar-inner">
 
+    <!-- Left: Menu -->
     <button class="icon-btn menu-toggle" aria-label="Open menu" aria-expanded="false">
       <img class="icon icon--menu" src="assets/images/menu.png" alt="" />
       <img class="icon icon--close" src="assets/images/close.png" alt="" />
     </button>
 
+    <!-- Center: Logo -->
     <a class="brand" href="index.php">
       <img class="brand-logo" src="assets/images/logo.png" alt="Sabil" />
     </a>
 
+    <!-- Right: actions -->
     <nav class="actions" aria-label="Account & tools">
-      <?php include __DIR__ . "/partials/navbar.php"; ?>
+  
+      <a href="customer_dashboard.php" class="my-account-link">
+        <img class="icon" src="assets/images/user.png" alt="My Account">
+        <span>My Account</span>
+      </a>
 
-      <div class="search-group">
-        <a id="searchBtn" class="action" href="#">
-          <img class="icon" src="assets/images/search.png" alt="Search" />
-        </a>
-        <input type="text" id="navSearchInput" class="nav-search-input" placeholder="Search..." />
-      </div>
+      <a href="logout.php">Logout</a>
+
+      <a id="searchBtn" class="action" href="#">
+        <img class="icon" src="assets/images/search.png" alt="Search">
+      </a>
 
       <a id="favBtn" class="action" href="customer_favourites.php">
-        <img id="favIcon" class="icon" src="assets/images/favorite.png" alt="Favourite" />
+        <img class="icon" src="assets/images/favorite.png" alt="Favourites">
       </a>
 
-      <a id="bagBtn" class="action" href="cart.php">
-        <img id="bagIcon" class="icon" src="assets/images/shopping-bag.png" alt="Shopping bag" />
+      <a id="bagBtn" class="action" href="basket.php">
+        <img class="icon" src="assets/images/shopping-bag.png" alt="Bag">
       </a>
+
     </nav>
   </div>
 </header>
 
-<!-- SAME DRAWER -->
 <div id="menuDrawer" class="drawer" aria-hidden="true">
   <div class="drawer__backdrop" data-close-drawer></div>
   <aside class="drawer__panel" role="dialog" aria-modal="true" aria-label="Site menu">
@@ -138,8 +143,6 @@ try {
               <div class="dash-recent-title">Saved Items</div>
               <div class="dash-recent-sub">Product&nbsp;&nbsp;Price&nbsp;&nbsp;Action</div>
             </div>
-
-            <a class="dash-viewall" href="products.php">Shop all</a>
           </div>
 
           <?php if (empty($favs)): ?>
