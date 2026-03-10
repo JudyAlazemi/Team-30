@@ -165,7 +165,7 @@ if (file_exists(__DIR__ . "/backend/config/db.php")) {
 </article>
 
 <article class="product-card" data-id="3">
-  <a href="productdetails.php?ID=3" class="card-link">
+  <a href="productdetails.php?id=3" class="card-link">
     <img src="assets/images/velvetmusk.JPEG" alt="Velvet Rose">
     <h3 class="card-title">Velvet Rose</h3>
   </a>
@@ -197,21 +197,21 @@ if (file_exists(__DIR__ . "/backend/config/db.php")) {
   <!-- Track: grid on desktop, carousel on mobile -->
   <div class="collection-track" id="signatureTrack">
   <article class="product-card" data-id="7">
-  <a href="productdetails.php?ID=7" class="card-link">
+  <a href="productdetails.php?id=7" class="card-link">
     <img src="assets/images/candle.png" alt="Vanilla Dream">
     <h3 class="card-title">Vanilla Dream Candle</h3>
   </a>
 </article>
 
 <article class="product-card" data-id="8">
-  <a href="productdetails.php?ID=8" class="card-link">
+  <a href="productdetails.php?id=8" class="card-link">
     <img src="assets/images/candle.png" alt="Amber Woods">
     <h3 class="card-title">Amber Woods Candle</h3>
   </a>
 </article>
 
 <article class="product-card" data-id="9">
-  <a href="productdetails.php?ID=9" class="card-link">
+  <a href="productdetails.php?id=9" class="card-link">
     <img src="assets/images/candle.png" alt="Cherry Blossom">
     <h3 class="card-title">Cherry Blossom Candle</h3>
   </a>
