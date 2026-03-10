@@ -12,8 +12,11 @@
   const products = window.productsData || [];
   const product = products.find(p => p.id === pid);
 
-  if (!product) { location.replace('products.php'); return; }
-
+if (!product) {
+  console.log("Product not found:", pid);
+  console.log(window.productsData);
+  return;
+}
   // ----- fill UI -----
   const elName  = $('#productName');
   const elPrice = $('#productPrice');

@@ -42,7 +42,7 @@ document.addEventListener("DOMContentLoaded", () => {
       return;
     }
     list.innerHTML = items.map(p => `
-      <div class="product-card" data-category="${p.category}">
+      <div class="product-card" data-category="${p.category}" data-id="${p.id}">
         <div class="product-image">
           <img src="${p.image}" alt="${p.name}">
           <div class="product-overlay">

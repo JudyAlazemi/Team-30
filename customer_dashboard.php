@@ -330,12 +330,8 @@ if (empty($userEmail) && $userId > 0 && isset($conn) && !$conn->connect_error) {
 
 
 <script>
-// Force the styles to apply by removing any inline conflicts
 document.addEventListener('DOMContentLoaded', function() {
-  // Log to confirm CSS is loaded
   console.log('Dashboard CSS loaded');
-  
-  // Add status colors to badges
   const badges = document.querySelectorAll('.dash-badge');
   badges.forEach(badge => {
     const status = badge.textContent.trim().toLowerCase();
