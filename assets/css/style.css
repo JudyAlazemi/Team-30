@@ -8,23 +8,195 @@
     --white: #ffffff;
     --border: #d4c5ba;
     --topbar-h: 88px;
-    --accent: #4ade80;
+    --accent: #2a834a;
     --primary: #303c30;
+
+    --nav-bg: rgba(255, 255, 255, 0.72);
+    --card-bg: #ffffff;
+    --hero-overlay: rgba(0, 0, 0, 0.10);
+    --button-bg: #ffffff;
+    --button-text: #2c2420;
 
 
 }
 
 body.darkmode {
     transition: background-color 0.3s, color 0.3s;
-  --background: #121212;
-    --secondary: #e5d3c6;
-    --text-dark: #f5f5f5;
-    --text-light: #bbbbbb;
-    --white: #1e1e1e;
-    --border: #333333;
-    --primary: #f5f5f5;
-
+    --background: #120d0b;
+    --secondary: #d8c2b2;
+    --text-dark: #f3ebe5;
+    --text-light: #b8a79b;
+    --white: #1b1411;
+    --border: #3a2d27;
+    --primary: #f3ebe5;
+    --nav-bg: #140f0d;
+    --hero-overlay: rgba(20, 12, 10, 0.24);
+    --button-bg: #1a1310;
+    --button-text: #f3ebe5;
    
+}
+
+.brand {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.brand-logo {
+  display: block;
+  height: auto;
+  max-height: 58px;
+  width: auto;
+}
+
+.brand-logo--default {
+  display: block !important;
+}
+
+.brand-logo--light {
+  display: none !important;
+}
+
+body.darkmode .brand-logo--default {
+  display: none !important;
+}
+
+body.darkmode .brand-logo--light {
+  display: block !important;
+}
+
+body.darkmode .icon-btn,
+body.darkmode .actions .action,
+body.darkmode .actions .action-text,
+body.darkmode #theme-switch {
+    color: #f0e7df;
+}
+
+
+
+#theme-switch {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-dark);
+}
+
+#theme-switch svg {
+  display: none;
+}
+
+body:not(.darkmode) #theme-switch svg:first-child {
+  display: block;
+}
+
+body.darkmode #theme-switch svg:last-child {
+  display: block;
+}
+
+body {
+    background: var(--background);
+    color: var(--text-dark);
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.topbar {
+    background: var(--nav-bg);
+    border-bottom: 1px solid var(--border);
+}
+
+.topbar-inner {
+    border: 1px solid var(--border);
+    background: transparent;
+}
+
+.actions .action,
+.actions .action-text,
+.icon-btn {
+  color: var(--text-dark);
+}
+
+.drawer__panel {
+  background: var(--white);
+  color: var(--text-dark);
+}
+
+.drawer__nav a {
+  color: var(--text-dark);
+  border-bottom: 1px solid var(--border);
+}
+
+header,
+.navbar {
+    background: var(--nav-bg);
+    border: 1px solid var(--border);
+    color: var(--text-dark);
+    backdrop-filter: blur(10px);
+}
+
+a,
+button,
+.icon-btn {
+    color: var(--text-dark);
+}
+
+.hero,
+.hero-banner,
+.hero-section {
+    position: relative;
+}
+
+.hero::before,
+.hero-banner::before,
+.hero-section::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: var(--hero-overlay);
+    pointer-events: none;
+    z-index: 1;
+}
+body.darkmode .hero h1,
+body.darkmode .hero-banner h1,
+body.darkmode .hero-section h1 {
+    color: #f2e7de;
+}
+
+.hero {
+    position: relative;
+}
+
+.hero::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: var(--hero-overlay);
+    pointer-events: none;
+}
+
+.hero h1,
+.hero p {
+    position: relative;
+    z-index: 1;
+    color: var(--text-dark);
+}
+
+.hero .btn,
+.shop-btn {
+    position: relative;
+    z-index: 1;
+    background: var(--button-bg);
+    color: var(--button-text);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 12px 28px;
+    transition: all 0.3s ease;
+}
+
+.hero .btn:hover,
+.shop-btn:hover {
+    transform: translateY(-1px);
+    border-color: var(--secondary);
 }
 
 @font-face {

@@ -17,67 +17,8 @@
 </head>
 <body class="page-product">
 
-  <!-- HEADER -->
-  <header class="topbar">
-    <div class="topbar-inner">
-      <button class="icon-btn menu-toggle" aria-label="Open menu" aria-expanded="false">
-        <img class="icon icon--menu" src="assets/images/menu.png" alt="" />
-        <img class="icon icon--close" src="assets/images/close.png" alt="" />
-      </button>
+ <?php include __DIR__ . "/partials/navigation.php"; ?>
 
-      <a class="brand" href="index.php">
-        <img class="brand-logo" src="assets/images/logo.png" alt="Sabil" />
-      </a>
-
-      <nav class="actions" aria-label="Account & tools">
-
-        <!-- DYNAMIC ACCOUNT NAVIGATION - WILL BE POPULATED BY JAVASCRIPT -->
-        <div id="accountNavSlot" class="account-nav-container"></div>
-
-        <div class="search-group">
-          <a id="searchBtn" class="action" href="#">
-            <img class="icon" src="assets/images/search.png" alt="Search" />
-          </a>
-          <input type="text" id="navSearchInput" class="nav-search-input" placeholder="Search..." />
-        </div>
-
-        <a id="favBtn" class="action" href="favourites.php" role="button" aria-pressed="false">
-          <img id="favIcon" class="icon" src="assets/images/favorite.png" alt="Favourite"
-               data-src-inactive="assets/images/favorite.png"
-               data-src-active="assets/images/favorite-shaded.png" />
-        </a>
-
-        <!-- keep your cart link as-is (change to cart.php only if YOU converted it) -->
-        <a id="bagBtn" class="action" href="cart.php" role="button" aria-pressed="false">
-          <img id="bagIcon" class="icon" src="assets/images/shopping-bag.png" alt="Shopping bag"
-               data-src-inactive="assets/images/shopping-bag.png"
-               data-src-active="assets/images/shopping-bag-filled.png" />
-        </a>
-
-      </nav>
-    </div>
-  </header>
-
-  <!-- MENU DRAWER (left-side) -->
-  <div id="menuDrawer" class="drawer" aria-hidden="true">
-    <div class="drawer__backdrop" data-close-drawer></div>
-
-    <aside class="drawer__panel" role="dialog" aria-modal="true" aria-label="Site menu">
-      <nav class="drawer__nav">
-   
-        <a href="products.php">Shop all</a>
-
-        <a href="cart.php">Cart</a>
-        <a href="favourites.php">Favourites</a>
-        <a href="contactus.php">Contact us</a>
-        <a href="faq.php">FAQ</a>
-        <a href="aboutus.php">About us</a>
-        <a href="terms.php">Terms</a>
-        <a href="privacypolicy.php">Privacy Policy</a>
-      </nav>
-    </aside>
-  </div>
-  
   <!--fonts -->
   <link rel="preload" href="fonts/MeshedDisplay-Regular.ttf" as="font" type="font/ttf" crossorigin>
   <link rel="preload" href="fonts/MeshedDisplay-Bold.ttf" as="font" type="font/ttf" crossorigin>

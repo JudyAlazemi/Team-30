@@ -2,6 +2,7 @@
 if (session_status() === PHP_SESSION_NONE) session_start();
 ?>
 
+
 <nav>
     <a href="index.php">Home</a>
     <a href="products.php">Products</a>
