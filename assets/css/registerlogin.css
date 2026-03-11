@@ -229,3 +229,36 @@ input {
     font-size: 16px;
 }
 
+/* Customer login bottom links */
+.signin,
+.admin-login-option{
+    text-align: center;
+    width: 100%;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.signin{
+    margin-top: 14px;
+    font-size: 15px;
+    color: #555;
+}
+
+.admin-login-option{
+    margin-top: 10px;
+    font-size: 15px;
+    color: #555;
+}
+
+.admin-login-option a,
+.signin a{
+    color: #7b5e57;
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.admin-login-option a:hover,
+.signin a:hover{
+    text-decoration: underline;
+}
