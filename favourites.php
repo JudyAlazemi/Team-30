@@ -5,25 +5,24 @@ require_once __DIR__ . "/backend/config/db.php";
 if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["action"])) {
     header("Content-Type: application/json");
 
-    $action     = $_POST["action"];
-    $userId     = $_SESSION["user_id"] ?? null;
-    $sessionId  = session_id();
+    $action = $_POST["action"];
+    $userId = $_SESSION["user_id"] ?? null;
 
-    // Determine WHERE clause
-    if ($userId) {
-        $where  = "user_id = ?";
-        $types  = "i";
-        $params = [$userId];
-    } else {
-        $where  = "session_id = ?";
-        $types  = "s";
-        $params = [$sessionId];
+    // Block guests from using favourites
+    if (!$userId) {
+        echo json_encode([
+            "status" => "error",
+            "requireLogin" => true,
+            "message" => "You need to login to choose a favourite.",
+            "loginUrl" => "login.html"
+        ]);
+        exit;
     }
 
-    // 1️⃣ LIST favourites
+    // 1️⃣ LIST favourites for logged-in user only
     if ($action === "list") {
-        $stmt = $conn->prepare("SELECT product_id FROM favourites WHERE $where");
-        $stmt->bind_param($types, ...$params);
+        $stmt = $conn->prepare("SELECT product_id FROM favourites WHERE user_id = ?");
+        $stmt->bind_param("i", $userId);
         $stmt->execute();
         $res = $stmt->get_result();
 
@@ -39,21 +38,25 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["action"])) {
         exit;
     }
 
-    // 2️⃣ TOGGLE favourite
+    // 2️⃣ TOGGLE favourite for logged-in user only
     if ($action === "toggle") {
         $productId = (int)($_POST["product_id"] ?? 0);
+
         if ($productId <= 0) {
-            echo json_encode(["status" => "error", "message" => "Invalid product"]);
+            echo json_encode([
+                "status" => "error",
+                "message" => "Invalid product"
+            ]);
             exit;
         }
 
-        // Check if exists
-        $stmt = $conn->prepare("SELECT id FROM favourites WHERE product_id = ? AND $where LIMIT 1");
-        $stmt->bind_param("i" . $types, $productId, ...$params);
+        // Check if already exists
+        $stmt = $conn->prepare("SELECT id FROM favourites WHERE user_id = ? AND product_id = ? LIMIT 1");
+        $stmt->bind_param("ii", $userId, $productId);
         $stmt->execute();
         $stmt->store_result();
 
-        // Remove
+        // Remove favourite
         if ($stmt->num_rows > 0) {
             $stmt->bind_result($favId);
             $stmt->fetch();
@@ -63,30 +66,33 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["action"])) {
             $del->bind_param("i", $favId);
             $del->execute();
 
-            echo json_encode(["status" => "success", "favourited" => false]);
+            echo json_encode([
+                "status" => "success",
+                "favourited" => false
+            ]);
             exit;
         }
 
-        // Add
         $stmt->close();
 
-        if ($userId) {
-            $ins = $conn->prepare("INSERT INTO favourites (user_id, product_id) VALUES (?, ?)");
-            $ins->bind_param("ii", $userId, $productId);
-        } else {
-            $ins = $conn->prepare("INSERT INTO favourites (session_id, product_id) VALUES (?, ?)");
-            $ins->bind_param("si", $sessionId, $productId);
-        }
+        // Add favourite
+        $ins = $conn->prepare("INSERT INTO favourites (user_id, product_id) VALUES (?, ?)");
+        $ins->bind_param("ii", $userId, $productId);
         $ins->execute();
 
-        echo json_encode(["status" => "success", "favourited" => true]);
+        echo json_encode([
+            "status" => "success",
+            "favourited" => true
+        ]);
         exit;
     }
 
-    echo json_encode(["status" => "error", "message" => "Unknown action"]);
+    echo json_encode([
+        "status" => "error",
+        "message" => "Unknown action"
+    ]);
     exit;
 }
-
 ?>
 <!doctype html>
 <html lang="en">
@@ -104,8 +110,87 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["action"])) {
 </head>
 <body class="page-favourites">
 
-<?php include __DIR__ . "/partials/navigation.php"; ?>
+  <!-- TOP BAR -->
 
+<header class="topbar">
+  <div class="topbar-inner">
+
+    <!-- Left: Menu button -->
+    <button class="icon-btn menu-toggle" aria-label="Open menu" aria-expanded="false">
+      <img class="icon icon--menu" src="assets/images/menu.png" alt="" />
+      <img class="icon icon--close" src="assets/images/close.png" alt="" />
+    </button>
+
+    <!-- Center: Logo -->
+    <a class="brand" href="index.php">
+      <img class="brand-logo" src="assets/images/logo.png" alt="Sabil" />
+    </a>
+
+    <!-- Right: actions -->
+    <nav class="actions" aria-label="Account & tools">
+
+      <!-- USER -->
+      <?php include __DIR__ . "/partials/navbar.php"; ?>
+
+
+      <!-- SEARCH GROUP (one flex item) -->
+      <div class="search-group">
+        <a id="searchBtn" class="action" href="#">
+          <img class="icon" src="assets/images/search.png" alt="Search" />
+        </a>
+        <input
+          type="text"
+          id="navSearchInput"
+          class="nav-search-input"
+          placeholder="Search..."
+        />
+      </div>
+
+      <!-- FAVOURITE -->
+      <a id="favBtn" class="action" href="favourites.php" role="button" aria-pressed="false">
+        <img
+          id="favIcon"
+          class="icon"
+          src="assets/images/favorite.png"
+          alt="Favourite"
+          data-src-inactive="assets/images/favorite.png"
+          data-src-active="assets/images/favorite-shaded.png"
+        />
+      </a>
+
+      <!-- BAG -->
+      <a id="bagBtn" class="action" href="cart.html" role="button" aria-pressed="false">
+        <img
+          id="bagIcon"
+          class="icon"
+          src="assets/images/shopping-bag.png"
+          alt="Shopping bag"
+          data-src-inactive="assets/images/shopping-bag.png"
+          data-src-active="assets/images/shopping-bag-filled.png"
+        />
+      </a>
+    </nav>
+  </div>
+</header>
+
+<!-- MENU DRAWER (left-side) -->
+<div id="menuDrawer" class="drawer" aria-hidden="true">
+  <div class="drawer__backdrop" data-close-drawer></div>
+
+  <aside class="drawer__panel" role="dialog" aria-modal="true" aria-label="Site menu">
+    <nav class="drawer__nav">
+      <a href="products.html">Shop all</a>
+      <a href="cart.html">Cart</a>
+      <a href="favourites.php">Favourites</a>
+      <a href="contactus.php">Contact us</a>
+      <a href="faq.php">FAQ</a>
+      <a href="aboutus.php">About us</a>
+      <a href="terms.php">Terms</a>
+      <a href="privacypolicy.php">Privacy Policy</a>
+  
+    </nav>
+  </aside>
+</div>
 
 
 

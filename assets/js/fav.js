@@ -30,7 +30,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (!emptyState) return;
     emptyState.style.display = 'block';
     emptyState.innerHTML = `
-      <p><strong>Please sign in</strong> to add products to favourites.</p>
+      <p><strong>You need to login</strong> to choose a favourite.</p>
       <p><a href="login.html" class="hero-btn">Sign in</a></p>
     `;
     if (grid) grid.innerHTML = '';
@@ -118,7 +118,7 @@ document.addEventListener('DOMContentLoaded', () => {
       const res = await postFav({ action: "toggle", product_id: productId });
 
       if (res.requireLogin) {
-        alert("Please login to use favourites.");
+        alert("You need to login to choose a favourite.");
         window.location.href = res.loginUrl || 'login.html';
         return;
       }
