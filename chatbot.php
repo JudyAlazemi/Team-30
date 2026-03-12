@@ -1,5 +1,6 @@
 <!-- Chat Widget -->
 <link rel="stylesheet" href="assets/css/chatbot.css" />
+
 <script defer src="assets/js/chatbot.js"></script>
 
 <button class="chat-fab" id="chatFab" aria-label="Open chat">
@@ -25,11 +26,9 @@
   </header>
 
   <div class="chat-body" id="chatBody">
-    <!-- Messages get injected here -->
   </div>
 
   <div class="chat-quick" id="chatQuick">
-    <!-- Quick question chips get injected here -->
   </div>
 
   

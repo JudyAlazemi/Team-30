@@ -139,7 +139,6 @@ if (empty($userEmail) && $userId > 0 && isset($conn) && !$conn->connect_error) {
 <?php include __DIR__ . "/partials/navigation.php"; ?>
 
 
-<!-- ✅ DASHBOARD (EXACT INSPO LAYOUT) -->
 <div class="dash-page">
 
   <div class="dash-frame">
@@ -196,7 +195,7 @@ if (empty($userEmail) && $userId > 0 && isset($conn) && !$conn->connect_error) {
       <main class="dash-right">
 
        <!-- <h1 class="dash-title">Hi <?= htmlspecialchars($userName) ?>,</h1> -->
-        
+
         <div class="dash-rule"></div>
 
         <!-- Stats row (3 small bars) -->

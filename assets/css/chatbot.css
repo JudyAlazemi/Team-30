@@ -7,6 +7,7 @@
     --chat-accent: #c8a06a; /* warm beige/gold */
   }
 
+
   .chat-fab{
     position: fixed;
     right: 18px;
@@ -167,3 +168,4 @@
     }
     .chat-fab{ right: 12px; bottom: 12px; }
   }
+
