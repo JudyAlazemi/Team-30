@@ -32,7 +32,8 @@ if ($newPassword !== $confirmPassword) {
 if (
     strlen($newPassword) < 8 ||
     !preg_match('/[A-Za-z]/', $newPassword) ||
-    !preg_match('/[0-9]/', $newPassword)
+    !preg_match('/[0-9]/', $newPassword) ||
+    !preg_match('/[^a-zA-Z0-9]/', $newPassword)
 ) {
     header("Location: ../../reset_password.php?error=weak");
     exit;

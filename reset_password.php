@@ -48,8 +48,33 @@ $error = $_GET["error"] ?? "";
     <label for="security_answer">Security Answer</label><br>
     <input type="text" id="security_answer" name="security_answer" required><br><br>
 
-    <label for="new_password">New Password</label><br>
-    <input type="password" id="new_password" name="new_password" required><br><br>
+    <form method="post" action="backend/controllers/process_reset_password.php">
+  <p>
+    <strong>Security Question:</strong>
+    <?= htmlspecialchars($_SESSION["reset_question"]) ?>
+  </p>
+
+  <label for="security_answer">Security Answer</label><br>
+  <input type="text" id="security_answer" name="security_answer" required><br><br>
+
+  <label for="new_password">New Password</label><br>
+  <input
+    type="password"
+    id="new_password"
+    name="new_password"
+    required
+    pattern="(?=.*[A-Za-z])(?=.*\d)(?=.*[^a-zA-Z0-9]).{8,}"
+    title="Minimum 8 characters, 1 number, and 1 special character"
+  ><br>
+
+  <small style="display:block; margin-top:6px; color:#666;">
+    Password must contain:
+    <ul style="margin:6px 0 0 18px; padding:0;">
+      <li>Minimum 8 characters</li>
+      <li>1 number</li>
+      <li>1 special character</li>
+    </ul>
+  </small><br>
 
     <label for="confirm_password">Confirm New Password</label><br>
     <input type="password" id="confirm_password" name="confirm_password" required><br><br>
