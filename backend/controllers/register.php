@@ -1,5 +1,7 @@
 <?php
+require_once __DIR__ . "/../config/session.php";
 require_once __DIR__ . "/../config/db.php";
+
 
 $name = trim($_POST["name"] ?? "");
 $email = trim($_POST["email"] ?? "");
@@ -17,12 +19,14 @@ if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
     exit;
 }
 
+
 if (
     strlen($password) < 8 ||
     !preg_match('/[A-Za-z]/', $password) ||
-    !preg_match('/[0-9]/', $password)
+    !preg_match('/[0-9]/', $password) ||
+    !preg_match('/[^a-zA-Z0-9]/', $password)
 ) {
-    echo "Password must be at least 8 characters and include at least one letter and one number.";
+    echo "Password must be at least 8 characters and include at least one number and one special character.";
     exit;
 }
 

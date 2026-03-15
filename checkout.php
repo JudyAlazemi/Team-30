@@ -3,7 +3,7 @@
 // GET  -> render checkout page (same as checkout.html)
 // POST -> handle order placement (JSON API) and return JSON
 
-if (session_status() === PHP_SESSION_NONE) session_start();
+if (session_status() === PHP_SESSION_NONE) require_once __DIR__ . "/backend/config/session.php";
 
 /**
  * --------- ORDER API (POST JSON) ----------
@@ -11,7 +11,7 @@ if (session_status() === PHP_SESSION_NONE) session_start();
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   header('Content-Type: application/json');
 
-  // ✅ DB include (tries common locations)
+  //  DB include (tries common locations)
   $dbCandidates = [
     __DIR__ . "/backend/config/db.php",
     __DIR__ . "/config/db.php",
@@ -27,7 +27,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     exit;
   }
 
-  // ✅ must be logged in
+  //  must be logged in
   if (empty($_SESSION['user_id'])) {
     http_response_code(401);
     echo json_encode(["ok" => false, "error" => "Please login first"]);

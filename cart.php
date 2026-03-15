@@ -1,6 +1,6 @@
 <?php
 // cart.php  ✅ one file = (1) JSON API when ?action=...  (2) HTML page otherwise
-session_start();
+require_once __DIR__ . "/backend/config/session.php";
 
 $isApi = isset($_GET['action']) || isset($_POST['action']);
 

@@ -1,6 +1,6 @@
 <?php
 header("Content-Type: application/json");
-session_start();
+require_once __DIR__ . "/backend/config/session.php";
 
 // support different session keys (because different pages may set different names)
 $userId =

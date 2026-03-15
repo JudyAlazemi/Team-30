@@ -262,3 +262,19 @@ input {
 .signin a:hover{
     text-decoration: underline;
 }
+
+.password-rules {
+    margin-top: 8px;
+    font-size: 13px;
+    color: #666;
+    line-height: 1.5;
+}
+
+.password-rules ul {
+    margin: 6px 0 0 18px;
+    padding: 0;
+}
+
+.password-rules li {
+    margin-bottom: 2px;
+}
