@@ -1646,6 +1646,8 @@ body.drawer-open{ overflow: hidden; }
   font-size: 1rem;
 }
 
+
+
 @media (max-width: 992px) {
   .home-reviews-grid {
     grid-template-columns: repeat(2, 1fr);

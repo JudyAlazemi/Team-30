@@ -321,7 +321,7 @@ if ($productId > 0) {
               id="reviewName"
               type="text"
               value="<?= htmlspecialchars($_SESSION['user_name'] ?? '') ?>"
-              readonly
+              placeholder="Enter your name"
             >
           </div>
 
