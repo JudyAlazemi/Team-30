@@ -71,8 +71,8 @@ $error = $_GET["error"] ?? "";
     Password must contain:
     <ul style="margin:6px 0 0 18px; padding:0;">
       <li>Minimum 8 characters</li>
-      <li>1 number</li>
-      <li>1 special character</li>
+      <li>At least one number</li>
+      <li>At least one special character</li>
     </ul>
   </small><br>
 
