@@ -153,6 +153,7 @@ if ($isApi) {
 <!DOCTYPE html>
 <html lang="en">
 <link rel="stylesheet" href="assets/css/style.css">
+<link rel="stylesheet" href="assets/css/darkmode.css">
 <script defer src="assets/js/nav.js"></script>
 <head>
     <meta charset="UTF-8">

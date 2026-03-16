@@ -77,6 +77,7 @@ if ($productId > 0) {
     <script defer src="assets/js/newsletter.js"></script>
     <link rel="stylesheet" href="assets/css/globals.css">
     <link rel="stylesheet" href="assets/css/product.css">
+    <link rel="stylesheet" href="assets/css/darkmode.css">
 </head>
 
 <body class="page-product-details" data-logged-in="<?= isset($_SESSION['user_id']) ? 'true' : 'false' ?>">

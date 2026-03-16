@@ -127,6 +127,7 @@ if (empty($userEmail) && $userId > 0 && isset($conn) && !$conn->connect_error) {
  
   <link rel="stylesheet" href="assets/css/style.css">
   <link rel="stylesheet" href="assets/css/customer_dashboard.css?v=<?= time() ?>">
+  <link rel="stylesheet" href="assets/css/darkmode.css">
 
 
   <script defer src="assets/js/nav.js"></script>

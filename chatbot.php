@@ -1,5 +1,6 @@
 <!-- Chat Widget -->
 <link rel="stylesheet" href="assets/css/chatbot.css" />
+<link rel="stylesheet" href="assets/css/darkmode.css">
 
 <script defer src="assets/js/chatbot.js"></script>
 

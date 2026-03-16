@@ -150,6 +150,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   <title>Checkout - Sabil</title>
 
   <link rel="stylesheet" href="assets/css/style.css" />
+  <link rel="stylesheet" href="assets/css/darkmode.css">
   <script defer src="assets/js/nav.js"></script>
 
   <style>

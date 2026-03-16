@@ -27,6 +27,7 @@ try {
   <!-- SAME THEME AS DASHBOARD/ORDERS -->
   <link rel="stylesheet" href="assets/css/style.css">
   <link rel="stylesheet" href="assets/css/customer_dashboard.css?v=<?= time() ?>">
+  <link rel="stylesheet" href="assets/css/darkmode.css">
 
   <script defer src="assets/js/nav.js"></script>
   <link rel="icon" type="image/png" href="assets/images/logo.png">

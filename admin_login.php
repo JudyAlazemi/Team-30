@@ -60,6 +60,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     <link rel="stylesheet" href="assets/css/registerlogin.css?v=3">
     <script src="assets/js/auth.js" defer></script>
     <link rel="stylesheet" href="assets/css/style.css" />
+    <link rel="stylesheet" href="assets/css/darkmode.css">
 
     <script defer src="assets/js/nav.js"></script>
     <script defer src="assets/js/home.js"></script>

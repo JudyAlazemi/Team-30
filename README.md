@@ -224,7 +224,7 @@ Team 30 – CS2TP
 - Iman – Page development and UI components
 
 **UI Design**
-- Novejot – Figma wireframes and interface planning
+- Judy – Figma wireframes and interface planning
 
 **Testing & Documentation**
 - Prabhjot – Testing and documentation support

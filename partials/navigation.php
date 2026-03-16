@@ -1,6 +1,7 @@
 <link rel="stylesheet" href="assets/css/style.css" />
 
     <script defer src="assets/js/nav.js"></script>
+    <link rel="stylesheet" href="assets/css/darkmode.css">
 
     <link rel="icon" type="image/png" href="assets/images/logo.png">
 
