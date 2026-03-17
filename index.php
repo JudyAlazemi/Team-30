@@ -11,7 +11,6 @@ $siteReviews = [];
 $siteStmt = $conn->prepare("
     SELECT sr.rating, sr.comment, sr.created_at, sr.display_name
     FROM site_reviews sr
-    JOIN users u ON sr.user_id = u.id
     ORDER BY sr.created_at DESC
     LIMIT 6
 ");
