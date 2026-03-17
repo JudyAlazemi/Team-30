@@ -1,3 +1,4 @@
+
 <?php
 
 require_once __DIR__ . "/backend/config/session.php";
@@ -11,7 +12,22 @@ $siteReviews = [];
 $siteStmt = $conn->prepare("
     SELECT sr.rating, sr.comment, sr.created_at, sr.display_name
     FROM site_reviews sr
-    JOIN users u ON sr.user_id = u.id
+    ORDER BY sr.created_at DESC
+    LIMIT 6
+");
+
+if ($siteStmt) {
+    $siteStmt->execute();
+    $siteResult = $siteStmt->get_result();
+
+    while ($row = $siteResult->fetch_assoc()) {
+        $siteReviews[] = $row;
+    }
+}
+
+$siteStmt = $conn->prepare("
+    SELECT sr.rating, sr.comment, sr.created_at, sr.display_name
+    FROM site_reviews sr
     ORDER BY sr.created_at DESC
     LIMIT 6
 ");
