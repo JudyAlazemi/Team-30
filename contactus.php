@@ -11,7 +11,6 @@ if (file_exists(__DIR__ . '/db.php')) {
   <title>Contact | Sabil</title>
   <link rel="stylesheet" href="assets/css/style.css" />
   <link rel="stylesheet" href="assets/css/static.css" />
-  <link rel="stylesheet" href="assets/css/darkmode.css">
     <script defer src="assets/js/nav.js"></script>
     <script defer src="assets/js/home.js"></script>
     <script defer src="assets/js/newsletter.js"></script>
@@ -22,6 +21,7 @@ if (file_exists(__DIR__ . '/db.php')) {
 <body class="page-static">
 
 <?php include __DIR__ . "/partials/navigation.php"; ?>
+
 
   <!-- Page title band -->
   <header class="static-hero">
@@ -68,8 +68,54 @@ if (file_exists(__DIR__ . '/db.php')) {
       </address>
 
       <p><strong>Hours</strong><br> Mon-Thu:   10:00–16:00 &nbsp;&nbsp; <br> Fri–Sat:   10:00–14:00</p>
-  
 
+      <!-- CONTACT FORM -->
+<section class="contact-form-section">
+
+  <div class="contact-form-header">
+    <h2>Contact us</h2>
+    <p>Got any questions or suggestions?<br>Fill out this form to reach out</p>
+  </div>
+
+  <form class="contact-form">
+
+    <div class="contact-row">
+      <input 
+        type="text"
+        name="name"
+        placeholder="Enter your name"
+        required
+      >
+
+      <input 
+        type="email"
+        name="email"
+        placeholder="Enter your email"
+        required
+      >
+    </div>
+
+    <textarea
+      name="message"
+      placeholder="Enter your message"
+      rows="6"
+      required
+    ></textarea>
+
+    <button type="submit" class="contact-send-btn">
+      Send
+    </button>
+
+    <p class="contact-note">
+      You can email us directly at
+      <a href="mailto:info@sabilfragrance.com">info@sabilfragrance.com</a>
+    </p>
+
+  </form>
+
+</section>  
+    </section>
+    <!-- Right: optional large image (hides on small screens) -->
     <aside class="static-media">
       <img src="assets/images/flower.png" alt="Sabil studio" />
     </aside>
