@@ -8,26 +8,45 @@ const LS = {
 };
 const CART_KEY = 'cart'; // [{id, qty}]
 
-function getCart(){ return LS.get(CART_KEY, []); }
+function getCart() {
+  const raw = LS.get(CART_KEY, []);
+  return raw.map(item => ({
+    id: Number(item.id),
+    qty: Number(item.qty ?? item.quantity ?? 1)
+  }));
+}
 function setCart(c){ LS.set(CART_KEY, c); }
 
 // ---- merge cart with products ----
-function mergeCart(){
+function mergeCart() {
   const cart = getCart();
-  const products = (window.productsData || []);
-  return cart.map(ci=>{
-    const p = products.find(x=>x.id === ci.id);
-    return p ? { ...p, qty: ci.qty } : null;
+  const products = window.productsData || [];
+
+  return cart.map(ci => {
+    const p = products.find(x => Number(x.id) === Number(ci.id));
+    return p
+      ? {
+          ...p,
+          price: Number(p.price) || 0,
+          qty: Number(ci.qty) || 1
+        }
+      : null;
   }).filter(Boolean);
 }
 
 // ---- money helpers ----
 const fmt = (n)=> `£${(Math.round(n*100)/100).toFixed(2)}`;
-function totals(items){
-  const subtotal = items.reduce((s,i)=> s + i.price * i.qty, 0);
-  const shipping = subtotal >= 150 ? 0 : (items.length ? 10 : 0); // your rule
+function totals(items) {
+  const subtotal = items.reduce((sum, item) => {
+    const price = Number(item.price) || 0;
+    const qty = Number(item.qty) || 1;
+    return sum + (price * qty);
+  }, 0);
+
+  const shipping = subtotal >= 150 ? 0 : (items.length ? 10 : 0);
   const tax = subtotal * 0.08;
   const total = subtotal + shipping + tax;
+
   return { subtotal, shipping, tax, total };
 }
 
@@ -58,7 +77,10 @@ function removeItem(id){
 function render(){
   const items = mergeCart();
 
-  if (elCount) elCount.textContent = `${items.length} item${items.length!==1?'s':''} in your cart`;
+  if (elCount) {
+  const totalQty = items.reduce((sum, item) => sum + item.qty, 0);
+  elCount.textContent = totalQty;
+}
 
   if (!items.length){
     if (elList){
