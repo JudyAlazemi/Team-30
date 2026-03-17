@@ -1,0 +1,589 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sabil - Our Collection</title>
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="icon" type="image/png" href="assets/images/logo.png">
+    <script defer src="assets/js/nav.js"></script>
+    <script defer src="assets/js/home.js"></script>
+    <script defer src="assets/js/newsletter.js"></script>
+    <link rel="stylesheet" href="assets/css/globals.css">
+    <link rel="stylesheet" href="assets/css/product.css">
+</head>
+<body class="page-product">
+
+  <header class="topbar">
+  <div class="topbar-inner">
+
+    <!-- Left: Menu button -->
+    <button class="icon-btn menu-toggle" aria-label="Open menu" aria-expanded="false">
+      <img class="icon icon--menu" src="assets/images/menu.png" alt="" />
+      <img class="icon icon--close" src="assets/images/close.png" alt="" />
+    </button>
+
+    <!-- Center: Logo -->
+    <a class="brand" href="index.php">
+      <img class="brand-logo" src="assets/images/logo.png" alt="Sabil" />
+    </a>
+
+    <!-- Right: actions -->
+    <nav class="actions" aria-label="Account & tools">
+
+      <!-- USER -->
+      <a id="userBtn" class="action" href="login.html" role="button" aria-pressed="false">
+        <img
+          id="userIcon"
+          class="icon"
+          src="assets/images/sign-in.png"
+          alt="User"
+          data-src-inactive="assets/images/sign-in.png"
+          data-src-active="assets/images/user-shaded.png"
+        />
+        <span id="userText" class="action-text">Sign in</span>
+      </a>
+
+      <!-- SEARCH GROUP (one flex item) -->
+      <div class="search-group">
+        <a id="searchBtn" class="action" href="#">
+          <img class="icon" src="assets/images/search.png" alt="Search" />
+        </a>
+        <input
+          type="text"
+          id="navSearchInput"
+          class="nav-search-input"
+          placeholder="Search..."
+        />
+      </div>
+
+      <!-- FAVOURITE -->
+      <a id="favBtn" class="action" href="favourites.php" role="button" aria-pressed="false">
+        <img
+          id="favIcon"
+          class="icon"
+          src="assets/images/favorite.png"
+          alt="Favourite"
+          data-src-inactive="assets/images/favorite.png"
+          data-src-active="assets/images/favorite-shaded.png"
+        />
+      </a>
+
+      <!-- BAG -->
+      <a id="bagBtn" class="action" href="cart.html" role="button" aria-pressed="false">
+        <img
+          id="bagIcon"
+          class="icon"
+          src="assets/images/shopping-bag.png"
+          alt="Shopping bag"
+          data-src-inactive="assets/images/shopping-bag.png"
+          data-src-active="assets/images/shopping-bag-filled.png"
+        />
+      </a>
+    </nav>
+  </div>
+</header>
+
+<!-- MENU DRAWER (left-side) -->
+<div id="menuDrawer" class="drawer" aria-hidden="true">
+  <div class="drawer__backdrop" data-close-drawer></div>
+
+  <aside class="drawer__panel" role="dialog" aria-modal="true" aria-label="Site menu">
+    <nav class="drawer__nav">
+      <a href="products.html">Shop all</a>
+      <a href="cart.html">Cart</a>
+      <a href="favourites.php">Favourites</a>
+      <a href="contactus.php">Contact us</a>
+      <a href="faq.php">FAQ</a>
+      <a href="aboutus.php">About us</a>
+      <a href="terms.php">Terms</a>
+      <a href="privacypolicy.php">Privacy Policy</a>
+  
+    </nav>
+  </aside>
+</div>
+    <!--fonts -->
+    <link rel="preload" href="fonts/MeshedDisplay-Regular.ttf" as="font" type="font/ttf" crossorigin>
+    <link rel="preload" href="fonts/MeshedDisplay-Bold.ttf" as="font" type="font/ttf" crossorigin>
+
+    <main>
+        <section class="products-hero">
+            <div class="hero-content">
+                <h1>Our Collection</h1>
+                <p>Discover the essence of luxury</p>
+            </div>
+        </section>
+
+<section class="filter-search-section">
+  <div class="container">
+    <div class="filter-search-bar">
+      <input type="text" id="productSearch" placeholder="Search by product name..." />
+
+      <select id="categoryFilter">
+        <option value="all">All Categories</option>
+        <option value="perfume">Perfumes</option>
+        <option value="car-perfume">Car Perfumes</option>
+        <option value="candle">Candles</option>
+        <option value="home-spray">Home Sprays</option>
+        <option value="body-wash">Body Wash</option>
+      </select>
+
+      <select id="priceFilter">
+        <option value="all">All Prices</option>
+        <option value="0-10">£0 - £10</option>
+        <option value="10-20">£10 - £20</option>
+        <option value="20-50">£20 - £50</option>
+        <option value="50+">£50+</option>
+      </select>
+    </div>
+  </div>
+</section> //hehe
+
+<section class="products-section">
+  <div class="container">
+    <div id="products-list" class="products-grid">
+      <!-- PERFUMES (5 products) -->
+      <div class="product-card" data-category="perfume" data-id="1">
+        <div class="product-image">
+          <img src="assets/images/oceanmist.png" alt="Ocean Breeze">
+          <div class="product-overlay">
+            <a href="productdetails.html?id=1" class="hero-btn">View Details</a>
+          </div>
+        </div>
+        <div class="product-info">
+          <h3>Ocean Breeze</h3>
+          <p class="product-description">Fresh aquatic fragrance with marine notes</p>
+          <p class="product-price">£49.99</p>
+          <button class="hero-btn add-to-cart" data-id="1">Add to Cart</button>
+        </div>
+      </div>
+
+      <div class="product-card" data-category="perfume" data-id="2">
+        <div class="product-image">
+          <img src="assets/images/midnightoud.png" alt="Midnight Oud">
+          <div class="product-overlay">
+            <a href="productdetails.html?id=2" class="hero-btn">View Details</a>
+          </div>
+        </div>
+        <div class="product-info">
+          <h3>Midnight Oud</h3>
+          <p class="product-description">Deep and mysterious oriental fragrance</p>
+          <p class="product-price">£69.99</p>
+          <button class="hero-btn add-to-cart" data-id="2">Add to Cart</button>
+        </div>
+      </div>
+
+      <div class="product-card" data-category="perfume" data-id="3">
+        <div class="product-image">
+          <img src="assets/images/velvetmusk.JPEG" alt="Velvet Rose">
+          <div class="product-overlay">
+            <a href="productdetails.html?id=3" class="hero-btn">View Details</a>
+          </div>
+        </div>
+        <div class="product-info">
+          <h3>Velvet Rose</h3>
+          <p class="product-description">Luxurious rose with velvety undertones</p>
+          <p class="product-price">£64.99</p>
+          <button class="hero-btn add-to-cart" data-id="3">Add to Cart</button>
+        </div>
+      </div>
+
+      <div class="product-card" data-category="perfume" data-id="16">
+  <div class="product-image">
+    <img src="assets/images/goldenvanilla.jpeg" alt="Golden Vanilla">
+    <div class="product-overlay">
+      <a href="productdetails.html?id=16" class="hero-btn">View Details</a>
+    </div>
+  </div>
+  <div class="product-info">
+    <h3>Golden Vanilla</h3>
+    <p class="product-description">Creamy vanilla fragrance with warm golden notes</p>
+    <p class="product-price">£62.99</p>
+    <button class="hero-btn add-to-cart" data-id="16">Add to Cart</button>
+  </div>
+</div>
+
+<div class="product-card" data-category="perfume" data-id="17">
+  <div class="product-image">
+    <img src="assets/images/royalamber.jpeg" alt="Royal Amber">
+    <div class="product-overlay">
+      <a href="productdetails.html?id=17" class="hero-btn">View Details</a>
+    </div>
+  </div>
+  <div class="product-info">
+    <h3>Royal Amber</h3>
+    <p class="product-description">Rich amber scent with a smooth luxurious finish</p>
+    <p class="product-price">£71.99</p>
+    <button class="hero-btn add-to-cart" data-id="17">Add to Cart</button>
+  </div>
+</div>
+
+      <!-- CAR PERFUMES (5 products) -->
+      <div class="product-card" data-category="car-perfume" data-id="4">
+        <div class="product-image">
+          <img src="assets/images/carperfdark.jpeg" alt="Unleaded Petrol">
+          <div class="product-overlay">
+            <a href="productdetails.html?id=4" class="hero-btn">View Details</a>
+          </div>
+        </div>
+        <div class="product-info">
+          <h3>Unleaded Petrol</h3>
+          <p class="product-description">Energetic and bold car fragrance</p>
+          <p class="product-price">£16.99</p>
+          <button class="hero-btn add-to-cart" data-id="4">Add to Cart</button>
+        </div>
+      </div>
+
+      <div class="product-card" data-category="car-perfume" data-id="5">
+        <div class="product-image">
+          <img src="assets/images/carperflight.jpeg" alt="Ionix Fresh">
+          <div class="product-overlay">
+            <a href="productdetails.html?id=5" class="hero-btn">View Details</a>
+          </div>
+        </div>
+        <div class="product-info">
+          <h3>Ionix Fresh</h3>
+          <p class="product-description">Air-purifying fresh car scent</p>
+          <p class="product-price">£14.99</p>
+          <button class="hero-btn add-to-cart" data-id="5">Add to Cart</button>
+        </div>
+      </div>
+
+      <div class="product-card" data-category="car-perfume" data-id="6">
+        <div class="product-image">
+          <img src="assets/images/carperfmed.png" alt="Lavender Cruise">
+          <div class="product-overlay">
+            <a href="productdetails.html?id=6" class="hero-btn">View Details</a>
+          </div>
+        </div>
+        <div class="product-info">
+          <h3>Lavender Cruise</h3>
+          <p class="product-description">Calming lavender for relaxed drives</p>
+          <p class="product-price">£18.99</p>
+          <button class="hero-btn add-to-cart" data-id="6">Add to Cart</button>
+        </div>
+      </div>
+
+      <div class="product-card" data-category="car-perfume" data-id="18">
+  <div class="product-image">
+    <img src="assets/images/matchasneeze.jpeg" alt="Matcha Sneeze">
+    <div class="product-overlay">
+      <a href="productdetails.html?id=18" class="hero-btn">View Details</a>
+    </div>
+  </div>
+  <div class="product-info">
+    <h3>Matcha Sneeze</h3>
+    <p class="product-description">Fresh burst of matcha scent </p>
+    <p class="product-price">£15.99</p>
+    <button class="hero-btn add-to-cart" data-id="18">Add to Cart</button>
+  </div>
+</div>
+
+<div class="product-card" data-category="car-perfume" data-id="19">
+  <div class="product-image">
+    <img src="assets/images/blackiceelite.jpeg" alt="Black Ice Elite">
+    <div class="product-overlay">
+      <a href="productdetails.html?id=19" class="hero-btn">View Details</a>
+    </div>
+  </div>
+  <div class="product-info">
+    <h3>Black Ice Elite</h3>
+    <p class="product-description">Cool bold scent with a glossy modern feel</p>
+    <p class="product-price">£17.99</p>
+    <button class="hero-btn add-to-cart" data-id="19">Add to Cart</button>
+  </div>
+</div>
+
+      <!-- CANDLES (5 products) -->
+      <div class="product-card" data-category="candle" data-id="7">
+        <div class="product-image">
+          <img src="assets/images/candle.png" alt="Vanilla Dream Candle">
+          <div class="product-overlay">
+            <a href="productdetails.html?id=7" class="hero-btn">View Details</a>
+          </div>
+        </div>
+        <div class="product-info">
+          <h3>Vanilla Dream Candle</h3>
+          <p class="product-description">Warm vanilla and cream scented candle</p>
+          <p class="product-price">£12.99</p>
+          <button class="hero-btn add-to-cart" data-id="7">Add to Cart</button>
+        </div>
+      </div>
+
+      <div class="product-card" data-category="candle" data-id="8">
+        <div class="product-image">
+          <img src="assets/images/candle.png" alt="Amber Woods Candle">
+          <div class="product-overlay">
+            <a href="productdetails.html?id=8" class="hero-btn">View Details</a>
+          </div>
+        </div>
+        <div class="product-info">
+          <h3>Amber Woods Candle</h3>
+          <p class="product-description">Earthy amber with woody undertones</p>
+          <p class="product-price">£16.99</p>
+          <button class="hero-btn add-to-cart" data-id="8">Add to Cart</button>
+        </div>
+      </div>
+
+      <div class="product-card" data-category="candle" data-id="9">
+        <div class="product-image">
+          <img src="assets/images/candle.png" alt="Cherry Blossom Candle">
+          <div class="product-overlay">
+            <a href="productdetails.html?id=9" class="hero-btn">View Details</a>
+          </div>
+        </div>
+        <div class="product-info">
+          <h3>Cherry Blossom Candle</h3>
+          <p class="product-description">Delicate floral cherry blossom scent</p>
+          <p class="product-price">£14.99</p>
+          <button class="hero-btn add-to-cart" data-id="9">Add to Cart</button>
+        </div>
+      </div>
+
+      <div class="product-card" data-category="candle" data-id="20">
+  <div class="product-image">
+    <img src="assets/images/candle.png" alt="Rose Vanilla Candle">
+    <div class="product-overlay">
+      <a href="productdetails.html?id=20" class="hero-btn">View Details</a>
+    </div>
+  </div>
+  <div class="product-info">
+    <h3>Rose Vanilla Candle</h3>
+    <p class="product-description">Soft rose petals blended with creamy vanilla</p>
+    <p class="product-price">£15.99</p>
+    <button class="hero-btn add-to-cart" data-id="20">Add to Cart</button>
+  </div>
+</div>
+
+<div class="product-card" data-category="candle" data-id="21">
+  <div class="product-image">
+    <img src="assets/images/candle.png" alt="Matcha Melt Candle">
+    <div class="product-overlay">
+      <a href="productdetails.html?id=21" class="hero-btn">View Details</a>
+    </div>
+  </div>
+  <div class="product-info">
+    <h3>Matcha Melt Candle</h3>
+    <p class="product-description">Smooth matcha for a productive atmosphere</p>
+    <p class="product-price">£17.99</p>
+    <button class="hero-btn add-to-cart" data-id="21">Add to Cart</button>
+  </div>
+</div>
+
+      <!-- HOME SPRAYS (5 products) -->
+      <div class="product-card" data-category="home-spray" data-id="10">
+        <div class="product-image">
+          <img src="assets/images/homespraysilver.jpeg" alt="Lavender Cloud Spray">
+          <div class="product-overlay">
+            <a href="productdetails.html?id=10" class="hero-btn">View Details</a>
+          </div>
+        </div>
+        <div class="product-info">
+          <h3>Lavender Cloud Spray</h3>
+          <p class="product-description">Soothing lavender mist for relaxation</p>
+          <p class="product-price">£17.99</p>
+          <button class="hero-btn add-to-cart" data-id="10">Add to Cart</button>
+        </div>
+      </div>
+
+      <div class="product-card" data-category="home-spray" data-id="11">
+        <div class="product-image">
+          <img src="assets/images/homespraygold.jpeg" alt="Jasmine Home Spray">
+          <div class="product-overlay">
+            <a href="productdetails.html?id=11" class="hero-btn">View Details</a>
+          </div>
+        </div>
+        <div class="product-info">
+          <h3>Jasmine Home Spray</h3>
+          <p class="product-description">Exotic jasmine room freshener</p>
+          <p class="product-price">£21.99</p>
+          <button class="hero-btn add-to-cart" data-id="11">Add to Cart</button>
+        </div>
+      </div>
+
+      <div class="product-card" data-category="home-spray" data-id="12">
+        <div class="product-image">
+          <img src="assets/images/homesprayblue.jpeg" alt="Ocean Breeze Spray">
+          <div class="product-overlay">
+            <a href="productdetails.html?id=12" class="hero-btn">View Details</a>
+          </div>
+        </div>
+        <div class="product-info">
+          <h3>Ocean Breeze Spray</h3>
+          <p class="product-description">Fresh coastal air room spray</p>
+          <p class="product-price">£16.99</p>
+          <button class="hero-btn add-to-cart" data-id="12">Add to Cart</button>
+        </div>
+      </div>
+
+      <div class="product-card" data-category="home-spray" data-id="22">
+  <div class="product-image">
+    <img src="assets/images/homesprayrose.jpeg" alt="Rose Mist Spray">
+    <div class="product-overlay">
+      <a href="productdetails.html?id=22" class="hero-btn">View Details</a>
+    </div>
+  </div>
+  <div class="product-info">
+    <h3>Rose Mist Spray</h3>
+    <p class="product-description">Fresh rose fragrance to brighten your space</p>
+    <p class="product-price">£18.99</p>
+    <button class="hero-btn add-to-cart" data-id="22">Add to Cart</button>
+  </div>
+</div>
+
+<div class="product-card" data-category="home-spray" data-id="23">
+  <div class="product-image">
+    <img src="assets/images/homespraymint.jpeg" alt="Mint Glow Spray">
+    <div class="product-overlay">
+      <a href="productdetails.html?id=23" class="hero-btn">View Details</a>
+    </div>
+  </div>
+  <div class="product-info">
+    <h3>Mint Glow Spray</h3>
+    <p class="product-description">Fresh mint scent with a clean uplifting finish</p>
+    <p class="product-price">£17.49</p>
+    <button class="hero-btn add-to-cart" data-id="23">Add to Cart</button>
+  </div>
+</div>
+
+      <!-- BODY WASH (5 products) -->
+      <div class="product-card" data-category="body-wash" data-id="13">
+        <div class="product-image">
+          <img src="assets/images/tropicalbreeze.JPEG" alt="Tropical Breeze Body Wash">
+          <div class="product-overlay">
+            <a href="productdetails.html?id=13" class="hero-btn">View Details</a>
+          </div>
+        </div>
+        <div class="product-info">
+          <h3>Tropical Breeze Body Wash</h3>
+          <p class="product-description">Exotic tropical fruit cleansing wash</p>
+          <p class="product-price">£8.99</p>
+          <button class="hero-btn add-to-cart" data-id="13">Add to Cart</button>
+        </div>
+      </div>
+
+      <div class="product-card" data-category="body-wash" data-id="14">
+        <div class="product-image">
+          <img src="assets/images/strawbsilk.JPEG" alt="Strawberry Silk Body Wash">
+          <div class="product-overlay">
+            <a href="productdetails.html?id=14" class="hero-btn">View Details</a>
+          </div>
+        </div>
+        <div class="product-info">
+          <h3>Strawberry Silk Body Wash</h3>
+          <p class="product-description">Sweet strawberry with silk proteins</p>
+          <p class="product-price">£9.99</p>
+          <button class="hero-btn add-to-cart" data-id="14">Add to Cart</button>
+        </div>
+      </div>
+
+      <div class="product-card" data-category="body-wash" data-id="15">
+        <div class="product-image">
+          <img src="assets/images/ultrafresh.JPEG" alt="Ultra Fresh Body Wash">
+          <div class="product-overlay">
+            <a href="productdetails.html?id=15" class="hero-btn">View Details</a>
+          </div>
+        </div>
+        <div class="product-info">
+          <h3>Ultra Fresh Body Wash</h3>
+          <p class="product-description">Deep cleansing with mint freshness</p>
+          <p class="product-price">£7.99</p>
+          <button class="hero-btn add-to-cart" data-id="15">Add to Cart</button>
+        </div>
+      </div>
+
+      <div class="product-card" data-category="body-wash" data-id="24">
+  <div class="product-image">
+    <img src="assets/images/coconutsilk.jpeg" alt="Coconut Silk Body Wash">
+    <div class="product-overlay">
+      <a href="productdetails.html?id=24" class="hero-btn">View Details</a>
+    </div>
+  </div>
+  <div class="product-info">
+    <h3>Coconut Silk Body Wash</h3>
+    <p class="product-description">Fresh coconut wash for soft and smooth skin</p>
+    <p class="product-price">£9.49</p>
+    <button class="hero-btn add-to-cart" data-id="24">Add to Cart</button>
+  </div>
+</div>
+
+<div class="product-card" data-category="body-wash" data-id="25">
+  <div class="product-image">
+    <img src="assets/images/lemonfresh.jpeg" alt="Lemon Fresh Body Wash">
+    <div class="product-overlay">
+      <a href="productdetails.html?id=25" class="hero-btn">View Details</a>
+    </div>
+  </div>
+  <div class="product-info">
+    <h3>Lemon Fresh Body Wash</h3>
+    <p class="product-description">Pure lemon cleanse with a refreshing feel</p>
+    <p class="product-price">£8.49</p>
+    <button class="hero-btn add-to-cart" data-id="25">Add to Cart</button>
+  </div>
+</div>
+    </div>
+  </div>
+</section>
+
+
+    </main>
+
+    <footer class="site-footer">
+  <div class="footer-container">
+
+    <!-- Newsletter -->
+    <div class="footer-newsletter">
+      <h3>Join our newsletter</h3>
+      <p>Get personalized updates, launch news, and exclusive access just for you.</p>
+
+      <form id="newsletterForm">
+        <input 
+          type="email"
+          id="newsletterEmail"
+          name="email"
+          placeholder="Enter your email"
+          required
+        >
+        <button type="submit">Subscribe</button>
+        <p id="newsletterMsg" style="margin-top:10px;"></p>
+      </form>
+    </div>
+
+    <!-- Column 1 -->
+    <div class="footer-links">
+      <a href="contactus.php">Contact Us</a>
+      <a href="faq.php">FAQ</a>
+      <a href="aboutus.php">About Us</a>
+      <a href="terms.php">Terms</a>
+      <a href="privacypolicy.php">Privacy Policy</a>
+    </div>
+
+    <!-- Column 2 -->
+    <div class="footer-links">
+      <a href="products.html">Order</a>
+      <a href="cart.html">Shopping Cart</a>
+      <a href="favourites.php">Favourites</a>
+    </div>
+  </div>
+
+  <div class="footer-bottom">
+    <p>© 2025 Sabil. All rights reserved.</p>
+  </div>
+</footer>
+
+<script src="assets/js/products-data.js"></script>
+<script src="assets/js/product.js"></script>
+<script src="assets/js/wire-products-lite.js"></script>
+<script src="assets/js/render-products.js"></script>
+<script src="assets/js/filter-search.js"></script>
+<script src="assets/js/sort-products.js"></script>
+
+
+
+
+
+
+</body>
+
+</html>
+
