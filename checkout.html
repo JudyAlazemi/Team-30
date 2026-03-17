@@ -644,7 +644,11 @@
     function updateTotals() {
         const items = getCartItems();
         const subtotal = items.reduce((sum, item) => sum + item.price * item.qty, 0);
-        const shipping = items.length ? (currentShipping === 'standard' ? 4.99 : 7.99) : 0;
+        const shipping = !items.length
+  ? 0
+  : subtotal >= 50
+    ? 0
+    : (currentShipping === 'standard' ? 4.99 : 7.99);
         const tax = subtotal * 0.08;
         const total = subtotal + shipping + tax;
 
