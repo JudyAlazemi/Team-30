@@ -1,5 +1,4 @@
 <?php
-// cart.php  ✅ one file = (1) JSON API when ?action=...  (2) HTML page otherwise
 require_once __DIR__ . "/backend/config/session.php";
 
 $isApi = isset($_GET['action']) || isset($_POST['action']);
@@ -154,7 +153,6 @@ if ($isApi) {
 <html lang="en">
 <link rel="stylesheet" href="assets/css/style.css">
 <link rel="stylesheet" href="assets/css/darkmode.css">
-<script defer src="assets/js/nav.js"></script>
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -425,6 +423,7 @@ if ($isApi) {
 </head>
 
 <body>
+    
 <?php include __DIR__ . "/partials/navigation.php"; ?>
 
 

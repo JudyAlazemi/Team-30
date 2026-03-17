@@ -1,21 +1,37 @@
 <?php
-require_once __DIR__ . "/includes/account_layout.php";
-$active = "orders";
+session_start();
+require_once __DIR__ . "/backend/config/db.php";
 
-/* Fetch orders for this user */
+if (!isset($_SESSION["user_id"])) {
+    header("Location: login.html");
+    exit;
+}
+
+$userId   = (int)($_SESSION["user_id"] ?? 0);
+$userName = $_SESSION["user_name"] ?? "Customer";
+
 $orders = [];
+
 try {
-  $stmt = $conn->prepare("
-    SELECT id, total_amount, status, created_at
-    FROM orders
-    WHERE user_id = ?
-    ORDER BY created_at DESC
-  ");
-  $stmt->bind_param("i", $userId);
-  $stmt->execute();
-  $orders = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
-  $stmt->close();
-} catch (Exception $e) {}
+    $stmt = $conn->prepare("
+        SELECT id, total_amount, status, created_at
+        FROM orders
+        WHERE user_id = ?
+        ORDER BY created_at DESC
+        LIMIT 5
+    ");
+    $stmt->bind_param("i", $userId);
+    $stmt->execute();
+    $result = $stmt->get_result();
+
+    while ($row = $result->fetch_assoc()) {
+        $orders[] = $row;
+    }
+
+    $stmt->close();
+} catch (Exception $e) {
+    $orders = [];
+}
 ?>
 <!doctype html>
 <html lang="en">
@@ -26,63 +42,13 @@ try {
 
   <link rel="stylesheet" href="assets/css/style.css">
   <link rel="stylesheet" href="assets/css/customer_dashboard.css?v=<?= time() ?>">
-  <link rel="stylesheet" href="assets/css/darkmode.css">
   <script defer src="assets/js/nav.js"></script>
   <link rel="icon" type="image/png" href="assets/images/logo.png">
 </head>
 
 <body class="account-page">
 
-<header class="topbar">
-  <div class="topbar-inner">
-
-    <button class="icon-btn menu-toggle" aria-label="Open menu" aria-expanded="false">
-      <img class="icon icon--menu" src="assets/images/menu.png" alt="" />
-      <img class="icon icon--close" src="assets/images/close.png" alt="" />
-    </button>
-
-    <a class="brand" href="index.php">
-      <img class="brand-logo" src="assets/images/logo.png" alt="Sabil" />
-    </a>
-
-    <nav class="actions" aria-label="Account & tools">
-      <a href="customer_dashboard.php" class="my-account-link">
-        <img class="icon" src="assets/images/user.png" alt="My Account">
-        <span>My Account</span>
-      </a>
-
-      <a href="logout.php">Logout</a>
-
-      <a id="searchBtn" class="action" href="#">
-        <img class="icon" src="assets/images/search.png" alt="Search">
-      </a>
-
-      <a id="favBtn" class="action" href="customer_favourites.php">
-        <img class="icon" src="assets/images/favorite.png" alt="Favourites">
-      </a>
-
-      <a id="bagBtn" class="action" href="basket.php">
-        <img class="icon" src="assets/images/shopping-bag.png" alt="Bag">
-      </a>
-    </nav>
-  </div>
-</header>
-
-<div id="menuDrawer" class="drawer" aria-hidden="true">
-  <div class="drawer__backdrop" data-close-drawer></div>
-  <aside class="drawer__panel" role="dialog" aria-modal="true" aria-label="Site menu">
-    <nav class="drawer__nav">
-      <a href="products.php">Shop all</a>
-      <a href="cart.php">Cart</a>
-      <a href="customer_favourites.php">Favourites</a>
-      <a href="contactus.php">Contact us</a>
-      <a href="faq.php">FAQ</a>
-      <a href="aboutus.php">About us</a>
-      <a href="terms.php">Terms</a>
-      <a href="privacypolicy.php">Privacy Policy</a>
-    </nav>
-  </aside>
-</div>
+<?php include __DIR__ . "/partials/navigation.php"; ?>
 
 <div class="dash-page">
   <div class="dash-frame">
@@ -137,7 +103,7 @@ try {
           <?php if (empty($orders)): ?>
             <div class="dash-empty">
               <p class="dash-muted">You haven’t placed any orders yet.</p>
-              <a href="cart.php" class="dash-place-btn">Place an order</a>
+              <a href="products.php" class="dash-place-btn">Place an order</a>
             </div>
           <?php else: ?>
             <div class="dash-recent-body">
@@ -145,7 +111,7 @@ try {
                 <?php $status = strtolower(trim($o['status'])); ?>
 
                 <div class="dash-row" style="grid-template-columns: 100px 140px 150px 210px 160px; align-items:center;">
-                  
+
                   <div class="dash-cell">
                     #<?= htmlspecialchars($o['id']) ?>
                   </div>
@@ -174,6 +140,15 @@ try {
 
                     <?php elseif ($status === 'returned'): ?>
                       <span class="dash-muted">Returned</span>
+
+                    <?php elseif ($status === 'pending'): ?>
+                      <span class="dash-muted">Waiting for processing</span>
+
+                    <?php elseif ($status === 'shipped'): ?>
+                      <span class="dash-muted">On the way</span>
+
+                    <?php elseif ($status === 'cancelled'): ?>
+                      <span class="dash-muted">Cancelled</span>
 
                     <?php else: ?>
                       <span class="dash-muted">-</span>

@@ -1,7 +1,4 @@
 <?php
-// checkout.php
-// GET  -> render checkout page (same as checkout.html)
-// POST -> handle order placement (JSON API) and return JSON
 
 if (session_status() === PHP_SESSION_NONE) require_once __DIR__ . "/backend/config/session.php";
 
@@ -151,7 +148,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
   <link rel="stylesheet" href="assets/css/style.css" />
   <link rel="stylesheet" href="assets/css/darkmode.css">
-  <script defer src="assets/js/nav.js"></script>
 
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -385,61 +381,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 <body>
 
-  <!-- HEADER -->
-  <header class="topbar">
-    <div class="topbar-inner">
-      <button class="icon-btn menu-toggle" aria-label="Open menu" aria-expanded="false">
-        <img class="icon icon--menu" src="assets/images/menu.png" alt="" />
-        <img class="icon icon--close" src="assets/images/close.png" alt="" />
-      </button>
-
-      <a class="brand" href="index.php">
-        <img class="brand-logo" src="assets/images/logo.png" alt="Sabil" />
-      </a>
-
-      <nav class="actions" aria-label="Account & tools">
-
-        <div id="accountNavSlot"></div>
-
-        <div class="search-group">
-          <a id="searchBtn" class="action" href="#">
-            <img class="icon" src="assets/images/search.png" alt="Search" />
-          </a>
-          <input type="text" id="navSearchInput" class="nav-search-input" placeholder="Search..." />
-        </div>
-
-        <a id="favBtn" class="action" href="favourites.php" role="button" aria-pressed="false">
-          <img id="favIcon" class="icon" src="assets/images/favorite.png" alt="Favourite"
-               data-src-inactive="assets/images/favorite.png"
-               data-src-active="assets/images/favorite-shaded.png" />
-        </a>
-
-        <a id="bagBtn" class="action" href="cart.php" role="button" aria-pressed="false">
-          <img id="bagIcon" class="icon" src="assets/images/shopping-bag.png" alt="Shopping bag"
-               data-src-inactive="assets/images/shopping-bag.png"
-               data-src-active="assets/images/shopping-bag-filled.png" />
-        </a>
-
-      </nav>
-    </div>
-  </header>
-
-  <!-- DRAWER -->
-  <div id="menuDrawer" class="drawer" aria-hidden="true">
-    <div class="drawer__backdrop" data-close-drawer></div>
-    <aside class="drawer__panel" role="dialog" aria-modal="true" aria-label="Site menu">
-      <nav class="drawer__nav">
-        <a href="products.php">Shop all</a>
-        <a href="cart.php">Cart</a>
-        <a href="favourites.php">Favourites</a>
-        <a href="contactus.php">Contact us</a>
-        <a href="faq.php">FAQ</a>
-        <a href="aboutus.php">About us</a>
-        <a href="terms.php">Terms</a>
-        <a href="privacypolicy.php">Privacy Policy</a>
-      </nav>
-    </aside>
-  </div>
+<?php include __DIR__ . "/partials/navigation.php"; ?>
 
   <!-- PAGE -->
   <div class="container">

@@ -1,10 +1,10 @@
 <?php
-require_once __DIR__ . "/backend/config/session.php";
+session_start();
 header("Content-Type: application/json");
 
 require_once __DIR__ . "/backend/config/db.php";
 
-/* ✅ Must be logged in (guest can't order) */
+/*  Must be logged in (guest can't order) */
 if (empty($_SESSION['user_id'])) {
     http_response_code(401);
     echo json_encode(["ok" => false, "error" => "Please login first"]);
@@ -12,7 +12,7 @@ if (empty($_SESSION['user_id'])) {
 }
 $userId = (int)$_SESSION['user_id'];
 
-/* ✅ Read JSON body from checkout.php */
+/*  Read JSON body from checkout.php */
 $raw = file_get_contents("php://input");
 $payload = json_decode($raw, true);
 
@@ -22,7 +22,7 @@ if (!is_array($payload)) {
     exit;
 }
 
-/* ✅ checkout.php sends items[], not cart[] */
+/*  checkout.php sends items[], not cart[] */
 $items = $payload['items'] ?? [];
 $shippingMethod = $payload['shipping_method'] ?? 'standard';
 
@@ -50,7 +50,7 @@ if (count($requested) === 0) {
 try {
     $conn->begin_transaction();
 
-    /* ✅ Validate products + lock rows + compute subtotal using DB prices */
+    /*  Validate products + lock rows + compute subtotal using DB prices */
     $cleanItems = [];
     $subtotal = 0.0;
 
@@ -82,14 +82,14 @@ try {
     $tax = round($subtotal * 0.08, 2);
     $total = round($subtotal + $shipping + $tax, 2);
 
-    /* ✅ Insert order */
-    $status = "processing";
+    /*  Insert order */
+    $status = "pending";
     $stmt = $conn->prepare("INSERT INTO orders (user_id, total_amount, status, created_at) VALUES (?, ?, ?, NOW())");
     $stmt->bind_param("ids", $userId, $total, $status);
     $stmt->execute();
     $orderId = $stmt->insert_id;
 
-    /* ✅ Insert items + update stock */
+    /*  Insert items + update stock */
     $stmtItem = $conn->prepare("INSERT INTO order_items (order_id, product_id, quantity, price) VALUES (?, ?, ?, ?)");
     $stmtStock = $conn->prepare("UPDATE products SET stock = stock - ? WHERE id = ?");
 
@@ -107,7 +107,7 @@ try {
 
     $conn->commit();
 
-    /* ✅ Clear server session cart (optional) */
+    /*  Clear server session cart (optional) */
     if (isset($_SESSION['cart'])) $_SESSION['cart'] = [];
 
     echo json_encode(["ok" => true, "order_id" => $orderId, "total" => $total]);
