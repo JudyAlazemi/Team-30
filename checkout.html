@@ -531,42 +531,27 @@
                     <div class="summary-box">
                         <h2>Order Summary</h2>
 
-                        <div class="order-items">
-                            <div class="order-item">
-                                <div>
-                                    <p>Essence</p>
-                                    <p class="item-qty">Qty: 1</p>
-                                </div>
-                                <p>£120.00</p>
-                            </div>
-                            <div class="order-item">
-                                <div>
-                                    <p>Velvet Night</p>
-                                    <p class="item-qty">Qty: 2</p>
-                                </div>
-                                <p>£290.00</p>
-                            </div>
-                        </div>
+                        <div class="order-items" id="order-items"></div>
 
-                        <div class="summary-row">
-                            <span>Subtotal</span>
-                            <span>£410.00</span>
-                        </div>
+<div class="summary-row">
+    <span>Subtotal</span>
+    <span id="checkout-subtotal">£0.00</span>
+</div>
 
-                        <div class="summary-row">
-                            <span>Shipping</span>
-                            <span id="shipping-cost">£10.00</span>
-                        </div>
+<div class="summary-row">
+    <span>Shipping</span>
+    <span id="shipping-cost">£10.00</span>
+</div>
 
-                        <div class="summary-row">
-                            <span>Tax</span>
-                            <span>£32.80</span>
-                        </div>
+<div class="summary-row">
+    <span>Tax</span>
+    <span id="checkout-tax">£0.00</span>
+</div>
 
-                        <div class="summary-row summary-total">
-                            <span>Total</span>
-                            <span id="total-cost">£452.80</span>
-                        </div>
+<div class="summary-row summary-total">
+    <span>Total</span>
+    <span id="total-cost">£0.00</span>
+</div>
 
                         <button type="submit" class="btn-primary">Place Order</button>
 
@@ -630,15 +615,55 @@
             }
         }
 
-        function updateTotals() {
-            const subtotal = 410;
-            const shipping = currentShipping === 'standard' ? 10 : 20;
-            const tax = subtotal * 0.08;
-            const total = subtotal + shipping + tax;
-            
-            document.getElementById('shipping-cost').textContent = '£' + shipping.toFixed(2);
-            document.getElementById('total-cost').textContent = '£' + total.toFixed(2);
-        }
+       function getCart() {
+  const raw = JSON.parse(localStorage.getItem('cart')) || [];
+  return raw.map(item => ({
+    id: Number(item.id),
+    qty: Number(item.qty ?? item.quantity ?? 1)
+  }));
+}
+
+function getCartItems() {
+  const cart = getCart();
+  return cart.map(ci => {
+    const p = (window.productsData || []).find(prod => Number(prod.id) === Number(ci.id));
+    return p ? { ...p, qty: ci.qty, price: Number(p.price) || 0 } : null;
+  }).filter(Boolean);
+}
+
+function formatMoney(n) {
+  return `£${(Number(n) || 0).toFixed(2)}`;
+}
+
+function renderOrderItems() {
+  const items = getCartItems();
+  const orderItemsEl = document.getElementById('order-items');
+
+  if (!orderItemsEl) return;
+
+  orderItemsEl.innerHTML = items.map(item => `
+    <div class="order-item">
+      <div>
+        <p>${item.name}</p>
+        <p class="item-qty">Qty: ${item.qty}</p>
+      </div>
+      <p>${formatMoney(item.price * item.qty)}</p>
+    </div>
+  `).join('');
+}
+
+function updateTotals() {
+  const items = getCartItems();
+  const subtotal = items.reduce((sum, item) => sum + item.price * item.qty, 0);
+  const shipping = items.length ? (currentShipping === 'standard' ? 10 : 15) : 0;
+  const tax = subtotal * 0.08;
+  const total = subtotal + shipping + tax;
+
+  document.getElementById('checkout-subtotal').textContent = formatMoney(subtotal);
+  document.getElementById('shipping-cost').textContent = formatMoney(shipping);
+  document.getElementById('checkout-tax').textContent = formatMoney(tax);
+  document.getElementById('total-cost').textContent = formatMoney(total);
+}
 
         document.getElementById('checkout-form').addEventListener('submit', function(e) {
             e.preventDefault();
@@ -646,7 +671,8 @@
             // In production, redirect to success page:
             // window.location.href = 'order-success.html';
         });
-
+renderOrderItems();
+updateTotals();
     </script>
 </body>
 </html>
