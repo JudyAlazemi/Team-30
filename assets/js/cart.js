@@ -43,7 +43,7 @@ function totals(items) {
     return sum + (price * qty);
   }, 0);
 
-  const shipping = subtotal >= 150 ? 0 : (items.length ? 10 : 0);
+  const shipping = subtotal >= 50 ? 0 : (items.length ? 4.99 : 0);
   const tax = subtotal * 0.08;
   const total = subtotal + shipping + tax;
 
