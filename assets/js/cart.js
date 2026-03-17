@@ -136,15 +136,17 @@ function render(){
   if (elTax) elTax.textContent = fmt(t.tax);
   if (elTotal) elTotal.textContent = fmt(t.total);
 
-  if (elFSN){
-    const need = 150 - t.subtotal;
-    if (need > 0){
-      elFSN.style.display = '';
-      elFSN.textContent = `Add ${fmt(need)} more for free shipping!`;
-    } else {
-      elFSN.style.display = 'none';
-    }
+  if (elFSN) {
+  const FREE_LIMIT = 40; // or 50 if you prefer
+  const need = FREE_LIMIT - t.subtotal;
+
+  if (need > 0) {
+    elFSN.style.display = '';
+    elFSN.textContent = `Add ${fmt(need)} more for free shipping!`;
+  } else {
+    elFSN.style.display = 'none';
   }
+}
 
   // event delegation for +/−/remove
   if (elList){
