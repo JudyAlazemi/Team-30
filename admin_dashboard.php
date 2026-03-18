@@ -10,7 +10,6 @@ if (!isset($_SESSION["admin_logged_in"]) || $_SESSION["admin_logged_in"] !== tru
 $adminId    = (int)($_SESSION["admin_id"] ?? 0);
 $adminName  = $_SESSION["admin_name"] ?? "Admin";
 $adminEmail = $_SESSION["admin_email"] ?? "";
-
 /* ---------------------------
    Dashboard counts
 --------------------------- */
@@ -42,7 +41,7 @@ try {
 } catch (Exception $e) {}
 
 try {
-    $result = $conn->query("SELECT COUNT(*) AS total FROM products WHERE stock_quantity <= 5");
+    $result = $conn->query("SELECT COUNT(*) AS total FROM products WHERE stock <= 5");
     if ($result && $row = $result->fetch_assoc()) {
         $lowStockCount = (int)$row['total'];
     }
@@ -123,7 +122,7 @@ try {
 $products = [];
 try {
     $sql = "
-        SELECT id, name, price, stock_quantity
+        SELECT id, name, price, stock
         FROM products
         ORDER BY id DESC
         LIMIT 5
@@ -142,10 +141,10 @@ try {
 $lowStockProducts = [];
 try {
     $sql = "
-        SELECT id, name, stock_quantity
+        SELECT id, name, stock
         FROM products
-        WHERE stock_quantity <= 5
-        ORDER BY stock_quantity ASC, name ASC
+        WHERE stock <= 5
+        ORDER BY stock ASC, name ASC
         LIMIT 5
     ";
     $result = $conn->query($sql);
@@ -208,49 +207,17 @@ try {
   <link rel="stylesheet" href="assets/css/admin_dashboard.css?v=<?= time() ?>">
   <link rel="stylesheet" href="assets/css/darkmode.css">
 
-  <script defer src="assets/js/nav.js"></script>
+
   <link rel="icon" type="image/png" href="assets/images/logo.png">
 </head>
 
 <body class="account-page">
 
-<header class="topbar">
-  <div class="topbar-inner">
-    <button class="icon-btn menu-toggle" aria-label="Open menu" aria-expanded="false">
-      <img class="icon icon--menu" src="assets/images/menu.png" alt="" />
-      <img class="icon icon--close" src="assets/images/close.png" alt="" />
-    </button>
-
-    <a class="brand" href="index.php">
-      <img class="brand-logo" src="assets/images/logo.png" alt="Sabil" />
-    </a>
-
-    <nav class="actions" aria-label="Account & tools">
-      <a href="admin_dashboard.php" class="my-account-link">
-        <img class="icon" src="assets/images/user.png" alt="Admin Dashboard">
-        <span>Admin Panel</span>
-      </a>
-
-      <a href="admin_logout.php">Logout</a>
-    </nav>
-  </div>
-</header>
-
-<div id="menuDrawer" class="drawer" aria-hidden="true">
-  <div class="drawer__backdrop" data-close-drawer></div>
-  <aside class="drawer__panel" role="dialog" aria-modal="true" aria-label="Site menu">
-    <nav class="drawer__nav">
-      <a href="index.php">Home</a>
-      <a href="admin_dashboard.php">Dashboard</a>
-      <a href="admin_products.php">Manage Products</a>
-      <a href="admin_orders.php">Manage Orders</a>
-      <a href="admin_users.php">Manage Customers</a>
-      <a href="incoming_orders.php">Incoming Orders</a>
-      <a href="admin_returns.php">Returns</a>
-      <a href="admin_logout.php">Logout</a>
-    </nav>
-  </aside>
-</div>
+<?php
+$forceIsAdmin = true;
+$forceIsUser = false;
+include __DIR__ . "/partials/navigation.php";
+?>
 
 <main class="dash-page">
   <div class="dash-frame">
@@ -271,25 +238,25 @@ try {
           </a>
 
           <a class="dash-link" href="admin_orders.php">
-            <span class="dash-ico"><img src="assets/images/shopping-bag.png" alt=""></span>
+            <span class="dash-ico"><img src="assets/images/processorder.png" alt=""></span>
             <span>Process Orders</span>
             <span class="dash-arrow">›</span>
           </a>
 
           <a class="dash-link" href="admin_users.php">
-            <span class="dash-ico"><img src="assets/images/user.png" alt=""></span>
+            <span class="dash-ico"><img src="assets/images/sign-in.png" alt=""></span>
             <span>Customers</span>
             <span class="dash-arrow">›</span>
           </a>
 
           <a class="dash-link" href="admin_products.php">
-            <span class="dash-ico"><img src="assets/images/favorite.png" alt=""></span>
+            <span class="dash-ico"><img src="assets/images/inventory.png" alt=""></span>
             <span>Inventory</span>
             <span class="dash-arrow">›</span>
           </a>
 
           <a class="dash-link" href="incoming_orders.php">
-            <span class="dash-ico"><img src="assets/images/shopping-bag.png" alt=""></span>
+            <span class="dash-ico"><img src="assets/images/incoming-order.png" alt=""></span>
             <span>Incoming Orders</span>
             <span class="dash-arrow">›</span>
           </a>
@@ -467,7 +434,7 @@ try {
                       <tr>
                         <td><?= htmlspecialchars($product['name']) ?></td>
                         <td>£<?= number_format((float)$product['price'], 2) ?></td>
-                        <td><?= (int)$product['stock_quantity'] ?></td>
+                        <td><?= (int)$product['stock'] ?></td>
                       </tr>
                     <?php endforeach; ?>
                   </tbody>
@@ -485,7 +452,7 @@ try {
                 <?php foreach ($lowStockProducts as $item): ?>
                   <li>
                     <span><?= htmlspecialchars($item['name']) ?></span>
-                    <strong><?= (int)$item['stock_quantity'] ?> left</strong>
+                    <strong><?= (int)$item['stock'] ?> left</strong>
                   </li>
                 <?php endforeach; ?>
               </ul>

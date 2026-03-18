@@ -1,5 +1,5 @@
 <?php
-require_once __DIR__ . "/backend/config/session.php";
+session_start();
 require_once __DIR__ . "/backend/config/db.php";
 
 if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["action"])) {
@@ -19,7 +19,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["action"])) {
         exit;
     }
 
-    // 1️⃣ LIST favourites for logged-in user only
+    // LIST favourites for logged-in user only
     if ($action === "list") {
         $stmt = $conn->prepare("SELECT product_id FROM favourites WHERE user_id = ?");
         $stmt->bind_param("i", $userId);
@@ -38,7 +38,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["action"])) {
         exit;
     }
 
-    // 2️⃣ TOGGLE favourite for logged-in user only
+    // TOGGLE favourite for logged-in user only
     if ($action === "toggle") {
         $productId = (int)($_POST["product_id"] ?? 0);
 
@@ -102,8 +102,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["action"])) {
   <title>Favourites | Sabil</title>
   <link rel="stylesheet" href="assets/css/style.css" />
   <link rel="stylesheet" href="assets/css/static.css" /> 
-  <link rel="stylesheet" href="assets/css/darkmode.css">
-     <script defer src="assets/js/nav.js"></script>
+  <link rel="stylesheet" href="assets/css/darkmode.css" />
     <script defer src="assets/js/home.js"></script>
     <script defer src="assets/js/newsletter.js"></script>
 
@@ -111,89 +110,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["action"])) {
 </head>
 <body class="page-favourites">
 
-  <!-- TOP BAR -->
-
-<header class="topbar">
-  <div class="topbar-inner">
-
-    <!-- Left: Menu button -->
-    <button class="icon-btn menu-toggle" aria-label="Open menu" aria-expanded="false">
-      <img class="icon icon--menu" src="assets/images/menu.png" alt="" />
-      <img class="icon icon--close" src="assets/images/close.png" alt="" />
-    </button>
-
-    <!-- Center: Logo -->
-    <a class="brand" href="index.php">
-      <img class="brand-logo" src="assets/images/logo.png" alt="Sabil" />
-    </a>
-
-    <!-- Right: actions -->
-    <nav class="actions" aria-label="Account & tools">
-
-      <!-- USER -->
-      <?php include __DIR__ . "/partials/navbar.php"; ?>
-
-
-      <!-- SEARCH GROUP (one flex item) -->
-      <div class="search-group">
-        <a id="searchBtn" class="action" href="#">
-          <img class="icon" src="assets/images/search.png" alt="Search" />
-        </a>
-        <input
-          type="text"
-          id="navSearchInput"
-          class="nav-search-input"
-          placeholder="Search..."
-        />
-      </div>
-
-      <!-- FAVOURITE -->
-      <a id="favBtn" class="action" href="favourites.php" role="button" aria-pressed="false">
-        <img
-          id="favIcon"
-          class="icon"
-          src="assets/images/favorite.png"
-          alt="Favourite"
-          data-src-inactive="assets/images/favorite.png"
-          data-src-active="assets/images/favorite-shaded.png"
-        />
-      </a>
-
-      <!-- BAG -->
-      <a id="bagBtn" class="action" href="cart.html" role="button" aria-pressed="false">
-        <img
-          id="bagIcon"
-          class="icon"
-          src="assets/images/shopping-bag.png"
-          alt="Shopping bag"
-          data-src-inactive="assets/images/shopping-bag.png"
-          data-src-active="assets/images/shopping-bag-filled.png"
-        />
-      </a>
-    </nav>
-  </div>
-</header>
-
-<!-- MENU DRAWER (left-side) -->
-<div id="menuDrawer" class="drawer" aria-hidden="true">
-  <div class="drawer__backdrop" data-close-drawer></div>
-
-  <aside class="drawer__panel" role="dialog" aria-modal="true" aria-label="Site menu">
-    <nav class="drawer__nav">
-      <a href="products.html">Shop all</a>
-      <a href="cart.html">Cart</a>
-      <a href="favourites.php">Favourites</a>
-      <a href="contactus.php">Contact us</a>
-      <a href="faq.php">FAQ</a>
-      <a href="aboutus.php">About us</a>
-      <a href="terms.php">Terms</a>
-      <a href="privacypolicy.php">Privacy Policy</a>
-  
-    </nav>
-  </aside>
-</div>
-
-
+<?php include __DIR__ . "/partials/navigation.php"; ?>
 
   <!-- MAIN FAVOURITES CONTENT -->
 <main class="favourites-main" style="text-align:center;">
@@ -261,6 +178,61 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["action"])) {
   <script src="assets/js/fav.js" defer></script>
   <script src="assets/js/newsletter.js" defer></script>
   <script src="assets/js/products-data.js"></script>
+
+<script>
+async function updateNavbar() {
+  const slot = document.getElementById('accountNavSlot');
+  if (!slot) return;
+
+  try {
+    const res = await fetch('check_login.php', {
+      cache: 'no-store',
+      credentials: 'same-origin'
+    });
+
+    if (!res.ok) throw new Error('Network response was not ok');
+
+    const data = await res.json();
+
+    if (data.loggedIn && data.role === "admin") {
+      slot.innerHTML = `
+        <a class="action" href="admin_dashboard.php" role="button">
+          <img class="icon" src="assets/images/user.png" alt="My Account" />
+          <span class="action-text">My Account</span>
+        </a>
+        <a class="action" href="admin_logout.php" role="button">
+          <span class="action-text">Logout</span>
+        </a>
+      `;
+    } else if (data.loggedIn && data.role === "customer") {
+      slot.innerHTML = `
+        <a class="action" href="customer_dashboard.php" role="button">
+          <img class="icon" src="assets/images/user.png" alt="My Account" />
+          <span class="action-text">My Account</span>
+        </a>
+        <a class="action" href="logout.php" role="button">
+          <span class="action-text">Logout</span>
+        </a>
+      `;
+    } else {
+      slot.innerHTML = `
+        <a class="action" href="login.html?redirect=checkout.php" role="button">
+          <img class="icon" src="assets/images/sign-in.png" alt="Sign in" />
+          <span class="action-text">Sign in</span>
+        </a>
+      `;
+    }
+  } catch (e) {
+    slot.innerHTML = `
+      <a class="action" href="login.html?redirect=checkout.php" role="button">
+        <img class="icon" src="assets/images/sign-in.png" alt="Sign in" />
+        <span class="action-text">Sign in</span>
+      </a>
+    `;
+  }
+}
+</script>
+
 
 </body>
 </html>

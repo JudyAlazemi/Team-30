@@ -9,16 +9,16 @@
     <title>Sabil - Our Collection</title>
     <link rel="stylesheet" href="assets/css/style.css">
     <link rel="icon" type="image/png" href="assets/images/logo.png">
-    <script defer src="assets/js/nav.js"></script>
     <script defer src="assets/js/home.js"></script>
     <script defer src="assets/js/newsletter.js"></script>
     <link rel="stylesheet" href="assets/css/globals.css">
     <link rel="stylesheet" href="assets/css/product.css">
     <link rel="stylesheet" href="assets/css/darkmode.css">
+    <link rel="stylesheet" href="assets/css/customer_dashboard.css">
 </head>
 <body class="page-product">
 
- <?php include __DIR__ . "/partials/navigation.php"; ?>
+<?php include __DIR__ . "/partials/navigation.php"; ?>
 
   <!--fonts -->
   <link rel="preload" href="fonts/MeshedDisplay-Regular.ttf" as="font" type="font/ttf" crossorigin>
