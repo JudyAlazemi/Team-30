@@ -201,7 +201,7 @@
 
 .account-page .dash-two{
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: repeat(3, 1fr);
   gap: 18px;
   margin-bottom: 20px;
 }
@@ -221,6 +221,12 @@
   font-size: 13px;
   font-weight: 500;
   color: var(--text-dark);
+}
+@media (max-width: 700px){
+  .account-page .dash-bars,
+  .account-page .dash-two{
+    grid-template-columns: 1fr;
+  }
 }
 
 /* admin sections */
@@ -577,3 +583,293 @@
   color: var(--text-light);
   font-size: 13px;
 }
+
+/* =========================
+   ADMIN MESSAGES PAGE
+========================= */
+
+.admin-messages-page .dash-bottom{
+  display: flex;
+  justify-content: center;
+  gap: 18px;
+  margin-top: 26px;
+  flex-wrap: wrap;
+}
+
+.admin-message-list{
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  margin-top: 18px;
+}
+
+.admin-message-card{
+  background: #e8e0d8;
+  border: 1px solid #d1c3b6;
+  padding: 18px;
+}
+
+.admin-message-top{
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+.admin-message-user h3{
+  margin: 0 0 4px;
+  font-size: 20px;
+  color: #3e342d;
+}
+
+.admin-message-user p{
+  margin: 0;
+  font-size: 14px;
+  color: #7a6d64;
+}
+
+.admin-status{
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 6px 12px;
+  border: 1px solid #6d584a;
+  border-radius: 999px;
+  font-size: 13px;
+  color: #4a3b31;
+  background: transparent;
+}
+
+.admin-status.replied{
+  background: #f3eee8;
+}
+
+.admin-status.sent{
+  background: transparent;
+}
+
+.admin-message-grid{
+  display: grid;
+  grid-template-columns: 1.5fr 1fr;
+  gap: 18px;
+  margin-bottom: 16px;
+}
+
+.admin-message-field{
+  margin-bottom: 16px;
+}
+
+.admin-message-subject-wrap{
+  margin-bottom: 16px;
+}
+
+.admin-label{
+  font-size: 13px;
+  font-weight: 700;
+  color: #4a3b31;
+  margin-bottom: 6px;
+  display: block;
+}
+
+.admin-value{
+  font-size: 15px;
+  color: #2f2925;
+}
+
+.admin-message-text{
+  background: #f7f2ec;
+  border: 1px solid #d9ccc0;
+  padding: 14px;
+  font-size: 14px;
+  line-height: 1.6;
+  color: #2f2925;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.admin-reply-box{
+  margin-top: 8px;
+  background: #efe6dc;
+  border-left: 4px solid #907867;
+  padding: 14px;
+}
+
+.admin-reply-time{
+  margin-top: 10px;
+  font-size: 12px;
+  color: #7a6d64;
+}
+
+.admin-reply-form{
+  margin-top: 8px;
+}
+
+.admin-reply-textarea{
+  width: 100%;
+  min-height: 120px;
+  resize: vertical;
+  border: 1px solid #cdbfb2;
+  background: #fff;
+  padding: 12px 14px;
+  font-size: 14px;
+  color: #2f2925;
+  outline: none;
+  margin-bottom: 12px;
+}
+
+.admin-reply-textarea:focus{
+  border-color: #907867;
+}
+
+.admin-msg-success,
+.admin-msg-error{
+  padding: 12px 14px;
+  margin-bottom: 16px;
+  font-size: 14px;
+}
+
+.admin-msg-success{
+  background: #e8f5e9;
+  color: #256029;
+  border: 1px solid #c8dfc9;
+}
+
+.admin-msg-error{
+  background: #fdecea;
+  color: #b42318;
+  border: 1px solid #f2c9c4;
+}
+
+.admin-message-box{
+  background: #e8e0d8;
+  padding: 18px;
+  margin-top: 18px;
+}
+
+.admin-empty{
+  margin: 0;
+  color: #6f655e;
+  font-size: 15px;
+}
+
+.dash-btn-outline{
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 22px;
+  border-radius: 999px;
+  border: 1px solid #6d584a;
+  color: #3e342d;
+  text-decoration: none;
+  font-size: 14px;
+  transition: all 0.2s ease;
+  background: transparent;
+  cursor: pointer;
+}
+
+.dash-btn-outline:hover{
+  background: #f3eee8;
+}
+
+@media (max-width: 900px){
+  .admin-message-grid{
+    grid-template-columns: 1fr;
+    gap: 0;
+  }
+
+  .admin-message-top{
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
+
+/* =========================
+   ADMIN REVIEWS PAGE
+========================= */
+    .review-stars{
+      color:#d8a25e;
+      font-size:15px;
+      letter-spacing:2px;
+      white-space:nowrap;
+    }
+
+    .review-comment{
+      min-width: 220px;
+      max-width: 360px;
+      line-height: 1.5;
+      word-break: break-word;
+      white-space: normal;
+    }
+
+    .dash-actions{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      align-items:center;
+    }
+
+    .dash-danger-btn{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      min-width:92px;
+      padding:8px 18px;
+      line-height:1;
+      box-sizing:border-box;
+      text-decoration:none;
+      appearance:none;
+      -webkit-appearance:none;
+      background:transparent;
+      color:#b42318;
+      border:1.5px solid #b42318;
+      border-radius:999px;
+      font-size:14px;
+      font-family:inherit;
+      cursor:pointer;
+      transition:.2s ease;
+    }
+
+    .dash-danger-btn:hover{
+      background:#b42318;
+      color:#fff;
+    }
+
+    .dash-msg{
+      padding: 12px 16px;
+      border-radius: 12px;
+      margin-bottom: 18px;
+      font-size: 14px;
+      border: 1px solid var(--border);
+    }
+
+    .dash-msg.success{
+      background: #eef9f0;
+      color: #1f7a35;
+      border-color: #cbe8d1;
+    }
+
+    .dash-msg.error{
+      background: #fff1f1;
+      color: #b42318;
+      border-color: #f3c7c7;
+    }
+
+    .review-type-badge{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      padding:5px 10px;
+      border-radius:999px;
+      background:rgba(212,197,186,0.35);
+      color:var(--secondary);
+      font-size:12px;
+      white-space:nowrap;
+    }
+
+    @media (max-width: 900px){
+      .review-comment{
+        min-width: 160px;
+        max-width: 100%;
+      }
+    }

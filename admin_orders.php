@@ -62,14 +62,20 @@ try {
 
       <aside class="dash-left">
         <div class="dash-hello">
-          <h3>Hello,</h3>
-          <p><?= htmlspecialchars($adminName) ?></p>
+          <h3>Hello <?= htmlspecialchars($adminName) ?>,</h3>
+          <p>Welcome back!</p>
         </div>
 
         <nav class="dash-menu">
           <a class="dash-link" href="admin_dashboard.php">
             <span class="dash-ico"><img src="assets/images/user.png" alt=""></span>
             <span>Dashboard</span>
+            <span class="dash-arrow">›</span>
+          </a>
+
+          <a class="dash-link" href="admin_messages.php">
+            <span class="dash-ico"><img src="assets/images/message.png" alt=""></span>
+            <span>Customer Messages</span>
             <span class="dash-arrow">›</span>
           </a>
 
@@ -100,6 +106,12 @@ try {
           <a class="dash-link" href="admin_returns.php">
             <span class="dash-ico"><img src="assets/images/return.png" alt=""></span>
             <span>Return Requests</span>
+            <span class="dash-arrow">›</span>
+          </a>
+
+          <a class="dash-link" href="admin_review.php">
+            <span class="dash-ico"><img src="assets/images/reviews.png" alt=""></span>
+            <span>Manage Reviews</span>
             <span class="dash-arrow">›</span>
           </a>
 

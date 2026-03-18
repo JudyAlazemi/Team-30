@@ -1,9 +1,10 @@
 <?php
+// Start session if not already started
 if (session_status() === PHP_SESSION_NONE) {
     require_once __DIR__ . "/backend/config/session.php";
-    require_once __DIR__ . "/backend/config/db.php";
 }
 
+// Include account layout
 require_once __DIR__ . "/includes/account_layout.php";
 $active = "dashboard";
 
@@ -14,16 +15,18 @@ if (!isset($_SESSION['user_id'])) {
 }
 
 // Set user data from session with proper fallbacks
-$userId = $_SESSION['user_id'] ?? 0;
+$userId = (int)($_SESSION['user_id'] ?? 0);
 $userName = $_SESSION['user_name'] ?? 'Customer';
-$userEmail = $_SESSION['user_email'] ?? ''; // Get email from session
+$userEmail = $_SESSION['user_email'] ?? '';
 $userPhone = $_SESSION['user_phone'] ?? 'Not added';
 
 // Initialize variables
 $totalOrders = 0;
 $pendingOrders = 0;
 $totalSpent = 0.0;
-$favCount = 0; // Initialize favorites count
+$favCount = 0;
+$messageCount = 0;
+$reviewCount = 0;
 $recentOrders = [];
 
 try {
@@ -44,9 +47,9 @@ try {
 
     // Get pending orders count
     $stmt = $conn->prepare("
-        SELECT COUNT(*) AS c 
-        FROM orders 
-        WHERE user_id = ? 
+        SELECT COUNT(*) AS c
+        FROM orders
+        WHERE user_id = ?
           AND LOWER(status) IN ('pending','processing')
     ");
     if ($stmt) {
@@ -67,7 +70,7 @@ try {
         $stmt->close();
     }
 
-    // Get favourites count (table name is `favourites`)
+    // Get favourites count
     $stmt = $conn->prepare("SELECT COUNT(*) AS c FROM favourites WHERE user_id = ?");
     if ($stmt) {
         $stmt->bind_param("i", $userId);
@@ -77,8 +80,57 @@ try {
         $stmt->close();
     }
 
+    // Get customer messages count
+    $checkMessagesTable = $conn->query("SHOW TABLES LIKE 'customer_messages'");
+    if ($checkMessagesTable && $checkMessagesTable->num_rows > 0) {
+        $stmt = $conn->prepare("SELECT COUNT(*) AS c FROM customer_messages WHERE user_id = ?");
+        if ($stmt) {
+            $stmt->bind_param("i", $userId);
+            $stmt->execute();
+            $result = $stmt->get_result();
+            $messageCount = (int)($result->fetch_assoc()['c'] ?? 0);
+            $stmt->close();
+        }
+    }
+
+    // Get total reviews count = product reviews + site reviews
+    $productReviewCount = 0;
+    $siteReviewCount = 0;
+
+    $checkReviewsTable = $conn->query("SHOW TABLES LIKE 'reviews'");
+    if ($checkReviewsTable && $checkReviewsTable->num_rows > 0) {
+        $stmt = $conn->prepare("SELECT COUNT(*) AS c FROM reviews WHERE user_id = ?");
+        if ($stmt) {
+            $stmt->bind_param("i", $userId);
+            $stmt->execute();
+            $result = $stmt->get_result();
+            $productReviewCount = (int)($result->fetch_assoc()['c'] ?? 0);
+            $stmt->close();
+        }
+    }
+
+    $checkSiteReviewsTable = $conn->query("SHOW TABLES LIKE 'site_reviews'");
+    if ($checkSiteReviewsTable && $checkSiteReviewsTable->num_rows > 0) {
+        $stmt = $conn->prepare("SELECT COUNT(*) AS c FROM site_reviews WHERE user_id = ?");
+        if ($stmt) {
+            $stmt->bind_param("i", $userId);
+            $stmt->execute();
+            $result = $stmt->get_result();
+            $siteReviewCount = (int)($result->fetch_assoc()['c'] ?? 0);
+            $stmt->close();
+        }
+    }
+
+    $reviewCount = $productReviewCount + $siteReviewCount;
+
     // Get recent orders
-    $stmt = $conn->prepare("SELECT id, total_amount, status, created_at FROM orders WHERE user_id = ? ORDER BY created_at DESC LIMIT 5");
+    $stmt = $conn->prepare("
+        SELECT id, total_amount, status, created_at
+        FROM orders
+        WHERE user_id = ?
+        ORDER BY created_at DESC
+        LIMIT 5
+    ");
     if ($stmt) {
         $stmt->bind_param("i", $userId);
         $stmt->execute();
@@ -88,7 +140,6 @@ try {
     }
 
 } catch (Exception $e) {
-    // Log error for debugging
     error_log("Dashboard error: " . $e->getMessage());
 }
 
@@ -106,7 +157,6 @@ if (empty($userEmail) && $userId > 0 && isset($conn) && !$conn->connect_error) {
             $result = $stmt->get_result();
             if ($row = $result->fetch_assoc()) {
                 $userEmail = $row['email'];
-                // Update session for future requests
                 $_SESSION['user_email'] = $userEmail;
             }
             $stmt->close();
@@ -123,12 +173,11 @@ if (empty($userEmail) && $userId > 0 && isset($conn) && !$conn->connect_error) {
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>Customer Dashboard</title>
 
- 
   <link rel="stylesheet" href="assets/css/style.css">
-  <link rel="stylesheet" href="assets/css/customer_dashboard.css">
+  <link rel="stylesheet" href="assets/css/customer_dashboard.css?v=<?= time() ?>">
   <link rel="stylesheet" href="assets/css/darkmode.css">
 
-
+  <script defer src="assets/js/nav.js"></script>
 
   <link rel="icon" type="image/png" href="assets/images/logo.png">
 </head>
@@ -137,11 +186,8 @@ if (empty($userEmail) && $userId > 0 && isset($conn) && !$conn->connect_error) {
 
 <?php include __DIR__ . "/partials/navigation.php"; ?>
 
-
 <div class="dash-page">
-
   <div class="dash-frame">
-
     <div class="dash-grid">
 
       <!-- LEFT COLUMN -->
@@ -178,12 +224,32 @@ if (empty($userEmail) && $userId > 0 && isset($conn) && !$conn->connect_error) {
             <span class="dash-arrow" aria-hidden="true">›</span>
           </a>
 
+          <a class="dash-link" href="customer_messages.php">
+            <span class="dash-ico"><img src="assets/images/message.png" alt=""></span>
+            <span>Messages</span>
+            <span class="dash-arrow">›</span>
+          </a>
+
+          <a class="dash-link" href="customer_review.php">
+            <span class="dash-ico"><img src="assets/images/reviews.png" alt=""></span>
+            <span>Reviews</span>
+            <span class="dash-arrow">›</span>
+          </a>
+
           <a class="dash-link" href="customer_security.php">
             <span class="dash-ico">
               <img src="assets/images/security-icon.png" alt="">
             </span>
             <span>Login &amp; Security</span>
             <span class="dash-arrow" aria-hidden="true">›</span>
+          </a>
+
+          <a class="dash-link" href="customer_logout.php">
+            <span class="dash-ico">
+              <img src="assets/images/settings.png" alt="">
+            </span>
+            <span>Logout</span>
+            <span class="dash-arrow">›</span>
           </a>
 
         </nav>
@@ -193,11 +259,9 @@ if (empty($userEmail) && $userId > 0 && isset($conn) && !$conn->connect_error) {
       <!-- RIGHT COLUMN -->
       <main class="dash-right">
 
-       <!-- <h1 class="dash-title">Hi <?= htmlspecialchars($userName) ?>,</h1> -->
-
         <div class="dash-rule"></div>
 
-        <!-- Stats row (3 small bars) -->
+        <!-- Stats row -->
         <div class="dash-bars">
           <div class="dash-bar">
             <div class="dash-bar-label">Total Orders</div>
@@ -213,15 +277,25 @@ if (empty($userEmail) && $userId > 0 && isset($conn) && !$conn->connect_error) {
             <div class="dash-bar-label">Favourites</div>
             <div class="dash-bar-value"><?= (int)$favCount ?></div>
           </div>
+
+          <div class="dash-bar">
+            <div class="dash-bar-label">Messages</div>
+            <div class="dash-bar-value"><?= (int)$messageCount ?></div>
+          </div>
+
+          <div class="dash-bar">
+            <div class="dash-bar-label">Reviews</div>
+            <div class="dash-bar-value"><?= (int)$reviewCount ?></div>
+          </div>
         </div>
 
-        <!-- Total spent (long bar) -->
+        <!-- Total spent -->
         <div class="dash-long">
           <div class="dash-long-label">Total Spent</div>
           <div class="dash-long-value">£<?= number_format((float)$totalSpent, 2) ?></div>
         </div>
 
-        <!-- Email + phone bars -->
+        <!-- Email + phone -->
         <div class="dash-two">
           <div class="dash-field">
             <div class="dash-field-label">Email</div>
@@ -234,7 +308,7 @@ if (empty($userEmail) && $userId > 0 && isset($conn) && !$conn->connect_error) {
           </div>
         </div>
 
-        <!-- Recent Orders (exact look: title left + view all right, then table text style) -->
+        <!-- Recent Orders -->
         <section class="dash-recent">
           <div class="dash-recent-head">
             <div>
@@ -272,10 +346,8 @@ if (empty($userEmail) && $userId > 0 && isset($conn) && !$conn->connect_error) {
   </div>
 </div>
 
-
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-  console.log('Dashboard CSS loaded');
   const badges = document.querySelectorAll('.dash-badge');
   badges.forEach(badge => {
     const status = badge.textContent.trim().toLowerCase();
