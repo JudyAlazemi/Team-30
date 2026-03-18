@@ -1,143 +1,184 @@
 <?php
-
-if (session_status() === PHP_SESSION_NONE) require_once __DIR__ . "/backend/config/session.php";
+if (session_status() === PHP_SESSION_NONE) {
+    require_once __DIR__ . "/backend/config/session.php";
+}
 
 /**
  * --------- ORDER API (POST JSON) ----------
  */
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-  header('Content-Type: application/json');
+    header('Content-Type: application/json');
 
-  //  DB include (tries common locations)
-  $dbCandidates = [
-    __DIR__ . "/backend/config/db.php",
-    __DIR__ . "/config/db.php",
-    __DIR__ . "/db.php",
-  ];
-  $dbLoaded = false;
-  foreach ($dbCandidates as $p) {
-    if (file_exists($p)) { require_once $p; $dbLoaded = true; break; }
-  }
-  if (!$dbLoaded || !isset($conn)) {
-    http_response_code(500);
-    echo json_encode(["ok" => false, "error" => "Database connection failed (db.php not found / $conn missing)"]);
-    exit;
-  }
+    $dbCandidates = [
+        __DIR__ . "/backend/config/db.php",
+        __DIR__ . "/config/db.php",
+        __DIR__ . "/db.php",
+    ];
 
-  //  must be logged in
-  if (empty($_SESSION['user_id'])) {
-    http_response_code(401);
-    echo json_encode(["ok" => false, "error" => "Please login first"]);
-    exit;
-  }
-  $userId = (int)$_SESSION['user_id'];
-
-  $raw = file_get_contents("php://input");
-  $data = json_decode($raw, true);
-
-  if (!is_array($data)) {
-    http_response_code(400);
-    echo json_encode(["ok" => false, "error" => "Invalid JSON body"]);
-    exit;
-  }
-
-  $items = $data['items'] ?? [];
-  $shippingMethod = $data['shipping_method'] ?? 'standard';
-
-  if (!is_array($items) || count($items) === 0) {
-    http_response_code(400);
-    echo json_encode(["ok" => false, "error" => "Cart is empty"]);
-    exit;
-  }
-
-  // Build requested list: productId => qty
-  $requested = [];
-  foreach ($items as $it) {
-    $pid = (int)($it['id'] ?? $it['product_id'] ?? 0);
-    $qty = (int)($it['qty'] ?? $it['quantity'] ?? 0);
-    if ($pid <= 0 || $qty <= 0) continue;
-    $requested[$pid] = ($requested[$pid] ?? 0) + $qty;
-  }
-
-  if (count($requested) === 0) {
-    http_response_code(400);
-    echo json_encode(["ok" => false, "error" => "Invalid cart items format"]);
-    exit;
-  }
-
-  try {
-    $conn->begin_transaction();
-
-    // Lock products and validate stock
-    $cleanItems = [];
-    $subtotal = 0.0;
-
-    foreach ($requested as $pid => $qty) {
-      $stmt = $conn->prepare("SELECT id, name, price, stock FROM products WHERE id = ? FOR UPDATE");
-      $stmt->bind_param("i", $pid);
-      $stmt->execute();
-      $p = $stmt->get_result()->fetch_assoc();
-
-      if (!$p) {
-        throw new Exception("Product #$pid not found");
-      }
-      if ((int)$p['stock'] < $qty) {
-        throw new Exception("Not enough stock for {$p['name']}");
-      }
-
-      $price = (float)$p['price'];
-      $subtotal += $price * $qty;
-      $cleanItems[] = ["product_id" => (int)$p['id'], "qty" => $qty, "price" => $price];
+    $dbLoaded = false;
+    foreach ($dbCandidates as $p) {
+        if (file_exists($p)) {
+            require_once $p;
+            $dbLoaded = true;
+            break;
+        }
     }
 
-    // Shipping + tax (same rules as your JS)
-    $shipping = ($subtotal >= 150) ? 0.0 : 10.0;
-    if ($shippingMethod === 'express') {
-      $shipping = ($subtotal >= 150) ? 0.0 : 20.0;
+    if (!$dbLoaded || !isset($conn)) {
+        http_response_code(500);
+        echo json_encode([
+            "ok" => false,
+            "error" => "Database connection failed"
+        ]);
+        exit;
     }
 
-    $tax = round($subtotal * 0.08, 2);
-    $total = round($subtotal + $shipping + $tax, 2);
-
-    // Insert order
-    $status = "processing";
-    $stmt = $conn->prepare("INSERT INTO orders (user_id, total_amount, status, created_at) VALUES (?, ?, ?, NOW())");
-    $stmt->bind_param("ids", $userId, $total, $status);
-    $stmt->execute();
-    $orderId = $stmt->insert_id;
-
-    // Insert items + update stock
-    $stmtItem = $conn->prepare("INSERT INTO order_items (order_id, product_id, quantity, price) VALUES (?, ?, ?, ?)");
-    $stmtStock = $conn->prepare("UPDATE products SET stock = stock - ? WHERE id = ?");
-
-    foreach ($cleanItems as $it) {
-      $pid = (int)$it['product_id'];
-      $qty = (int)$it['qty'];
-      $price = (float)$it['price'];
-
-      $stmtItem->bind_param("iiid", $orderId, $pid, $qty, $price);
-      $stmtItem->execute();
-
-      $stmtStock->bind_param("ii", $qty, $pid);
-      $stmtStock->execute();
+    if (empty($_SESSION['user_id'])) {
+        http_response_code(401);
+        echo json_encode([
+            "ok" => false,
+            "error" => "Please login first"
+        ]);
+        exit;
     }
 
-    $conn->commit();
+    $userId = (int) $_SESSION['user_id'];
 
-    // Clear server cart if you use it
-    if (isset($_SESSION['cart'])) $_SESSION['cart'] = [];
+    $raw = file_get_contents("php://input");
+    $data = json_decode($raw, true);
 
-    echo json_encode(["ok" => true, "order_id" => $orderId, "total" => $total]);
-    exit;
+    if (!is_array($data)) {
+        http_response_code(400);
+        echo json_encode([
+            "ok" => false,
+            "error" => "Invalid JSON body"
+        ]);
+        exit;
+    }
 
-  } catch (Exception $e) {
-    if (isset($conn)) $conn->rollback();
-    http_response_code(500);
-    echo json_encode(["ok" => false, "error" => $e->getMessage()]);
-    exit;
-  }
+    $items = $data['items'] ?? [];
+    $shippingMethod = $data['shipping_method'] ?? 'standard';
+
+    if (!is_array($items) || count($items) === 0) {
+        http_response_code(400);
+        echo json_encode([
+            "ok" => false,
+            "error" => "Cart is empty"
+        ]);
+        exit;
+    }
+
+    $requested = [];
+    foreach ($items as $it) {
+        $pid = (int) ($it['id'] ?? $it['product_id'] ?? 0);
+        $qty = (int) ($it['qty'] ?? $it['quantity'] ?? 0);
+
+        if ($pid <= 0 || $qty <= 0) {
+            continue;
+        }
+
+        $requested[$pid] = ($requested[$pid] ?? 0) + $qty;
+    }
+
+    if (count($requested) === 0) {
+        http_response_code(400);
+        echo json_encode([
+            "ok" => false,
+            "error" => "Invalid cart items format"
+        ]);
+        exit;
+    }
+
+    try {
+        $conn->begin_transaction();
+
+        $cleanItems = [];
+        $subtotal = 0.0;
+
+        foreach ($requested as $pid => $qty) {
+            $stmt = $conn->prepare("SELECT id, name, price, stock FROM products WHERE id = ? FOR UPDATE");
+            $stmt->bind_param("i", $pid);
+            $stmt->execute();
+            $p = $stmt->get_result()->fetch_assoc();
+            $stmt->close();
+
+            if (!$p) {
+                throw new Exception("Product #{$pid} not found");
+            }
+
+            if ((int)$p['stock'] < $qty) {
+                throw new Exception("Not enough stock for {$p['name']}");
+            }
+
+            $price = (float) $p['price'];
+            $subtotal += $price * $qty;
+
+            $cleanItems[] = [
+                "product_id" => (int) $p['id'],
+                "qty" => $qty,
+                "price" => $price
+            ];
+        }
+
+        $shipping = ($subtotal >= 150) ? 0.0 : 10.0;
+        if ($shippingMethod === 'express') {
+            $shipping = ($subtotal >= 150) ? 0.0 : 20.0;
+        }
+
+        $tax = round($subtotal * 0.08, 2);
+        $total = round($subtotal + $shipping + $tax, 2);
+
+        $status = "processing";
+        $stmt = $conn->prepare("INSERT INTO orders (user_id, total_amount, status, created_at) VALUES (?, ?, ?, NOW())");
+        $stmt->bind_param("ids", $userId, $total, $status);
+        $stmt->execute();
+        $orderId = $stmt->insert_id;
+        $stmt->close();
+
+        $stmtItem = $conn->prepare("INSERT INTO order_items (order_id, product_id, quantity, price) VALUES (?, ?, ?, ?)");
+        $stmtStock = $conn->prepare("UPDATE products SET stock = stock - ? WHERE id = ?");
+
+        foreach ($cleanItems as $it) {
+            $pid = (int) $it['product_id'];
+            $qty = (int) $it['qty'];
+            $price = (float) $it['price'];
+
+            $stmtItem->bind_param("iiid", $orderId, $pid, $qty, $price);
+            $stmtItem->execute();
+
+            $stmtStock->bind_param("ii", $qty, $pid);
+            $stmtStock->execute();
+        }
+
+        $stmtItem->close();
+        $stmtStock->close();
+
+        $conn->commit();
+
+        if (isset($_SESSION['cart'])) {
+            $_SESSION['cart'] = [];
+        }
+
+        echo json_encode([
+            "ok" => true,
+            "order_id" => $orderId,
+            "total" => $total
+        ]);
+        exit;
+
+    } catch (Exception $e) {
+        if (isset($conn)) {
+            $conn->rollback();
+        }
+
+        http_response_code(500);
+        echo json_encode([
+            "ok" => false,
+            "error" => $e->getMessage()
+        ]);
+        exit;
+    }
 }
-
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -147,7 +188,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   <title>Checkout - Sabil</title>
 
   <link rel="stylesheet" href="assets/css/style.css" />
-  <link rel="stylesheet" href="assets/css/darkmode.css">
 
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -195,6 +235,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       margin-bottom: 1rem;
       transition: opacity 0.3s;
     }
+
     .back-link:hover { opacity: 1; }
 
     .secure-badge {
@@ -211,6 +252,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       gap: 2rem;
       margin-top: 2rem;
     }
+
     @media (min-width: 1024px) {
       .grid { grid-template-columns: 2fr 1fr; }
     }
@@ -235,7 +277,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       .form-row.three-col { grid-template-columns: 1fr 1fr 1fr; }
     }
 
-    label { display: block; color: var(--color-primary); margin-bottom: 0.5rem; font-weight: 400; }
+    label {
+      display: block;
+      color: var(--color-primary);
+      margin-bottom: 0.5rem;
+      font-weight: 400;
+    }
 
     input, select {
       width: 100%;
@@ -266,15 +313,28 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       margin-bottom: 0.75rem;
       transition: all 0.3s;
     }
+
     .shipping-option:hover { opacity: 0.7; }
     .shipping-option.active { border-color: var(--color-secondary); }
     .shipping-option input[type="radio"] { width: auto; margin-right: 0.75rem; }
     .shipping-left { display: flex; align-items: center; }
 
-    .shipping-details p:first-child { color: var(--color-primary); font-weight: 400; }
-    .shipping-details p:last-child { color: var(--color-primary); opacity: 0.7; font-size: 0.875rem; }
+    .shipping-details p:first-child {
+      color: var(--color-primary);
+      font-weight: 400;
+    }
 
-    .payment-tabs { display: flex; gap: 1rem; margin-bottom: 1.5rem; }
+    .shipping-details p:last-child {
+      color: var(--color-primary);
+      opacity: 0.7;
+      font-size: 0.875rem;
+    }
+
+    .payment-tabs {
+      display: flex;
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+    }
 
     .payment-tab {
       flex: 1;
@@ -288,7 +348,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       font-weight: 500;
       transition: all 0.3s;
     }
-    .payment-tab.active { background-color: var(--color-secondary); color: white; }
+
+    .payment-tab.active {
+      background-color: var(--color-secondary);
+      color: white;
+    }
 
     .paypal-notice {
       padding: 1.5rem;
@@ -312,15 +376,34 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       margin-bottom: 1.5rem;
     }
 
-    .order-item { display: flex; justify-content: space-between; margin-bottom: 1rem; }
+    .order-item {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 1rem;
+      gap: 1rem;
+    }
+
     .order-item p:last-child { font-weight: 400; }
     .item-qty { opacity: 0.7; font-size: 0.875rem; }
 
-    .summary-row { display: flex; justify-content: space-between; margin-bottom: 1rem; }
+    .summary-row {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 1rem;
+    }
+
     .summary-row span:first-child { opacity: 0.7; }
 
-    .summary-total { border-top: 1px solid var(--color-secondary); padding-top: 1rem; margin-top: 1rem; }
-    .summary-total span { font-weight: 500; opacity: 1 !important; }
+    .summary-total {
+      border-top: 1px solid var(--color-secondary);
+      padding-top: 1rem;
+      margin-top: 1rem;
+    }
+
+    .summary-total span {
+      font-weight: 500;
+      opacity: 1 !important;
+    }
 
     .btn-primary {
       width: 100%;
@@ -335,10 +418,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       transition: opacity 0.3s;
       margin-bottom: 1rem;
     }
+
     .btn-primary:hover:not(:disabled) { opacity: 0.9; }
     .btn-primary:disabled { opacity: 0.5; cursor: not-allowed; }
 
-    .terms-text { text-align: center; opacity: 0.7; color: var(--color-primary); font-size: 0.875rem; }
+    .terms-text {
+      text-align: center;
+      opacity: 0.7;
+      color: var(--color-primary);
+      font-size: 0.875rem;
+    }
 
     .error-message {
       color: #dc2626;
@@ -357,33 +446,93 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       margin: 1rem 0;
       display: none;
     }
+
     .topbar .actions {
-    display: flex;
-    align-items: center;
-    gap: 18px;
+      display: flex;
+      align-items: center;
+      gap: 18px;
     }
 
     #accountNavSlot {
-    display: flex;
-    align-items: center;
-    gap: 16px;
-    white-space: nowrap;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      white-space: nowrap;
     }
 
     #accountNavSlot .action {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      text-decoration: none;
     }
   </style>
 </head>
 
 <body>
 
-<?php include __DIR__ . "/partials/navigation.php"; ?>
+  <header class="topbar">
+    <div class="topbar-inner">
+      <button class="icon-btn menu-toggle" aria-label="Open menu" aria-expanded="false">
+        <img class="icon icon--menu" src="assets/images/menu.png" alt="" />
+        <img class="icon icon--close" src="assets/images/close.png" alt="" />
+      </button>
 
-  <!-- PAGE -->
+      <a class="brand" href="index.php">
+        <img class="brand-logo" src="assets/images/logo.png" alt="Sabil" />
+      </a>
+
+      <nav class="actions" aria-label="Account & tools">
+        <div id="accountNavSlot"></div>
+
+        <div class="search-group">
+          <a id="searchBtn" class="action" href="#">
+            <img class="icon" src="assets/images/search.png" alt="Search" />
+          </a>
+          <input type="text" id="navSearchInput" class="nav-search-input" placeholder="Search..." />
+        </div>
+
+        <a id="favBtn" class="action" href="favourites.php" role="button" aria-pressed="false">
+          <img
+            id="favIcon"
+            class="icon"
+            src="assets/images/favorite.png"
+            alt="Favourite"
+            data-src-inactive="assets/images/favorite.png"
+            data-src-active="assets/images/favorite-shaded.png"
+          />
+        </a>
+
+        <a id="bagBtn" class="action" href="cart.php" role="button" aria-pressed="false">
+          <img
+            id="bagIcon"
+            class="icon"
+            src="assets/images/shopping-bag.png"
+            alt="Shopping bag"
+            data-src-inactive="assets/images/shopping-bag.png"
+            data-src-active="assets/images/shopping-bag-filled.png"
+          />
+        </a>
+      </nav>
+    </div>
+  </header>
+
+  <div id="menuDrawer" class="drawer" aria-hidden="true">
+    <div class="drawer__backdrop" data-close-drawer></div>
+    <aside class="drawer__panel" role="dialog" aria-modal="true" aria-label="Site menu">
+      <nav class="drawer__nav">
+        <a href="products.php">Shop all</a>
+        <a href="cart.php">Cart</a>
+        <a href="favourites.php">Favourites</a>
+        <a href="contactus.php">Contact us</a>
+        <a href="faq.php">FAQ</a>
+        <a href="aboutus.php">About us</a>
+        <a href="terms.php">Terms</a>
+        <a href="privacypolicy.php">Privacy Policy</a>
+      </nav>
+    </aside>
+  </div>
+
   <div class="container">
     <div class="header">
       <a href="cart.php" class="back-link">
@@ -425,6 +574,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
           <div class="form-section">
             <h2>Shipping Address</h2>
+
             <div class="form-row two-col">
               <div class="form-group">
                 <label for="firstName">First Name *</label>
@@ -475,7 +625,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
           <div class="form-section">
             <h2>Shipping Method</h2>
-            <div class="shipping-option active" onclick="selectShipping('standard')">
+
+            <div class="shipping-option active" onclick="selectShipping('standard', event)">
               <div class="shipping-left">
                 <input type="radio" name="shipping" value="standard" checked>
                 <div class="shipping-details">
@@ -486,7 +637,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
               <p>£10.00</p>
             </div>
 
-            <div class="shipping-option" onclick="selectShipping('express')">
+            <div class="shipping-option" onclick="selectShipping('express', event)">
               <div class="shipping-left">
                 <input type="radio" name="shipping" value="express">
                 <div class="shipping-details">
@@ -500,9 +651,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
           <div class="form-section">
             <h2>Payment Method</h2>
+
             <div class="payment-tabs">
-              <button type="button" class="payment-tab active" onclick="selectPayment('card')">Credit/Debit Card</button>
-              <button type="button" class="payment-tab" onclick="selectPayment('paypal')">PayPal</button>
+              <button type="button" class="payment-tab active" onclick="selectPayment('card', event)">Credit/Debit Card</button>
+              <button type="button" class="payment-tab" onclick="selectPayment('paypal', event)">PayPal</button>
             </div>
 
             <div id="card-payment">
@@ -510,10 +662,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <label for="cardNumber">Card Number *</label>
                 <input type="text" id="cardNumber" name="cardNumber" placeholder="1234 5678 9012 3456">
               </div>
+
               <div class="form-group">
                 <label for="cardName">Name on Card *</label>
                 <input type="text" id="cardName" name="cardName" placeholder="John Doe">
               </div>
+
               <div class="form-row two-col">
                 <div class="form-group">
                   <label for="expiry">Expiry Date *</label>
@@ -575,22 +729,38 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <!-- your footer -->
   </footer>
 
-  <!-- ✅ Load products only once -->
-  <script src="assets/js/products-data.js"></script>
+  <script src="products-data.php?v=<?= time() ?>"></script>
 
   <script>
-    function money(n) { return "£" + Number(n || 0).toFixed(2); }
+    function money(n) {
+      return "£" + Number(n || 0).toFixed(2);
+    }
 
-    // ✅ Navbar: show My Account if logged in
     async function updateNavbar() {
       const slot = document.getElementById('accountNavSlot');
       if (!slot) return;
 
       try {
-        const res = await fetch('check_login.php', { cache: 'no-store' });
+        const res = await fetch('check_login.php', {
+          cache: 'no-store',
+          credentials: 'same-origin'
+        });
+
+        if (!res.ok) throw new Error('Network response was not ok');
+
         const data = await res.json();
 
-        if (data.loggedIn) {
+        if (data.loggedIn && data.role === "admin") {
+          slot.innerHTML = `
+            <a class="action" href="admin_dashboard.php" role="button">
+              <img class="icon" src="assets/images/user.png" alt="My Account" />
+              <span class="action-text">My Account</span>
+            </a>
+            <a class="action" href="admin_logout.php" role="button">
+              <span class="action-text">Logout</span>
+            </a>
+          `;
+        } else if (data.loggedIn && data.role === "customer") {
           slot.innerHTML = `
             <a class="action" href="customer_dashboard.php" role="button">
               <img class="icon" src="assets/images/user.png" alt="My Account" />
@@ -609,7 +779,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
           `;
         }
       } catch (e) {
-        console.error("Navbar update failed:", e);
         slot.innerHTML = `
           <a class="action" href="login.html?redirect=checkout.php" role="button">
             <img class="icon" src="assets/images/sign-in.png" alt="Sign in" />
@@ -619,7 +788,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       }
     }
 
-    // Cart helpers
     function getLocalCart() {
       try {
         return JSON.parse(localStorage.getItem('cart')) || [];
@@ -633,25 +801,23 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       const cart = getLocalCart();
       const products = window.productsData || [];
 
-      const fullItems = cart.map(item => {
+      return cart.map(item => {
         const productId = item.id || item.product_id;
-        const product = products.find(p => p.id == productId);
+        const product = products.find(p => String(p.id) === String(productId));
         if (!product) return null;
 
-        const quantity = item.quantity || item.qty || 1;
+        const quantity = parseInt(item.quantity || item.qty || 1, 10);
 
         return {
-          id: product.id,
-          product_id: product.id,
+          id: parseInt(product.id, 10),
+          product_id: parseInt(product.id, 10),
           name: product.name,
-          price: product.price,
-          quantity,
+          price: parseFloat(product.price),
+          quantity: quantity,
           qty: quantity,
-          subtotal: product.price * quantity
+          subtotal: parseFloat(product.price) * quantity
         };
       }).filter(Boolean);
-
-      return fullItems;
     }
 
     function calculateTotals(items, shippingMethod = 'standard') {
@@ -659,6 +825,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       const shipping = subtotal >= 150 ? 0 : (shippingMethod === 'express' ? 20 : 10);
       const tax = subtotal * 0.08;
       const total = subtotal + shipping + tax;
+
       return { subtotal, shipping, tax, total };
     }
 
@@ -669,14 +836,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       const shippingEl = document.getElementById('shipping-cost');
       const taxEl = document.getElementById('tax');
       const totalEl = document.getElementById('total-cost');
+      const placeOrderBtn = document.getElementById('place-order-btn');
 
       if (items.length === 0) {
         itemsContainer.innerHTML = '<p style="text-align:center; padding:2rem;">Your cart is empty</p>';
-        document.getElementById('place-order-btn').disabled = true;
+        subtotalEl.textContent = money(0);
+        shippingEl.textContent = money(0);
+        taxEl.textContent = money(0);
+        totalEl.textContent = money(0);
+        placeOrderBtn.disabled = true;
         return;
       }
 
-      document.getElementById('place-order-btn').disabled = false;
+      placeOrderBtn.disabled = false;
 
       const shippingMethod = document.querySelector('input[name="shipping"]:checked')?.value || 'standard';
       const totals = calculateTotals(items, shippingMethod);
@@ -699,17 +871,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       window.currentTotals = totals;
     }
 
-    window.selectShipping = function () {
+    window.selectShipping = function(method, event) {
       document.querySelectorAll('.shipping-option').forEach(opt => opt.classList.remove('active'));
       event.currentTarget.classList.add('active');
+
       const radio = event.currentTarget.querySelector('input[type="radio"]');
-      if (radio) radio.checked = true;
+      if (radio) {
+        radio.checked = true;
+      }
+
       renderOrderSummary();
     };
 
-    window.selectPayment = function (method) {
+    window.selectPayment = function(method, event) {
       document.querySelectorAll('.payment-tab').forEach(tab => tab.classList.remove('active'));
       event.currentTarget.classList.add('active');
+
       document.getElementById('card-payment').style.display = method === 'card' ? 'block' : 'none';
       document.getElementById('paypal-payment').style.display = method === 'paypal' ? 'block' : 'none';
     };
@@ -768,33 +945,43 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
           }
         };
 
-        // ✅ now posts to checkout.php itself
         const response = await fetch('checkout.php', {
           method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          credentials: 'same-origin',
           body: JSON.stringify(orderData)
         });
 
-        const result = await response.json();
+        const text = await response.text();
+        let result = {};
 
-        if (result.ok) {
-          localStorage.removeItem('cart');
+        try {
+          result = JSON.parse(text);
+        } catch (e) {
+          throw new Error('Invalid server response: ' + text);
+        }
 
-          successDiv.innerHTML = `
-            <strong>Order placed successfully!</strong><br>
-            Order #${result.order_id}<br>
-            Total: ${money(result.total)}
-          `;
-          successDiv.style.display = 'block';
-
-          document.getElementById('checkout-form').style.display = 'none';
-
-          setTimeout(() => {
-            window.location.href = 'customer_orders.php';
-          }, 3000);
-        } else {
+        if (!response.ok || !result.ok) {
           throw new Error(result.error || 'Failed to place order');
         }
+
+        localStorage.removeItem('cart');
+
+        successDiv.innerHTML = `
+          <strong>Order placed successfully!</strong><br>
+          Order #${result.order_id}<br>
+          Total: ${money(result.total)}
+        `;
+        successDiv.style.display = 'block';
+
+        document.getElementById('checkout-form').style.display = 'none';
+
+        setTimeout(() => {
+          window.location.href = 'customer_orders.php';
+        }, 3000);
+
       } catch (error) {
         errorDiv.textContent = error.message;
         errorDiv.style.display = 'block';
@@ -805,8 +992,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     async function checkLogin() {
       try {
-        const response = await fetch('check_login.php', { cache: 'no-store' });
+        const response = await fetch('check_login.php', {
+          cache: 'no-store',
+          credentials: 'same-origin'
+        });
+
         const data = await response.json();
+
         if (!data.loggedIn) {
           alert('Please login to checkout');
           window.location.href = 'login.html?redirect=checkout.php';
@@ -822,7 +1014,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
       setTimeout(renderOrderSummary, 100);
 
-      document.getElementById('checkout-form').addEventListener('submit', function (e) {
+      document.getElementById('checkout-form').addEventListener('submit', function(e) {
         e.preventDefault();
         placeOrder();
       });

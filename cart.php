@@ -1,4 +1,5 @@
 <?php
+require_once __DIR__ . "/backend/config/db.php";
 require_once __DIR__ . "/backend/config/session.php";
 
 $isApi = isset($_GET['action']) || isset($_POST['action']);
@@ -470,55 +471,8 @@ if ($isApi) {
   </div>
 </div>
 
-<script src="assets/js/products-data.js"></script>
+<script src="products-data.php?v=<?= time() ?>"></script>
 <script src="assets/js/cart.js"></script>
 
-<script>
-  // ✅ Navbar (My Account + Logout / Sign in)
-  async function updateNavbar() {
-    const slot = document.getElementById('accountNavSlot');
-    if (!slot) return;
-
-    try {
-      const res = await fetch('check_login.php', { cache: 'no-store', credentials: 'same-origin' });
-      if (!res.ok) throw new Error('Network response was not ok');
-      const data = await res.json();
-
-      if (data.loggedIn) {
-        slot.innerHTML = `
-          <a class="action account" href="customer_dashboard.php" role="button"
-             style="display:inline-flex;align-items:center;gap:8px;text-decoration:none;margin-right:8px;">
-            <img class="icon" src="assets/images/user.png" alt="My Account" style="width:24px;height:24px;" />
-            <span class="action-text" style="color: var(--text-dark);">My Account</span>
-          </a>
-          <a class="action" href="logout.php" role="button"
-             style="display:inline-flex;align-items:center;gap:8px;text-decoration:none;">
-            <span class="action-text" style="color: var(--text-dark);">Logout</span>
-          </a>
-        `;
-      } else {
-        slot.innerHTML = `
-          <a class="action account" href="login.html" role="button"
-             style="display:inline-flex;align-items:center;gap:8px;text-decoration:none;">
-            <img class="icon" src="assets/images/sign-in.png" alt="Sign in" style="width:24px;height:24px;" />
-            <span class="action-text" style="color: var(--text-dark);">Sign in</span>
-          </a>
-        `;
-      }
-    } catch (e) {
-      slot.innerHTML = `
-        <a class="action account" href="login.html" role="button"
-           style="display:inline-flex;align-items:center;gap:8px;text-decoration:none;">
-          <img class="icon" src="assets/images/sign-in.png" alt="Sign in" style="width:24px;height:24px;" />
-          <span class="action-text" style="color: var(--text-dark);">Sign in</span>
-        </a>
-      `;
-    }
-  }
-
-  document.addEventListener('DOMContentLoaded', updateNavbar);
-  window.addEventListener('pageshow', updateNavbar);
-  setInterval(updateNavbar, 30000);
-</script>
 </body>
 </html>
