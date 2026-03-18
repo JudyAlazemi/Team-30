@@ -1,13 +1,11 @@
 <?php
-require_once __DIR__ . "/backend/config/session.php";
-require_once __DIR__ . "/backend/config/db.php";
-require_once __DIR__ . "/includes/account_layout.php";
 
-if (!isset($_SESSION['user_id'])) {
-  header("Location: login.html");
-  exit;
+
+if (session_status() === PHP_SESSION_NONE) {
+  require_once __DIR__ . "/backend/config/session.php";
 }
 
+require_once __DIR__ . "/includes/account_layout.php";
 $active = "security";
 
 // ✅ must be logged in
@@ -136,7 +134,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       }
     }
 
-    // ✅ change password
+    //  change password
     if ($action === 'change_password') {
       $current = post('current_password');
       $new     = post('new_password');
@@ -215,11 +213,32 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <span class="dash-arrow">›</span>
           </a>
 
+          <a class="dash-link" href="customer_messages.php">
+            <span class="dash-ico"><img src="assets/images/message.png" alt=""></span>
+            <span> Messages</span>
+            <span class="dash-arrow">›</span>
+          </a>
+
+          <a class="dash-link" href="customer_review.php">
+            <span class="dash-ico"><img src="assets/images/reviews.png"></span>
+            <span> Reviews</span>
+            <span class="dash-arrow">›</span>
+          </a>
+
           <a class="dash-link is-active" href="customer_security.php">
             <span class="dash-ico"><img src="assets/images/security-icon.png" alt=""></span>
             <span>Login &amp; Security</span>
             <span class="dash-arrow">›</span>
           </a>
+
+          <a class="dash-link" href="customer_logout.php">
+            <span class="dash-ico">
+                <img src="assets/images/settings.png" alt="">
+            </span>
+            <span>Logout</span>
+            <span class="dash-arrow">›</span>
+          </a>
+
         </nav>
       </aside>
 

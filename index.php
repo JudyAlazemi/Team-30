@@ -1,34 +1,37 @@
 <?php
 
 require_once __DIR__ . "/backend/config/session.php";
+
 if (file_exists(__DIR__ . "/backend/config/db.php")) {
     require_once __DIR__ . "/backend/config/db.php";
 }
+?>
 
-
+<?php
 $siteReviews = [];
 
+try {
+    $checkTable = $conn->query("SHOW TABLES LIKE 'site_reviews'");
+    if ($checkTable && $checkTable->num_rows > 0) {
 
-$siteStmt = $conn->prepare("
-    SELECT sr.rating, sr.comment, sr.created_at, sr.display_name
-    FROM site_reviews sr
-    ORDER BY sr.created_at DESC
-    LIMIT 6
-");
+        $sql = "
+            SELECT display_name, rating, comment, created_at
+            FROM site_reviews
+            ORDER BY created_at DESC
+            LIMIT 6
+        ";
 
+        $result = $conn->query($sql);
 
-
-if ($siteStmt) {
-    $siteStmt->execute();
-    $siteResult = $siteStmt->get_result();
-
-    while ($row = $siteResult->fetch_assoc()) {
-        $siteReviews[] = $row;
+        if ($result) {
+            while ($row = $result->fetch_assoc()) {
+                $siteReviews[] = $row;
+            }
+        }
     }
+} catch (Exception $e) {
+    $siteReviews = [];
 }
-
-
-
 ?>
 
 <!doctype html>
@@ -40,21 +43,14 @@ if ($siteStmt) {
     <link rel="stylesheet" href="assets/css/style.css" />
     <link rel="stylesheet" href="assets/css/darkmode.css">
 
-    <script defer src="assets/js/nav.js"></script>
     <script defer src="assets/js/home.js"></script>
     <script defer src="assets/js/newsletter.js"></script>
 
     <link rel="icon" type="image/png" href="assets/images/logo.png">
 </head>
 
-
-
-
-
 <body class="page-home">
-
 <?php include __DIR__ . "/partials/navigation.php"; ?>
-
 
 <!-- HERO SECTION -->
 <section class="hero">
@@ -79,27 +75,28 @@ if ($siteStmt) {
   </div>
 
   <!-- Track: grid on desktop, carousel on mobile -->
-  <div class="collection-track" id="collectionTrack">
-<article class="product-card" data-id="2">
-  <a href="productdetails.php?id=2" class="card-link">
-    <img src="assets/images/midnightoud.PNG" alt="Midnight Oud">
-    <h3 class="card-title">Midnight Oud</h3>
-  </a>
-</article>
+<div class="collection-track" id="collectionTrack">
+  <article class="product-card" data-id="2">
+    <a href="productdetails.php?id=2" class="card-link">
+      <img src="assets/images/midnightoud.PNG" alt="Midnight Oud">
+      <h3 class="card-title">Midnight Oud</h3>
+    </a>
+  </article>
 
-<article class="product-card" data-id="1">
-  <a href="productdetails.php?id=1" class="card-link">
-    <img src="assets/images/oceanmist.PNG" alt="Ocean Breeze">
-    <h3 class="card-title">Ocean Breeze</h3>
-  </a>
-</article>
+  <article class="product-card" data-id="1">
+    <a href="productdetails.php?id=1" class="card-link">
+      <img src="assets/images/oceanmist.PNG" alt="Ocean Breeze">
+      <h3 class="card-title">Ocean Breeze</h3>
+    </a>
+  </article>
 
-<article class="product-card" data-id="3">
-  <a href="productdetails.php?id=3" class="card-link">
-    <img src="assets/images/velvetmusk.JPEG" alt="Velvet Rose">
-    <h3 class="card-title">Velvet Rose</h3>
-  </a>
-</article>
+  <article class="product-card" data-id="3">
+    <a href="productdetails.php?id=3" class="card-link">
+      <img src="assets/images/velvetmusk.JPEG" alt="Velvet Rose">
+      <h3 class="card-title">Velvet Rose</h3>
+    </a>
+  </article>
+</div>
 
 
   </div>
@@ -125,32 +122,30 @@ if ($siteStmt) {
   </div>
 
   <!-- Track: grid on desktop, carousel on mobile -->
-  <div class="collection-track" id="signatureTrack">
+<div class="collection-track" id="signatureTrack">
   <article class="product-card" data-id="7">
-  <a href="productdetails.php?id=7" class="card-link">
-    <img src="assets/images/candle.png" alt="Vanilla Dream">
-    <h3 class="card-title">Vanilla Dream Candle</h3>
-  </a>
-</article>
+    <a href="productdetails.php?id=7" class="card-link">
+      <img src="assets/images/candle.png" alt="Vanilla Dream">
+      <h3 class="card-title">Vanilla Dream Candle</h3>
+    </a>
+  </article>
 
-<article class="product-card" data-id="8">
-  <a href="productdetails.php?id=8" class="card-link">
-    <img src="assets/images/candle.png" alt="Amber Woods">
-    <h3 class="card-title">Amber Woods Candle</h3>
-  </a>
-</article>
+  <article class="product-card" data-id="8">
+    <a href="productdetails.php?id=8" class="card-link">
+      <img src="assets/images/candle.png" alt="Amber Woods">
+      <h3 class="card-title">Amber Woods Candle</h3>
+    </a>
+  </article>
 
-<article class="product-card" data-id="9">
-  <a href="productdetails.php?id=9" class="card-link">
-    <img src="assets/images/candle.png" alt="Cherry Blossom">
-    <h3 class="card-title">Cherry Blossom Candle</h3>
-  </a>
-</article>
-
-
+  <article class="product-card" data-id="9">
+    <a href="productdetails.php?id=9" class="card-link">
+      <img src="assets/images/candle.png" alt="Cherry Blossom">
+      <h3 class="card-title">Cherry Blossom Candle</h3>
+    </a>
+  </article>
 </div>
 
-   
+</div>
 
   <!-- Mobile arrows -->
   <div class="carousel-arrows signature-arrows">
@@ -246,62 +241,103 @@ if ($siteStmt) {
       </button>
     </div>
 
-    <div class="home-review-form-wrapper" id="reviewFormWrapper" aria-hidden="true">
-<form class="home-review-form" action="submit_site_review.php" method="POST">         <div class="home-review-form-grid">
+<div class="home-review-form-wrapper" id="reviewFormWrapper" aria-hidden="true">
+  <form class="review-form" action="submit_site_review.php" method="POST">
+    <div class="home-review-form-grid">
 
-          <div class="home-form-row">
-            <label for="reviewName">Name</label>
-            <input
-            id="reviewName"
-            type="text"
-            value="<?= htmlspecialchars($_SESSION['name'] ?? '') ?>"
-            placeholder="Enter your name"
-            >
-          </div>
+      <div class="home-form-row">
+        <label for="reviewName">Name</label>
+        <input id="reviewName" type="text" name="display_name" placeholder="Enter your name">
+      </div>
 
-          <div class="home-form-row">
-            <label>Rating</label>
-            <div class="home-star-input" aria-label="Select a rating">
-<input type="radio" id="homeStar5" name="rating" value="5" required>
-              <label for="homeStar5" title="5 stars">★</label>
+      <div class="home-form-row">
+        <label>Rating</label>
+        <div class="home-star-input" aria-label="Select a rating">
+          <input type="radio" id="homeStar5" name="rating" value="5" required>
+          <label for="homeStar5" title="5 stars">★</label>
 
-<input type="radio" id="homeStar4" name="rating" value="4" >
-              <label for="homeStar4" title="4 stars">★</label>
+          <input type="radio" id="homeStar4" name="rating" value="4">
+          <label for="homeStar4" title="4 stars">★</label>
 
-<input type="radio" id="homeStar3" name="rating" value="3">
-              <label for="homeStar3" title="3 stars">★</label>
+          <input type="radio" id="homeStar3" name="rating" value="3">
+          <label for="homeStar3" title="3 stars">★</label>
 
-<input type="radio" id="homeStar2" name="rating" value="2">
-              <label for="homeStar2" title="2 stars">★</label>
+          <input type="radio" id="homeStar2" name="rating" value="2">
+          <label for="homeStar2" title="2 stars">★</label>
 
-<input type="radio" id="homeStar1" name="rating" value="1">
-              <label for="homeStar1" title="1 star">★</label>
-            </div>
-          </div>
-
-          <div class="home-form-row home-form-row--full">
-            <label for="reviewText">Your Review</label>
-            <textarea id="reviewText" name="comment" rows="4" placeholder="Write your review..." required></textarea>
-          </div>
-
+          <input type="radio" id="homeStar1" name="rating" value="1">
+          <label for="homeStar1" title="1 star">★</label>
         </div>
+      </div>
 
-        <div class="home-review-form-actions">
-<button type="submit" class="hero-btn home-submit-review-btn">Submit Review</button>        </div>
-      </form>
+      <div class="home-form-row home-form-row--full">
+        <label for="reviewText">Your Review</label>
+        <textarea id="reviewText" name="comment" rows="4" placeholder="Write your review..." required></textarea>
+      </div>
+
     </div>
 
+    <div class="home-review-form-actions">
+      <button type="submit" class="hero-btn home-submit-review-btn">Submit Review</button>
+    </div>
+  </form>
+</div>
+
+<?php if (isset($_GET['review_success'])): ?>
+  <p class="home-review-message home-review-message--success">
+    Your site review was submitted successfully.
+  </p>
+<?php endif; ?>
+
+<?php if (isset($_GET['review_error'])): ?>
+  <p class="home-review-message home-review-message--error">
+    Could not submit your review. Please make sure all fields are filled correctly.
+  </p>
+<?php endif; ?>
+
     <div class="home-reviews-grid">
-      <?php if (!empty($siteReviews)): ?>
-        <?php foreach ($siteReviews as $review): ?>
+
       <article class="home-review-card">
-        <h3 class="home-review-name"><?= htmlspecialchars($review['display_name']) ?></h3>
+        <h3 class="home-review-name">Sarah M.</h3>
+        <span class="home-review-date">04 Mar 2026</span>
+        <div class="home-review-stars">★★★★★</div>
+        <p class="home-review-text">
+          Beautiful fragrance and long lasting. The packaging also feels very premium.
+        </p>
+      </article>
+
+      <article class="home-review-card">
+        <h3 class="home-review-name">Layla A.</h3>
+        <span class="home-review-date">02 Mar 2026</span>
+        <div class="home-review-stars">★★★★☆</div>
+        <p class="home-review-text">
+          Very elegant scent and perfect for daily wear.
+        </p>
+      </article>
+
+      <article class="home-review-card">
+        <h3 class="home-review-name">Huda K.</h3>
+        <span class="home-review-date">28 Feb 2026</span>
+        <div class="home-review-stars">★★★★★</div>
+        <p class="home-review-text">
+          One of my favourite perfumes so far. Highly recommend!
+        </p>
+      </article>
+
+    </div>
+<?php if (!empty($siteReviews)): ?>
+  <div class="home-reviews-grid customer-review-grid">
+    <?php foreach ($siteReviews as $review): ?>
+      <article class="home-review-card customer-review-card">
+        <h3 class="home-review-name">
+          <?= htmlspecialchars(!empty($review['display_name']) ? $review['display_name'] : 'Customer') ?>
+        </h3>
 
         <span class="home-review-date">
-          <?= date("d M Y", strtotime($review['created_at'])) ?>
+          <?= !empty($review['created_at']) ? date("d M Y", strtotime($review['created_at'])) : '' ?>
         </span>
 
-        <div class="home-review-stars" aria-label="<?= (int)$review['rating'] ?> out of 5 stars">
+        <div class="home-review-stars">
           <?php for ($i = 1; $i <= 5; $i++): ?>
             <?= $i <= (int)$review['rating'] ? '★' : '☆' ?>
           <?php endfor; ?>
@@ -310,26 +346,17 @@ if ($siteStmt) {
         <p class="home-review-text">
           <?= htmlspecialchars($review['comment']) ?>
         </p>
-
-        
       </article>
     <?php endforeach; ?>
-  <?php else: ?>
-    <p class="no-reviews">No reviews yet.</p>
-  <?php endif; ?>
-</div>
-    </div>
+  </div>
+<?php endif; ?>
 
   </div>
 </section>
 
 
-
-
 <footer class="site-footer">
   <div class="footer-container">
-
-  
 
     <!-- Newsletter -->
     <div class="footer-newsletter">

@@ -1,7 +1,6 @@
 <?php
 require_once __DIR__ . "/backend/config/session.php";
 require_once __DIR__ . "/backend/config/db.php";
-require_once __DIR__ . "/includes/account_layout.php";
 
 if (!isset($_SESSION["user_id"])) {
     header("Location: login.html");
@@ -43,7 +42,7 @@ try {
 
   <link rel="stylesheet" href="assets/css/style.css">
   <link rel="stylesheet" href="assets/css/customer_dashboard.css?v=<?= time() ?>">
-  <script defer src="assets/js/nav.js"></script>
+  <link rel="stylesheet" href="assets/css/darkmode.css">
   <link rel="icon" type="image/png" href="assets/images/logo.png">
 </head>
 
@@ -80,11 +79,32 @@ try {
             <span class="dash-arrow">›</span>
           </a>
 
+          <a class="dash-link" href="customer_messages.php">
+            <span class="dash-ico"><img src="assets/images/message.png" alt=""></span>
+            <span> Messages</span>
+            <span class="dash-arrow">›</span>
+          </a>
+
+          <a class="dash-link" href="customer_review.php">
+            <span class="dash-ico"><img src="assets/images/reviews.png"></span>
+            <span> Reviews</span>
+            <span class="dash-arrow">›</span>
+          </a>
+
           <a class="dash-link" href="customer_security.php">
             <span class="dash-ico"><img src="assets/images/security-icon.png" alt=""></span>
             <span>Login &amp; Security</span>
             <span class="dash-arrow">›</span>
           </a>
+
+          <a class="dash-link" href="customer_logout.php">
+            <span class="dash-ico">
+                <img src="assets/images/settings.png" alt="">
+            </span>
+            <span>Logout</span>
+            <span class="dash-arrow">›</span>
+          </a>
+
         </nav>
       </aside>
 

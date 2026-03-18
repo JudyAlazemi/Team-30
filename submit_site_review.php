@@ -8,39 +8,57 @@ if (!isset($_SESSION['user_id'])) {
 }
 
 if ($_SERVER["REQUEST_METHOD"] !== "POST") {
-    header("Location: index.php");
+    header("Location: index.php#reviews");
     exit;
 }
 
-$userId = (int) $_SESSION['user_id'];
-$rating = isset($_POST['rating']) ? (int) $_POST['rating'] : 0;
-$comment = trim($_POST['comment'] ?? '');
+$userId = (int)($_SESSION['user_id'] ?? 0);
 $displayName = trim($_POST['display_name'] ?? '');
+$rating = (int)($_POST['rating'] ?? 0);
+$comment = trim($_POST['comment'] ?? '');
 
-if ($displayName === '') {
-    $displayName = $_SESSION['name'] ?? 'Anonymous';
-}
-
-if ($rating < 1 || $rating > 5 || $comment === '') {
-    header("Location: index.php?site_review_error=1#reviews");
+if ($userId <= 0) {
+    header("Location: login.html");
     exit;
 }
 
-$stmt = $conn->prepare("
-    INSERT INTO site_reviews (user_id, rating, comment, display_name)
-    VALUES (?, ?, ?, ?)
-");
-
-if (!$stmt) {
-    die("Prepare failed: " . $conn->error);
+/* fallback name */
+if ($displayName === '') {
+    $displayName = $_SESSION['user_name'] ?? $_SESSION['name'] ?? 'Anonymous';
 }
 
-$stmt->bind_param("iiss", $userId, $rating, $comment, $displayName);
-
-if (!$stmt->execute()) {
-    die("Execute failed: " . $stmt->error);
+/* validation */
+if ($rating < 1 || $rating > 5 || $comment === '') {
+    header("Location: index.php?review_error=1#reviews");
+    exit;
 }
 
-header("Location: index.php?site_review_success=1#reviews");
-exit;
-?>
+try {
+    /* optional: check table exists */
+    $checkTable = $conn->query("SHOW TABLES LIKE 'site_reviews'");
+    if (!$checkTable || $checkTable->num_rows === 0) {
+        header("Location: index.php?review_error=table#reviews");
+        exit;
+    }
+
+    $stmt = $conn->prepare("
+        INSERT INTO site_reviews (user_id, display_name, rating, comment)
+        VALUES (?, ?, ?, ?)
+    ");
+
+    if (!$stmt) {
+        header("Location: index.php?review_error=prepare#reviews");
+        exit;
+    }
+
+    $stmt->bind_param("isis", $userId, $displayName, $rating, $comment);
+    $stmt->execute();
+    $stmt->close();
+
+    header("Location: index.php?review_success=1#reviews");
+    exit;
+
+} catch (Exception $e) {
+    header("Location: index.php?review_error=server#reviews");
+    exit;
+}

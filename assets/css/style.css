@@ -1308,8 +1308,6 @@ body.drawer-open{ overflow: hidden; }
         grid-template-columns: 1fr;
     }
 }
-
-
 /* ===== HOME REVIEWS SECTION ===== */
 .home-reviews-section {
   padding: 90px 0;
@@ -1349,6 +1347,7 @@ body.drawer-open{ overflow: hidden; }
   place-items: center;
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.06);
   transition: transform 0.25s ease, box-shadow 0.25s ease;
+  flex-shrink: 0;
 }
 
 .home-add-review-btn:hover {
@@ -1365,6 +1364,7 @@ body.drawer-open{ overflow: hidden; }
   display: block;
 }
 
+.review-form,
 .home-review-form {
   background: var(--white);
   border: 1px solid var(--border);
@@ -1443,13 +1443,24 @@ body.drawer-open{ overflow: hidden; }
   color: #d8a25e;
 }
 
-.home-reviews-grid {
+/* BOTH GRIDS */
+.home-reviews-grid,
+.home-review-grid,
+.customer-review-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 28px;
+  align-items: stretch;
 }
 
-.home-review-card {
+/* CUSTOMER REVIEW GRID SPACING */
+.customer-review-grid {
+  margin-top: 28px;
+}
+
+/* REVIEW CARDS */
+.home-review-card,
+.customer-review-card {
   background: var(--white);
   border: 1px solid var(--border);
   border-radius: 26px;
@@ -1458,17 +1469,24 @@ body.drawer-open{ overflow: hidden; }
   box-shadow: 0 10px 24px rgba(0, 0, 0, 0.05);
   transition: transform 0.25s ease, box-shadow 0.25s ease;
   min-height: 280px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
 }
 
-.home-review-card:hover {
+.home-review-card:hover,
+.customer-review-card:hover {
   transform: translateY(-5px);
   box-shadow: 0 16px 30px rgba(0, 0, 0, 0.08);
 }
 
-.home-review-name {
+.home-review-name,
+.home-review-user {
   margin: 0;
   font-size: 2rem;
+  font-weight: 700;
   color: var(--text-dark);
+  line-height: 1.15;
 }
 
 .home-review-date {
@@ -1484,6 +1502,7 @@ body.drawer-open{ overflow: hidden; }
   font-size: 1.5rem;
   letter-spacing: 4px;
   color: #d8a25e;
+  line-height: 1;
 }
 
 .home-review-text {
@@ -1493,29 +1512,23 @@ body.drawer-open{ overflow: hidden; }
   font-size: 1rem;
 }
 
-@media (max-width: 992px) {
-  .home-reviews-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
+/* SUCCESS / ERROR MESSAGES */
+.home-review-message {
+  margin: 0 0 20px;
+  padding: 14px 18px;
+  border-radius: 14px;
+  font-weight: 600;
+  border: 1px solid var(--border);
 }
 
-@media (max-width: 640px) {
-  .home-reviews-header {
-    flex-direction: column;
-    align-items: flex-start;
-  }
+.home-review-message--success {
+  background: #edf8f0;
+  color: #1d6b35;
+}
 
-  .home-review-form-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .home-reviews-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .home-review-card {
-    text-align: left;
-  }
+.home-review-message--error {
+  background: #fff1f1;
+  color: #a33a3a;
 }
 
 /* ============================================================

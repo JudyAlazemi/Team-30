@@ -8,11 +8,9 @@ if (!isset($_SESSION["admin_logged_in"]) || $_SESSION["admin_logged_in"] !== tru
 }
 
 $adminName = $_SESSION["admin_name"] ?? "Admin";
-
 $orders = [];
 
 try {
-
     $sql = "
         SELECT 
             o.id,
@@ -34,181 +32,145 @@ try {
             $orders[] = $row;
         }
     }
-
 } catch (Exception $e) {
     $orders = [];
 }
 ?>
-
 <!doctype html>
 <html lang="en">
 <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Incoming Orders</title>
 
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Incoming Orders</title>
-
-<link rel="stylesheet" href="assets/css/style.css">
-<link rel="stylesheet" href="assets/css/admin_dashboard.css?v=<?= time() ?>">
-<link rel="stylesheet" href="assets/css/darkmode.css">
-
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="assets/css/admin_dashboard.css?v=<?= time() ?>">
+    <link rel="stylesheet" href="assets/css/darkmode.css">
 </head>
-
 <body class="account-page">
 
 <?php include __DIR__ . "/partials/navigation.php"; ?>
 
 <main class="dash-page">
+    <div class="dash-frame">
+        <div class="dash-grid">
 
-<div class="dash-frame">
+            <!-- Left Sidebar -->
+            <aside class="dash-left">
+                <div class="dash-hello">
+                    <h3>Hello <?= htmlspecialchars($adminName) ?>,</h3>
+                    <p>Welcome back!</p>
+                </div>
 
-<div class="dash-grid">
+                <nav class="dash-menu">
+                    <a class="dash-link" href="admin_dashboard.php">
+                        <span class="dash-ico"><img src="assets/images/user.png" alt="Dashboard"></span>
+                        <span>Dashboard</span>
+                        <span class="dash-arrow">›</span>
+                    </a>
 
+                    <a class="dash-link" href="admin_messages.php">
+                        <span class="dash-ico"><img src="assets/images/message.png" alt=""></span>
+                        <span>Customer Messages</span>
+                        <span class="dash-arrow">›</span>
+                    </a>
 
-<aside class="dash-left">
+                    <a class="dash-link" href="admin_orders.php">
+                        <span class="dash-ico"><img src="assets/images/processorder.png" alt="Process Orders"></span>
+                        <span>Process Orders</span>
+                        <span class="dash-arrow">›</span>
+                    </a>
 
-<div class="dash-hello">
-<h3>Hello</h3>
-<p><?= htmlspecialchars($adminName) ?></p>
-</div>
+                    <a class="dash-link" href="admin_users.php">
+                        <span class="dash-ico"><img src="assets/images/sign-in.png" alt="Customers"></span>
+                        <span>Customers</span>
+                        <span class="dash-arrow">›</span>
+                    </a>
 
+                    <a class="dash-link" href="admin_products.php">
+                        <span class="dash-ico"><img src="assets/images/inventory.png" alt="Inventory"></span>
+                        <span>Inventory</span>
+                        <span class="dash-arrow">›</span>
+                    </a>
 
-<nav class="dash-menu">
+                    <a class="dash-link is-active" href="incoming_orders.php">
+                        <span class="dash-ico"><img src="assets/images/incoming-order.png" alt="Incoming Orders"></span>
+                        <span>Incoming Orders</span>
+                        <span class="dash-arrow">›</span>
+                    </a>
 
-<a class="dash-link" href="admin_dashboard.php">
-<span class="dash-ico"><img src="assets/images/user.png"></span>
-<span>Dashboard</span>
-<span class="dash-arrow">›</span>
-</a>
+                    <a class="dash-link" href="admin_returns.php">
+                        <span class="dash-ico"><img src="assets/images/return.png" alt="Return Requests"></span>
+                        <span>Return Requests</span>
+                        <span class="dash-arrow">›</span>
+                    </a>
 
-<a class="dash-link" href="admin_orders.php">
-<span class="dash-ico"><img src="assets/images/processorder.png"></span>
-<span>Process Orders</span>
-<span class="dash-arrow">›</span>
-</a>
+                    <a class="dash-link" href="admin_review.php">
+                        <span class="dash-ico"><img src="assets/images/reviews.png" alt=""></span>
+                        <span>Manage Reviews</span>
+                        <span class="dash-arrow">›</span>
+                    </a>
 
-<a class="dash-link" href="admin_users.php">
-<span class="dash-ico"><img src="assets/images/sign-in.png"></span>
-<span>Customers</span>
-<span class="dash-arrow">›</span>
-</a>
+                    <a class="dash-link" href="admin_logout.php">
+                        <span class="dash-ico"><img src="assets/images/settings.png" alt="Logout"></span>
+                        <span>Logout</span>
+                        <span class="dash-arrow">›</span>
+                    </a>
+                </nav>
+            </aside>
 
-<a class="dash-link" href="admin_products.php">
-<span class="dash-ico"><img src="assets/images/inventory.png"></span>
-<span>Inventory</span>
-<span class="dash-arrow">›</span>
-</a>
+            <!-- Right Content -->
+            <section class="dash-right">
+                <h1 class="dash-title">Incoming Orders</h1>
+                <hr class="dash-rule">
 
-<a class="dash-link is-active" href="incoming_orders.php">
-<span class="dash-ico"><img src="assets/images/incoming-order.png"></span>
-<span>Incoming Orders</span>
-<span class="dash-arrow">›</span>
-</a>
+                <?php if (empty($orders)): ?>
+                    <p class="dash-empty">No new orders.</p>
+                <?php else: ?>
+                    <div class="dash-table-wrap">
+                        <table class="dash-table">
+                            <thead>
+                                <tr>
+                                    <th>Order ID</th>
+                                    <th>Customer</th>
+                                    <th>Email</th>
+                                    <th>Total</th>
+                                    <th>Status</th>
+                                    <th>Action</th>
+                                    <th>Date</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php foreach ($orders as $order): ?>
+                                    <tr>
+                                        <td>#<?= (int)$order["id"] ?></td>
+                                        <td><?= htmlspecialchars($order["customer_name"] ?? "Customer") ?></td>
+                                        <td><?= htmlspecialchars($order["customer_email"] ?? "No email") ?></td>
+                                        <td>£<?= number_format((float)$order["total_amount"], 2) ?></td>
+                                        <td><?= htmlspecialchars(ucfirst($order["status"])) ?></td>
+                                        <td>
+                                            <form action="update_order_status.php" method="POST" class="order-status-form">
+                                                <input type="hidden" name="order_id" value="<?= (int)$order["id"] ?>">
 
-<a class="dash-link" href="admin_returns.php">
-<span class="dash-ico"><img src="assets/images/return.png"></span>
-<span>Return Requests</span>
-<span class="dash-arrow">›</span>
-</a>
+                                                <select name="status" required>
+                                                    <option value="processing">Accept</option>
+                                                    <option value="cancelled">Reject</option>
+                                                </select>
 
-<a class="dash-link" href="admin_logout.php">
-<span class="dash-ico"><img src="assets/images/settings.png"></span>
-<span>Logout</span>
-<span class="dash-arrow">›</span>
-</a>
+                                                <button type="submit" class="dash-back">Update</button>
+                                            </form>
+                                        </td>
+                                        <td><?= htmlspecialchars($order["created_at"]) ?></td>
+                                    </tr>
+                                <?php endforeach; ?>
+                            </tbody>
+                        </table>
+                    </div>
+                <?php endif; ?>
+            </section>
 
-</nav>
-
-</aside>
-
-
-<section class="dash-right">
-
-<h1 class="dash-title">Incoming Orders</h1>
-
-<hr class="dash-rule">
-
-
-<?php if (empty($orders)): ?>
-
-<p class="dash-empty">No new orders.</p>
-
-<?php else: ?>
-
-
-<div class="dash-table-wrap">
-
-<table class="dash-table">
-
-<thead>
-
-<tr>
-<th>Order ID</th>
-<th>Customer</th>
-<th>Email</th>
-<th>Total</th>
-<th>Status</th>
-<th>Action</th>
-<th>Date</th>
-</tr>
-
-</thead>
-
-<tbody>
-
-<?php foreach ($orders as $order): ?>
-
-<tr>
-
-<td>#<?= $order["id"] ?></td>
-
-<td><?= htmlspecialchars($order["customer_name"] ?? "Customer") ?></td>
-
-<td><?= htmlspecialchars($order["customer_email"] ?? "") ?></td>
-
-<td>£<?= number_format($order["total_amount"],2) ?></td>
-
-<td><?= htmlspecialchars($order["status"]) ?></td>
-
-<td>
-
-<form action="update_order_status.php" method="POST">
-
-<input type="hidden" name="order_id" value="<?= $order["id"] ?>">
-
-<select name="status">
-
-<option value="processing">Accept</option>
-<option value="cancelled">Reject</option>
-
-</select>
-
-<button type="submit" class="dash-back">Update</button>
-
-</form>
-
-</td>
-
-<td><?= $order["created_at"] ?></td>
-
-</tr>
-
-<?php endforeach; ?>
-
-</tbody>
-
-</table>
-
-</div>
-
-<?php endif; ?>
-
-</section>
-
-</div>
-
-</div>
-
+        </div>
+    </div>
 </main>
 
 </body>
