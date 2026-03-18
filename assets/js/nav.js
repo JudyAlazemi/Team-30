@@ -33,49 +33,51 @@ document.addEventListener('keydown', (e) => {
   if (e.key === 'Escape' && menuDrawer?.classList.contains('is-open')) closeDrawer();
 });
 
-// USER BUTTON LOGIC (session-based)
+// USER BUTTON LOGIC
 (function () {
-  const $ = (sel) => document.querySelector(sel);
-
-  const userBtn  = $("#userBtn");
-  const userIcon = $("#userIcon");
-  const userText = $("#userText");
+  const userBtn  = document.getElementById("userBtn");
+  const userIcon = document.getElementById("userIcon");
+  const userText = document.getElementById("userText");
 
   function setIcon(imgEl, active) {
     if (!imgEl) return;
     imgEl.src = active ? imgEl.dataset.srcActive : imgEl.dataset.srcInactive;
   }
 
-  async function updateUserUI() {
+  function applyUserUI(role) {
     if (!userBtn || !userIcon || !userText) return;
 
-    try {
-      const res = await fetch("check_login.php", {
-        cache: "no-store",
-        credentials: "same-origin"
-      });
-      const data = await res.json();
-
-      if (data.loggedIn) {
-        userBtn.href = "customer_dashboard.php";
-        userText.textContent = "My Account";
-        userBtn.setAttribute("aria-pressed", "true");
-        setIcon(userIcon, true);
-      } else {
-        userBtn.href = "login.html";
-        userText.textContent = "Sign in";
-        userBtn.setAttribute("aria-pressed", "false");
-        setIcon(userIcon, false);
-      }
-    } catch (err) {
-      userBtn.href = "login.html";
-      userText.textContent = "Sign in";
-      userBtn.setAttribute("aria-pressed", "false");
-      setIcon(userIcon, false);
+    if (role === "admin") {
+      userBtn.href = "admin_dashboard.php";
+      userText.textContent = "Admin Panel";
+      userBtn.setAttribute("aria-pressed", "true");
+      userBtn.dataset.role = "admin";
+      setIcon(userIcon, true);
+      return;
     }
+
+    if (role === "customer") {
+      userBtn.href = "customer_dashboard.php";
+      userText.textContent = "My Account";
+      userBtn.setAttribute("aria-pressed", "true");
+      userBtn.dataset.role = "customer";
+      setIcon(userIcon, true);
+      return;
+    }
+
+    userBtn.href = "login.html";
+    userText.textContent = "Sign in";
+    userBtn.setAttribute("aria-pressed", "false");
+    userBtn.dataset.role = "guest";
+    setIcon(userIcon, false);
   }
 
-  updateUserUI();
+  const roleFromServer =
+    window.userData && window.userData.role
+      ? window.userData.role
+      : (userBtn?.dataset.role || "guest");
+
+  applyUserUI(roleFromServer);
 })();
 
 // --- SEARCH SLIDE-IN ---
@@ -142,13 +144,10 @@ document.addEventListener("click", () => {
   });
 })();
 
-/// FAVOURITES LINK (heart icon + drawer menu link) ✅ always correct, even if clicked fast
+/// FAVOURITES LINK (heart icon + drawer menu link)
 (function () {
   const favBtn  = document.getElementById("favBtn");
   const favIcon = document.getElementById("favIcon");
-
-  // track state so click can redirect correctly
-  let loginState = null; // null = unknown, true/false = known
 
   function getDrawerFavLinks() {
     return document.querySelectorAll(
@@ -172,6 +171,7 @@ document.addEventListener("click", () => {
     getDrawerFavLinks().forEach(a => a.href = targetHref);
   }
 
+  // Check login state for favourites
   async function updateFavLinks() {
     try {
       const res = await fetch("check_login.php", {
@@ -179,41 +179,28 @@ document.addEventListener("click", () => {
         credentials: "same-origin"
       });
       const data = await res.json();
-
-      loginState = !!data.loggedIn;
-      applyFavUI(loginState);
-      return loginState;
+      
+      applyFavUI(!!data.loggedIn);
+      return !!data.loggedIn;
     } catch (err) {
-      loginState = false; // safest fallback
       applyFavUI(false);
       return false;
     }
   }
 
-  // ✅ IMPORTANT: intercept click so it never goes to the wrong page
   if (favBtn) {
     favBtn.addEventListener("click", async (e) => {
-      // if state not ready yet, prevent wrong navigation and redirect correctly
-      if (loginState === null) {
-        e.preventDefault();
-        const loggedIn = await updateFavLinks();
-        window.location.href = loggedIn ? "customer_favourites.php" : "favourites.php";
-        return;
-      }
-
-      // if state known, force correct href just before navigating
-      favBtn.href = loginState ? "customer_favourites.php" : "favourites.php";
+      e.preventDefault();
+      const loggedIn = await updateFavLinks();
+      window.location.href = loggedIn ? "customer_favourites.php" : "favourites.php";
     });
   }
 
-  // run on load + when coming back (bfcache)
+  // Initial load
   if (document.readyState === "loading") {
     document.addEventListener("DOMContentLoaded", updateFavLinks);
   } else {
     updateFavLinks();
   }
   window.addEventListener("pageshow", updateFavLinks);
-
-  // optional: allow manual refresh
-  window.updateFavButton = updateFavLinks;
 })();
