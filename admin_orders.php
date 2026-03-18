@@ -105,7 +105,7 @@ try {
           </a>
 
           <a class="dash-link" href="admin_logout.php">
-            <span class="dash-ico"><img src="assets/images/sign-in.png" alt=""></span>
+            <span class="dash-ico"><img src="assets/images/settings.png" alt=""></span>
             <span>Logout</span>
             <span class="dash-arrow">›</span>
           </a>
