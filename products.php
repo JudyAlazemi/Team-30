@@ -8,17 +8,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sabil - Our Collection</title>
     <link rel="stylesheet" href="assets/css/style.css">
-    <link rel="stylesheet" href="assets/css/darkmode.css?v=<?= time() ?>">
     <link rel="icon" type="image/png" href="assets/images/logo.png">
+    <script defer src="assets/js/nav.js"></script>
     <script defer src="assets/js/home.js"></script>
     <script defer src="assets/js/newsletter.js"></script>
     <link rel="stylesheet" href="assets/css/globals.css">
-    <link rel="stylesheet" href="assets/css/customer_dashboard.css?v=<?= time() ?>">    
     <link rel="stylesheet" href="assets/css/product.css">
+    <link rel="stylesheet" href="assets/css/darkmode.css">
 </head>
 <body class="page-product">
 
-<?php include __DIR__ . "/partials/navigation.php"; ?>
+ <?php include __DIR__ . "/partials/navigation.php"; ?>
 
   <!--fonts -->
   <link rel="preload" href="fonts/MeshedDisplay-Regular.ttf" as="font" type="font/ttf" crossorigin>
@@ -315,6 +315,7 @@
 
       <!-- Column 2 -->
       <div class="footer-links">
+    
         <a href="products.php">Order</a>
         <a href="cart.php">Shopping Cart</a>
         <a href="favourites.php">Favourites</a>
@@ -326,67 +327,56 @@
     </div>
   </footer>
 
-  <script src="products-data.php?v=<?= time() ?>"></script>
+  <script src="assets/js/products-data.js?v=2"></script>
   <script src="assets/js/product.js?v=2"></script>
   <script src="assets/js/wire-products-lite.js?v=2"></script>
   <script src="assets/js/render-product.js?v=2"></script>
 
   <script>
       function money(n) { return "£" + Number(n || 0).toFixed(2); }
+
       async function updateNavbar() {
-          const slot = document.getElementById('accountNavSlot');
-          if (!slot) return;
+        const slot = document.getElementById('accountNavSlot');
+        if (!slot) return;
 
-          try {
-            const res = await fetch('check_login.php', {
-              cache: 'no-store',
-              credentials: 'same-origin'
-            });
+        try {
+          const res = await fetch('check_login.php', {
+            cache: 'no-store',
+            credentials: 'same-origin'
+          });
 
-            if (!res.ok) throw new Error('Network response was not ok');
+          if (!res.ok) throw new Error('Network response was not ok');
 
-            const data = await res.json();
+          const data = await res.json();
 
-            if (data.loggedIn && data.role === "admin") {
-              slot.innerHTML = `
-                <div class="account-links">
-                  <a class="action account" href="admin_dashboard.php" role="button">
-                    <img class="icon" src="assets/images/user.png" alt="Admin Panel" />
-                    <span class="action-text">My Account</span>
-                  </a>
-
-                  <a class="action logout-link" href="admin_logout.php" role="button">
-                    <span class="action-text">Logout</span>
-                  </a>
-                </div>
-              `;
-            } else if (data.loggedIn && data.role === "customer") {
-              slot.innerHTML = `
-                <div class="account-links">
-                  <a class="action account" href="customer_dashboard.php" role="button">
-                    <img class="icon" src="assets/images/user.png" alt="My Account" />
-                    <span class="action-text">My Account</span>
-                  </a>
-
-                  <a class="action logout-link" href="logout.php" role="button">
-                    <span class="action-text">Logout</span>
-                  </a>
-                </div>
-              `;
-            } else {
-              slot.innerHTML = `
-                <div class="account-links">
-                  <a class="action account" href="login.html" role="button">
-                    <img class="icon" src="assets/images/sign-in.png" alt="Sign in" />
-                    <span class="action-text">Sign in</span>
-                  </a>
-                </div>
-              `;
-            }
-          } catch (e) {
-            console.error("Navbar update failed:", e);
+          if (data.loggedIn) {
+            slot.innerHTML = `
+              <a class="action account" href="customer_dashboard.php" role="button" style="display: inline-flex; align-items: center; gap: 8px; text-decoration: none; margin-right: 8px;">
+                <img class="icon" src="assets/images/user.png" alt="My Account" style="width: 24px; height: 24px;" />
+                <span class="action-text" style="color: var(--text-dark);">My Account</span>
+              </a>
+              <a class="action" href="logout.php" role="button" style="display: inline-flex; align-items: center; gap: 8px; text-decoration: none;">
+                <span class="action-text" style="color: var(--text-dark);">Logout</span>
+              </a>
+            `;
+          } else {
+            slot.innerHTML = `
+              <a class="action account" href="login.html" role="button" style="display: inline-flex; align-items: center; gap: 8px; text-decoration: none;">
+                <img class="icon" src="assets/images/sign-in.png" alt="Sign in" style="width: 24px; height: 24px;" />
+                <span class="action-text" style="color: var(--text-dark);">Sign in</span>
+              </a>
+            `;
           }
+        } catch (e) {
+          console.error("Navbar update failed:", e);
+          slot.innerHTML = `
+            <a class="action account" href="login.html" role="button" style="display: inline-flex; align-items: center; gap: 8px; text-decoration: none;">
+              <img class="icon" src="assets/images/user.png" alt="Sign in" style="width: 24px; height: 24px;" />
+              <span class="action-text" style="color: var(--text-dark);">Sign in</span>
+            </a>
+          `;
         }
+      }
 
       document.addEventListener('DOMContentLoaded', updateNavbar);
       window.addEventListener('pageshow', updateNavbar);

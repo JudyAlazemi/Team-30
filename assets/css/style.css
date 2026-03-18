@@ -347,13 +347,32 @@ body.darkmode #theme-switch svg:last-child { display: inline; }        /* sun */
 .menu-toggle.is-open .icon--close{ opacity:1; transform: rotate(0deg) scale(1); }
 
 /* Logo (center) */
-.brand{  text-decoration:none; }
+.brand{  text-decoration:none;
+ }
 .brand-logo{
   display: block;
   height: 64px;
  width: auto;
  padding: 0;
          
+}
+
+/*  light mode */
+.brand-logo--default{
+  display: block;
+}
+
+.brand-logo--light{
+  display: none;
+}
+
+/* dark mode switch */
+body.darkmode .brand-logo--default{
+  display: none !important;
+}
+
+body.darkmode .brand-logo--light{
+  display: block !important;
 }
 
 .actions{
