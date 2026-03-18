@@ -1,0 +1,121 @@
+<?php
+require_once __DIR__ . "/backend/config/session.php";
+require_once __DIR__ . "/backend/config/db.php";
+
+if (!isset($_SESSION["admin_logged_in"]) || $_SESSION["admin_logged_in"] !== true) {
+    header("Location: admin_login.php");
+    exit;
+}
+
+$productId = (int)($_GET['id'] ?? 0);
+if ($productId <= 0) {
+    header("Location: admin_products.php");
+    exit;
+}
+
+$product = null;
+$categories = [];
+
+$stmt = $conn->prepare("
+    SELECT id, name, description, price, stock, image_url, category_id
+    FROM products
+    WHERE id = ?
+");
+$stmt->bind_param("i", $productId);
+$stmt->execute();
+$result = $stmt->get_result();
+$product = $result->fetch_assoc();
+$stmt->close();
+
+if (!$product) {
+    header("Location: admin_products.php");
+    exit;
+}
+
+$result = $conn->query("SELECT id, name FROM categories ORDER BY name ASC");
+if ($result) {
+    while ($row = $result->fetch_assoc()) {
+        $categories[] = $row;
+    }
+}
+?>
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Edit Product</title>
+  <link rel="stylesheet" href="assets/css/style.css">
+  <link rel="stylesheet" href="assets/css/admin_dashboard.css?v=<?= time() ?>">
+</head>
+<body class="account-page">
+  
+<?php include __DIR__ . "/partials/navigation.php"; ?>
+
+<main class="dash-page">
+  <div class="dash-frame">
+    <div class="dash-grid">
+      <aside class="dash-left">
+        <div class="dash-hello">
+          <h3>Hello,</h3>
+          <p><?= htmlspecialchars($_SESSION["admin_name"] ?? "Admin") ?></p>
+        </div>
+      </aside>
+
+      <section class="dash-right">
+        <h1 class="dash-title">Edit Product</h1>
+        <hr class="dash-rule">
+
+        <div class="dash-section">
+          <form method="POST" action="update_product.php" class="admin-edit-form">
+            <input type="hidden" name="product_id" value="<?= (int)$product['id'] ?>">
+
+            <div class="admin-form-group">
+              <label>Name</label>
+              <input type="text" name="name" value="<?= htmlspecialchars($product['name']) ?>" required>
+            </div>
+
+            <div class="admin-form-group">
+              <label>Description</label>
+              <textarea name="description" required><?= htmlspecialchars($product['description']) ?></textarea>
+            </div>
+
+            <div class="admin-form-group">
+              <label>Price</label>
+              <input type="number" step="0.01" min="0" name="price" value="<?= htmlspecialchars($product['price']) ?>" required>
+            </div>
+
+            <div class="admin-form-group">
+              <label>Stock</label>
+              <input type="number" min="0" name="stock" value="<?= (int)$product['stock'] ?>" required>
+            </div>
+
+            <div class="admin-form-group">
+              <label>Image URL</label>
+              <input type="text" name="image_url" value="<?= htmlspecialchars($product['image_url']) ?>" required>
+            </div>
+
+            <div class="admin-form-group">
+              <label>Category</label>
+              <select name="category_id" required>
+                <?php foreach ($categories as $cat): ?>
+                  <option value="<?= (int)$cat['id'] ?>" <?= (int)$product['category_id'] === (int)$cat['id'] ? 'selected' : '' ?>>
+                    <?= htmlspecialchars($cat['name']) ?>
+                  </option>
+                <?php endforeach; ?>
+              </select>
+            </div>
+
+            <div class="dash-actions">
+              <button type="submit" class="dash-back">Update Product</button>
+              <a href="admin_products.php" class="dash-secondary-btn">Back</a>
+            </div>
+          </form>
+        </div>
+      </section>
+    </div>
+  </div>
+</main>
+
+</body>
+</html>

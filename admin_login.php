@@ -31,15 +31,20 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             } elseif ($admin["approval_status"] === "rejected") {
                 $error = "Your admin registration has been rejected.";
             } else {
+                // Clear old customer session data
+                unset($_SESSION["user_id"]);
+                unset($_SESSION["user_name"]);
+                unset($_SESSION["user_email"]);
+                unset($_SESSION["user_phone"]);
+
+                // Set admin session data
                 $_SESSION["admin_id"] = (int)$admin["id"];
                 $_SESSION["admin_name"] = $admin["name"];
                 $_SESSION["admin_email"] = $admin["email"];
                 $_SESSION["admin_logged_in"] = true;
 
-                if ((int)$admin["must_change_password"] === 1) {
-                    header("Location: admin_dashboard.php");
-                    exit;
-                }
+                // Optional but recommended
+                session_regenerate_id(true);
 
                 header("Location: admin_dashboard.php");
                 exit;
@@ -61,8 +66,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     <script src="assets/js/auth.js" defer></script>
     <link rel="stylesheet" href="assets/css/style.css" />
     <link rel="stylesheet" href="assets/css/darkmode.css">
-
-    <script defer src="assets/js/nav.js"></script>
+    
     <script defer src="assets/js/home.js"></script>
     <script defer src="assets/js/newsletter.js"></script>
 
@@ -70,61 +74,14 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 </head>
 
 <body class="page-home">
-<header class="topbar">
-  <div class="topbar-inner">
 
-    <button class="icon-btn menu-toggle" aria-label="Open menu" aria-expanded="false">
-      <img class="icon icon--menu" src="assets/images/menu.png" alt="" />
-      <img class="icon icon--close" src="assets/images/close.png" alt="" />
-    </button>
-
-    <a class="brand" href="index.php">
-      <img class="brand-logo" src="assets/images/logo.png" alt="Sabil" />
-    </a>
-
-    <nav class="actions" aria-label="Account & tools">
-      <a id="userBtn" class="action" href="admin_login.php" role="button">
-        <img
-          id="userIcon"
-          class="icon"
-          src="assets/images/sign-in.png"
-          alt="User"
-        />
-        <span id="userText" class="action-text">Admin Sign in</span>
-      </a>
-
-      <div class="search-group">
-        <a id="searchBtn" class="action" href="#">
-          <img class="icon" src="assets/images/search.png" alt="Search" />
-        </a>
-        <input
-          type="text"
-          id="navSearchInput"
-          class="nav-search-input"
-          placeholder="Search..."
-        />
-      </div>
-    </nav>
-  </div>
-</header>
-
-<div id="menuDrawer" class="drawer" aria-hidden="true">
-  <div class="drawer__backdrop" data-close-drawer></div>
-
-  <aside class="drawer__panel" role="dialog" aria-modal="true" aria-label="Site menu">
-    <nav class="drawer__nav">
-      <a href="index.php">Home</a>
-      <a href="products.php">Shop all</a>
-      <a href="contactus.php">Contact us</a>
-      <a href="faq.php">FAQ</a>
-      <a href="aboutus.php">About us</a>
-      <a href="terms.php">Terms</a>
-      <a href="privacypolicy.php">Privacy Policy</a>
-    </nav>
-  </aside>
-</div>
-
-<div id="overlay" class="overlay"></div>
+<?php
+$forceIsAdmin = false;
+$forceIsUser = false;
+$forceGuestHref = 'admin_login.php';
+$forceGuestText = 'Admin Sign in';
+include __DIR__ . "/partials/navigation.php";
+?>
 
 <main class="content">
     <h1>Welcome back, Admin</h1>
@@ -137,7 +94,13 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     <form class="auth-form" method="POST" action="">
         <div class="form-group">
             <label>Email Address</label>
-            <input type="email" name="email" placeholder="admin@example.com" value="<?= htmlspecialchars($_POST['email'] ?? '') ?>" required>
+            <input
+                type="email"
+                name="email"
+                placeholder="admin@example.com"
+                value="<?= htmlspecialchars($_POST['email'] ?? '') ?>"
+                required
+            >
         </div>
 
         <div class="form-group">

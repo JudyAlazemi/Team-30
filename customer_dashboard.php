@@ -1,10 +1,8 @@
 <?php
-// Start session if not already started
 if (session_status() === PHP_SESSION_NONE) {
     require_once __DIR__ . "/backend/config/session.php";
 }
 
-// Include account layout - FIXED PATH
 require_once __DIR__ . "/includes/account_layout.php";
 $active = "dashboard";
 
@@ -68,7 +66,7 @@ try {
         $stmt->close();
     }
 
-    // ✅ Get favourites count (table name is `favourites`)
+    // Get favourites count (table name is `favourites`)
     $stmt = $conn->prepare("SELECT COUNT(*) AS c FROM favourites WHERE user_id = ?");
     if ($stmt) {
         $stmt->bind_param("i", $userId);
@@ -126,11 +124,10 @@ if (empty($userEmail) && $userId > 0 && isset($conn) && !$conn->connect_error) {
 
  
   <link rel="stylesheet" href="assets/css/style.css">
-  <link rel="stylesheet" href="assets/css/customer_dashboard.css?v=<?= time() ?>">
+  <link rel="stylesheet" href="assets/css/customer_dashboard.css">
   <link rel="stylesheet" href="assets/css/darkmode.css">
 
 
-  <script defer src="assets/js/nav.js"></script>
 
   <link rel="icon" type="image/png" href="assets/images/logo.png">
 </head>

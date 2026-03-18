@@ -177,68 +177,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   <link rel="stylesheet" href="assets/css/customer_dashboard.css?v=<?= time() ?>">
   <link rel="stylesheet" href="assets/css/darkmode.css">
 
-  <script defer src="assets/js/nav.js"></script>
   <link rel="icon" type="image/png" href="assets/images/logo.png">
 </head>
 
 <body class="account-page">
 
-<header class="topbar">
-  <div class="topbar-inner">
-
-    <!-- Left: Menu -->
-    <button class="icon-btn menu-toggle" aria-label="Open menu" aria-expanded="false">
-      <img class="icon icon--menu" src="assets/images/menu.png" alt="" />
-      <img class="icon icon--close" src="assets/images/close.png" alt="" />
-    </button>
-
-    <!-- Center: Logo -->
-    <a class="brand" href="index.php">
-      <img class="brand-logo" src="assets/images/logo.png" alt="Sabil" />
-    </a>
-
-    <!-- Right: actions -->
-    <nav class="actions" aria-label="Account & tools">
-  
-      <a href="customer_dashboard.php" class="my-account-link">
-        <img class="icon" src="assets/images/user.png" alt="My Account">
-        <span>My Account</span>
-      </a>
-
-      <a href="logout.php">Logout</a>
-
-      <a id="searchBtn" class="action" href="#">
-        <img class="icon" src="assets/images/search.png" alt="Search">
-      </a>
-
-      <a id="favBtn" class="action" href="customer_favourites.php">
-        <img class="icon" src="assets/images/favorite.png" alt="Favourites">
-      </a>
-
-      <a id="bagBtn" class="action" href="basket.php">
-        <img class="icon" src="assets/images/shopping-bag.png" alt="Bag">
-      </a>
-
-    </nav>
-  </div>
-</header>
-
-
-<div id="menuDrawer" class="drawer" aria-hidden="true">
-  <div class="drawer__backdrop" data-close-drawer></div>
-  <aside class="drawer__panel" role="dialog" aria-modal="true" aria-label="Site menu">
-    <nav class="drawer__nav">
-      <a href="products.php">Shop all</a>
-      <a href="cart.php">Cart</a>
-      <a href="customer_favourites.php">Favourites</a>
-      <a href="contactus.php">Contact us</a>
-      <a href="faq.php">FAQ</a>
-      <a href="aboutus.php">About us</a>
-      <a href="terms.php">Terms</a>
-      <a href="privacypolicy.php">Privacy Policy</a>
-    </nav>
-  </aside>
-</div>
+<?php include __DIR__ . "/partials/navigation.php"; ?>
 
 <div class="dash-page profile-page">
   <div class="dash-frame">
