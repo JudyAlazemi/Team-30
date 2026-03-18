@@ -1,4 +1,6 @@
 <?php
+require_once __DIR__ . "/backend/config/session.php";
+require_once __DIR__ . "/backend/config/db.php";
 require_once __DIR__ . "/includes/account_layout.php";
 $active = "profile";
 ?>
@@ -25,7 +27,7 @@ $active = "profile";
       <?= sideLink("my_orders.php", "🧾 My Orders", false, $orderCount) ?>
       <?= sideLink("favourites.php", "🤍 Favourites", false, $favCount) ?>
       <?= sideLink("messages.php", "💬 Messages", false) ?>
-      <?= sideLink("profile.php", "⚙️ Profile Settings", true) ?>
+      <?= sideLink("customer_security.php", "⚙️ Profile Settings", true) ?>
       <a class="side-link logout" href="logout.php"><span class="side-text">🚪 Logout</span></a>
     </nav>
   </aside>

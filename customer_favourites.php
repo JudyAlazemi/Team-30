@@ -1,5 +1,13 @@
 <?php
+require_once __DIR__ . "/backend/config/session.php";
+require_once __DIR__ . "/backend/config/db.php";
 require_once __DIR__ . "/includes/account_layout.php";
+
+if (!isset($_SESSION["user_id"])) {
+    header("Location: login.html");
+    exit;
+}
+
 $active = "favourites";
 
 $favs = [];
@@ -26,7 +34,7 @@ try {
 
   <!-- SAME THEME AS DASHBOARD/ORDERS -->
   <link rel="stylesheet" href="assets/css/style.css">
-  <link rel="stylesheet" href="assets/css/customer_dashboard..css">
+  <link rel="stylesheet" href="assets/css/customer_dashboard.css">
   <link rel="stylesheet" href="assets/css/darkmode.css">
 
   <link rel="icon" type="image/png" href="assets/images/logo.png">

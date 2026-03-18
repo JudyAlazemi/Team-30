@@ -72,7 +72,6 @@ if ($productId > 0) {
     <title>Product Details | SABIL Perfumes</title>
      <link rel="stylesheet" href="assets/css/style.css">
     <link rel ="icon" type="image/png" href="assets/images/logo.png">
-    <script defer src ="assets/js/nav.js"></script>
     <script defer src="assets/js/home.js"></script>
     <script defer src="assets/js/newsletter.js"></script>
     <link rel="stylesheet" href="assets/css/globals.css">
