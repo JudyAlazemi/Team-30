@@ -82,7 +82,7 @@
 
             <div class="product-card" data-category="perfume" data-id="3">
               <div class="product-image">
-                <img src="assets/images/velvetmusk.JPEG" alt="Velvet Rose">
+                <img src="assets/images/velvetmusk.jpeg" alt="Velvet Rose">
                 <div class="product-overlay">
                   <a href="productdetails.php?id=3" class="hero-btn">View Details</a>
                 </div>
@@ -190,7 +190,7 @@
             <!-- HOME SPRAYS (3 products) -->
             <div class="product-card" data-category="home-spray" data-id="10">
               <div class="product-image">
-                <img src="assets/images/homespraysilver.jpeg" alt="Lavender Cloud Spray">
+                <img src="assets/images/homespraysilver.png" alt="Lavender Cloud Spray">
                 <div class="product-overlay">
                   <a href="productdetails.php?id=10" class="hero-btn">View Details</a>
                 </div>
@@ -236,7 +236,7 @@
             <!-- BODY WASH (3 products) -->
             <div class="product-card" data-category="body-wash" data-id="13">
               <div class="product-image">
-                <img src="assets/images/tropicalbreeze.JPEG" alt="Tropical Breeze Body Wash">
+                <img src="assets/images/tropicalbreeze.jpeg" alt="Tropical Breeze Body Wash">
                 <div class="product-overlay">
                   <a href="productdetails.php?id=13" class="hero-btn">View Details</a>
                 </div>
@@ -251,7 +251,7 @@
 
             <div class="product-card" data-category="body-wash" data-id="14">
               <div class="product-image">
-                <img src="assets/images/strawbsilk.JPEG" alt="Strawberry Silk Body Wash">
+                <img src="assets/images/strawbsilk.jpeg" alt="Strawberry Silk Body Wash">
                 <div class="product-overlay">
                   <a href="productdetails.php?id=14" class="hero-btn">View Details</a>
                 </div>
@@ -266,7 +266,7 @@
 
             <div class="product-card" data-category="body-wash" data-id="15">
               <div class="product-image">
-                <img src="assets/images/ultrafresh.JPEG" alt="Ultra Fresh Body Wash">
+                <img src="assets/images/ultrafresh.jpeg" alt="Ultra Fresh Body Wash">
                 <div class="product-overlay">
                   <a href="productdetails.php?id=15" class="hero-btn">View Details</a>
                 </div>
@@ -326,12 +326,12 @@
       <p>© 2025 Sabil. All rights reserved.</p>
     </div>
   </footer>
-
+  <!--
   <script src="assets/js/products-data.js?v=2"></script>
   <script src="assets/js/product.js?v=2"></script>
   <script src="assets/js/wire-products-lite.js?v=2"></script>
   <script src="assets/js/render-product.js?v=2"></script>
-
+-->
   <script>
       function money(n) { return "£" + Number(n || 0).toFixed(2); }
 

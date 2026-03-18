@@ -18,6 +18,8 @@ if (!product) {
   console.log(window.productsData);
   return;
 }
+console.log("Loaded product:", product);
+console.log("Image path:", product.image);
   // ----- fill UI -----
   const elName  = $('#productName');
   const elPrice = $('#productPrice');

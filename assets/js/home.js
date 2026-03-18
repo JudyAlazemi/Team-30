@@ -173,3 +173,27 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 });
+
+document.addEventListener("DOMContentLoaded", () => {
+  const track = document.getElementById("homeReviewsTrack");
+  const prevBtn = document.getElementById("reviewPrevBtn");
+  const nextBtn = document.getElementById("reviewNextBtn");
+
+  if (!track || !prevBtn || !nextBtn) return;
+
+  function getScrollAmount() {
+    const firstCard = track.querySelector(".home-review-card");
+    if (!firstCard) return 360;
+    const cardStyles = window.getComputedStyle(firstCard);
+    const gap = parseInt(cardStyles.marginRight || 0, 10);
+    return firstCard.offsetWidth + gap + 24;
+  }
+
+  prevBtn.addEventListener("click", () => {
+    track.scrollBy({ left: -getScrollAmount(), behavior: "smooth" });
+  });
+
+  nextBtn.addEventListener("click", () => {
+    track.scrollBy({ left: getScrollAmount(), behavior: "smooth" });
+  });
+});

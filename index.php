@@ -82,21 +82,21 @@ if ($siteStmt) {
   <div class="collection-track" id="collectionTrack">
 <article class="product-card" data-id="2">
   <a href="productdetails.php?id=2" class="card-link">
-    <img src="assets/images/midnightoud.PNG" alt="Midnight Oud">
+    <img src="assets/images/midnightoud.png" alt="Midnight Oud">
     <h3 class="card-title">Midnight Oud</h3>
   </a>
 </article>
 
 <article class="product-card" data-id="1">
   <a href="productdetails.php?id=1" class="card-link">
-    <img src="assets/images/oceanmist.PNG" alt="Ocean Breeze">
+    <img src="assets/images/oceanmist.png" alt="Ocean Breeze">
     <h3 class="card-title">Ocean Breeze</h3>
   </a>
 </article>
 
 <article class="product-card" data-id="3">
   <a href="productdetails.php?id=3" class="card-link">
-    <img src="assets/images/velvetmusk.JPEG" alt="Velvet Rose">
+    <img src="assets/images/velvetmusk.jpeg" alt="Velvet Rose">
     <h3 class="card-title">Velvet Rose</h3>
   </a>
 </article>
@@ -253,6 +253,7 @@ if ($siteStmt) {
             <label for="reviewName">Name</label>
             <input
             id="reviewName"
+            name="display_name"
             type="text"
             value="<?= htmlspecialchars($_SESSION['name'] ?? '') ?>"
             placeholder="Enter your name"
@@ -291,36 +292,62 @@ if ($siteStmt) {
       </form>
     </div>
 
-    <div class="home-reviews-grid">
-      <?php if (!empty($siteReviews)): ?>
-        <?php foreach ($siteReviews as $review): ?>
+    <div class="home-reviews-carousel">
+  <button class="review-arrow review-arrow-prev" id="reviewPrevBtn" aria-label="Previous review">‹</button>
+
+  <div class="home-reviews-track" id="homeReviewsTrack">
+    <?php if (!empty($siteReviews)): ?>
+      <?php foreach ($siteReviews as $review): ?>
+        <article class="home-review-card">
+          <h3 class="home-review-name"><?= htmlspecialchars($review['display_name']) ?></h3>
+
+          <span class="home-review-date">
+            <?= date("d M Y", strtotime($review['created_at'])) ?>
+          </span>
+
+          <div class="home-review-stars" aria-label="<?= (int)$review['rating'] ?> out of 5 stars">
+            <?php for ($i = 1; $i <= 5; $i++): ?>
+              <?= $i <= (int)$review['rating'] ? '★' : '☆' ?>
+            <?php endfor; ?>
+          </div>
+
+          <p class="home-review-text">
+            <?= htmlspecialchars($review['comment']) ?>
+          </p>
+        </article>
+      <?php endforeach; ?>
+    <?php else: ?>
       <article class="home-review-card">
-        <h3 class="home-review-name"><?= htmlspecialchars($review['display_name']) ?></h3>
-
-        <span class="home-review-date">
-          <?= date("d M Y", strtotime($review['created_at'])) ?>
-        </span>
-
-        <div class="home-review-stars" aria-label="<?= (int)$review['rating'] ?> out of 5 stars">
-          <?php for ($i = 1; $i <= 5; $i++): ?>
-            <?= $i <= (int)$review['rating'] ? '★' : '☆' ?>
-          <?php endfor; ?>
-        </div>
-
+        <h3 class="home-review-name">Sarah M.</h3>
+        <span class="home-review-date">04 Mar 2026</span>
+        <div class="home-review-stars">★★★★★</div>
         <p class="home-review-text">
-          <?= htmlspecialchars($review['comment']) ?>
+          Beautiful experience from start to finish. The website was elegant and very easy to use.
         </p>
-
-        
       </article>
-    <?php endforeach; ?>
-  <?php else: ?>
-    <p class="no-reviews">No reviews yet.</p>
-  <?php endif; ?>
-</div>
-    </div>
 
+      <article class="home-review-card">
+        <h3 class="home-review-name">Layla A.</h3>
+        <span class="home-review-date">02 Mar 2026</span>
+        <div class="home-review-stars">★★★★☆</div>
+        <p class="home-review-text">
+          I loved the overall shopping experience and the design felt very premium.
+        </p>
+      </article>
+
+      <article class="home-review-card">
+        <h3 class="home-review-name">Huda K.</h3>
+        <span class="home-review-date">28 Feb 2026</span>
+        <div class="home-review-stars">★★★★★</div>
+        <p class="home-review-text">
+          Very smooth website and the brand presentation looks luxurious and professional.
+        </p>
+      </article>
+    <?php endif; ?>
   </div>
+
+  <button class="review-arrow review-arrow-next" id="reviewNextBtn" aria-label="Next review">›</button>
+</div>
 </section>
 
 

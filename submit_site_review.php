@@ -17,9 +17,7 @@ $rating = isset($_POST['rating']) ? (int) $_POST['rating'] : 0;
 $comment = trim($_POST['comment'] ?? '');
 $displayName = trim($_POST['display_name'] ?? '');
 
-if ($displayName === '') {
-    $displayName = $_SESSION['name'] ?? 'Anonymous';
-}
+$displayName = trim($_POST['display_name'] ?? ($_SESSION['name'] ?? ''));
 
 if ($rating < 1 || $rating > 5 || $comment === '') {
     header("Location: index.php?site_review_error=1#reviews");

@@ -273,13 +273,13 @@ if ($productId > 0) {
                     <h2>You May Also Like</h2>
                     <div class="related-products-grid">
                         <div class="product-card-small">
-                            <img src="assets/images/midnightoud.PNG" alt="Midnight Oud">
+                            <img src="assets/images/midnightoud.png" alt="Midnight Oud">
                             <h4>Midnight Oud</h4>
                             <p>£69.99</p>
                             <a href="productdetails.php?id=2" class="hero-btn">View Details</a>
                         </div>
                         <div class="product-card-small">
-                            <img src="assets/images/velvetmusk.JPEG" alt="Velvet Rose">
+                            <img src="assets/images/velvetmusk.jpeg" alt="Velvet Rose">
                             <h4>Velvet Rose</h4>
                             <p>£64.99</p>
                             <a href="productdetails.php?id=3" class="hero-btn">View Details</a>

@@ -200,9 +200,9 @@ CREATE TABLE `products` (
 --
 
 INSERT INTO `products` (`id`, `name`, `description`, `price`, `stock`, `image_url`, `category_id`) VALUES
-(1, 'Ocean Breeze', 'Fresh aquatic fragrance with marine notes', '59.99', 97, 'assets/images/oceanmist.PNG', 1),
-(2, 'Midnight Oud', 'Deep and mysterious oriental fragrance', '69.99', 97, 'assets/images/midnightoud.PNG', 1),
-(3, 'Velvet Rose', 'Luxurious rose with velvety undertones', '64.99', 99, 'assets/images/velvetmusk.JPEG', 1),
+(1, 'Ocean Breeze', 'Fresh aquatic fragrance with marine notes', '59.99', 97, 'assets/images/oceanmist.png', 1),
+(2, 'Midnight Oud', 'Deep and mysterious oriental fragrance', '69.99', 97, 'assets/images/midnightoud.png', 1),
+(3, 'Velvet Rose', 'Luxurious rose with velvety undertones', '64.99', 99, 'assets/images/velvetmusk.jpeg', 1),
 (4, 'Unleaded Petrol', 'Energetic and bold car fragrance', '16.99', 98, 'assets/images/carperfdark.jpeg', 2),
 (5, 'Ionix Fresh', 'Air-purifying fresh car scent', '14.99', 100, 'assets/images/carperflight.jpeg', 2),
 (6, 'Lavender Cruise', 'Calming lavender for relaxed drives', '18.99', 100, 'assets/images/carperfmed.png', 2),
@@ -212,9 +212,9 @@ INSERT INTO `products` (`id`, `name`, `description`, `price`, `stock`, `image_ur
 (10, 'Lavender Cloud Spray', 'Soothing lavender mist for relaxation', '17.99', 100, 'assets/images/homespraysilver.png', 4),
 (11, 'Jasmine Home Spray', 'Exotic jasmine room freshener', '19.99', 100, 'assets/images/homespraygold.jpeg', 4),
 (12, 'Ocean Breeze Spray', 'Fresh coastal air room spray', '16.99', 100, 'assets/images/homesprayblue.jpeg', 4),
-(13, 'Tropical Breeze Body Wash', 'Exotic tropical fruit cleansing wash', '8.99', 100, 'assets/images/tropicalbreeze.JPEG', 5),
-(14, 'Strawberry Silk Body Wash', 'Sweet strawberry with silk proteins', '9.99', 100, 'assets/images/strawbsilk.JPEG', 5),
-(15, 'Ultra Fresh Body Wash', 'Deep cleansing with mint freshness', '7.99', 100, 'assets/images/ultrafresh.JPEG', 5);
+(13, 'Tropical Breeze Body Wash', 'Exotic tropical fruit cleansing wash', '8.99', 100, 'assets/images/tropicalbreeze.jpeg', 5),
+(14, 'Strawberry Silk Body Wash', 'Sweet strawberry with silk proteins', '9.99', 100, 'assets/images/strawbsilk.jpeg', 5),
+(15, 'Ultra Fresh Body Wash', 'Deep cleansing with mint freshness', '7.99', 100, 'assets/images/ultrafresh.jpeg', 5);
 
 -- --------------------------------------------------------
 
