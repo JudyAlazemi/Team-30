@@ -1,3 +1,4 @@
+
 <?php
 
 session_start();
@@ -5,6 +6,45 @@ session_start();
 if (file_exists(__DIR__ . "/backend/config/db.php")) {
     require_once __DIR__ . "/backend/config/db.php";
 }
+
+$siteReviews = [];
+
+$siteStmt = $conn->prepare("
+    SELECT sr.rating, sr.comment, sr.created_at, sr.display_name
+    FROM site_reviews sr
+    ORDER BY sr.created_at DESC
+    LIMIT 6
+");
+
+if ($siteStmt) {
+    $siteStmt->execute();
+    $siteResult = $siteStmt->get_result();
+
+    while ($row = $siteResult->fetch_assoc()) {
+        $siteReviews[] = $row;
+    }
+}
+
+$siteStmt = $conn->prepare("
+    SELECT sr.rating, sr.comment, sr.created_at, sr.display_name
+    FROM site_reviews sr
+    ORDER BY sr.created_at DESC
+    LIMIT 6
+");
+
+
+
+if ($siteStmt) {
+    $siteStmt->execute();
+    $siteResult = $siteStmt->get_result();
+
+    while ($row = $siteResult->fetch_assoc()) {
+        $siteReviews[] = $row;
+    }
+}
+
+
+
 ?>
 
 <!doctype html>
@@ -14,6 +54,7 @@ if (file_exists(__DIR__ . "/backend/config/db.php")) {
     <meta name="viewport" content="width=device-width,initial-scale=1" />
     <title>Sabil</title>
     <link rel="stylesheet" href="assets/css/style.css" />
+    <link rel="stylesheet" href="assets/css/darkmode.css">
 
     <script defer src="assets/js/nav.js"></script>
     <script defer src="assets/js/home.js"></script>
@@ -28,8 +69,7 @@ if (file_exists(__DIR__ . "/backend/config/db.php")) {
 
 <body class="page-home">
 
-<header class="topbar">
-  <div class="topbar-inner">
+<?php include __DIR__ . "/partials/navigation.php"; ?>
 
     <!-- Left: Menu button -->
     <button class="icon-btn menu-toggle" aria-label="Open menu" aria-expanded="false">

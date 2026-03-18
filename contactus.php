@@ -20,94 +20,9 @@ if (file_exists(__DIR__ . '/db.php')) {
 </head>
 <body class="page-static">
 
-<header class="topbar">
-  <div class="topbar-inner">
+<?php include __DIR__ . "/partials/navigation.php"; ?>
 
-    <!-- Left: Menu button -->
-    <button class="icon-btn menu-toggle" aria-label="Open menu" aria-expanded="false">
-      <img class="icon icon--menu" src="assets/images/menu.png" alt="" />
-      <img class="icon icon--close" src="assets/images/close.png" alt="" />
-    </button>
 
-    <!-- Center: Logo -->
-    <a class="brand" href="index.php">
-      <img class="brand-logo" src="assets/images/logo.png" alt="Sabil" />
-    </a>
-
-    <!-- Right: actions -->
-    <nav class="actions" aria-label="Account & tools">
-
-      <!-- USER -->
-      <a id="userBtn" class="action" href="login.html" role="button" aria-pressed="false">
-        <img
-          id="userIcon"
-          class="icon"
-          src="assets/images/sign-in.png"
-          alt="User"
-          data-src-inactive="assets/images/sign-in.png"
-          data-src-active="assets/images/user-shaded.png"
-        />
-        <span id="userText" class="action-text">Sign in</span>
-      </a>
-
-      <!-- SEARCH GROUP (one flex item) -->
-      <div class="search-group">
-        <a id="searchBtn" class="action" href="#">
-          <img class="icon" src="assets/images/search.png" alt="Search" />
-        </a>
-        <input
-          type="text"
-          id="navSearchInput"
-          class="nav-search-input"
-          placeholder="Search..."
-        />
-      </div>
-
-      <!-- FAVOURITE -->
-      <a id="favBtn" class="action" href="favourites.php" role="button" aria-pressed="false">
-        <img
-          id="favIcon"
-          class="icon"
-          src="assets/images/favorite.png"
-          alt="Favourite"
-          data-src-inactive="assets/images/favorite.png"
-          data-src-active="assets/images/favorite-shaded.png"
-        />
-      </a>
-
-      <!-- BAG -->
-      <a id="bagBtn" class="action" href="cart.html" role="button" aria-pressed="false">
-        <img
-          id="bagIcon"
-          class="icon"
-          src="assets/images/shopping-bag.png"
-          alt="Shopping bag"
-          data-src-inactive="assets/images/shopping-bag.png"
-          data-src-active="assets/images/shopping-bag-filled.png"
-        />
-      </a>
-    </nav>
-  </div>
-</header>
-
-<!-- MENU DRAWER (left-side) -->
-<div id="menuDrawer" class="drawer" aria-hidden="true">
-  <div class="drawer__backdrop" data-close-drawer></div>
-
-  <aside class="drawer__panel" role="dialog" aria-modal="true" aria-label="Site menu">
-    <nav class="drawer__nav">
-      <a href="products.html">Shop all</a>
-      <a href="cart.html">Cart</a>
-      <a href="favourites.php">Favourites</a>
-      <a href="contactus.php">Contact us</a>
-      <a href="faq.php">FAQ</a>
-      <a href="aboutus.php">About us</a>
-      <a href="terms.php">Terms</a>
-      <a href="privacypolicy.php">Privacy Policy</a>
-  
-    </nav>
-  </aside>
-</div>
   <!-- Page title band -->
   <header class="static-hero">
     <div class="static-wrap">
@@ -153,8 +68,53 @@ if (file_exists(__DIR__ . '/db.php')) {
       </address>
 
       <p><strong>Hours</strong><br> Mon-Thu:   10:00–16:00 &nbsp;&nbsp; <br> Fri–Sat:   10:00–14:00</p>
-  
 
+      <!-- CONTACT FORM -->
+<section class="contact-form-section">
+
+  <div class="contact-form-header">
+    <h2>Contact us</h2>
+    <p>Got any questions or suggestions?<br>Fill out this form to reach out</p>
+  </div>
+
+  <form class="contact-form">
+
+    <div class="contact-row">
+      <input 
+        type="text"
+        name="name"
+        placeholder="Enter your name"
+        required
+      >
+
+      <input 
+        type="email"
+        name="email"
+        placeholder="Enter your email"
+        required
+      >
+    </div>
+
+    <textarea
+      name="message"
+      placeholder="Enter your message"
+      rows="6"
+      required
+    ></textarea>
+
+    <button type="submit" class="contact-send-btn">
+      Send
+    </button>
+
+    <p class="contact-note">
+      You can email us directly at
+      <a href="mailto:info@sabilfragrance.com">info@sabilfragrance.com</a>
+    </p>
+
+  </form>
+
+</section>  
+    </section>
     <!-- Right: optional large image (hides on small screens) -->
     <aside class="static-media">
       <img src="assets/images/flower.png" alt="Sabil studio" />
@@ -193,8 +153,8 @@ if (file_exists(__DIR__ . '/db.php')) {
 
     <!-- Column 2 -->
     <div class="footer-links">
-      <a href="products.html">Order</a>
-      <a href="cart.html">Shopping Cart</a>
+      <a href="products.php">Order</a>
+      <a href="cart.php">Shopping Cart</a>
       <a href="favourites.php">Favourites</a>
     </div>
   </div>

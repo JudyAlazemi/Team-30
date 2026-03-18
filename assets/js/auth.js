@@ -1,30 +1,32 @@
-// Side menu open
-document.getElementById("menu-btn").addEventListener("click", () => {
-    document.getElementById("side-menu").classList.add("active");
-    document.getElementById("overlay").classList.add("active");
+document.getElementById("menu-btn")?.addEventListener("click", () => {
+  document.getElementById("side-menu")?.classList.add("active");
+  document.getElementById("overlay")?.classList.add("active");
 });
 
-// Side menu close
-document.getElementById("close-menu").addEventListener("click", () => {
-    document.getElementById("side-menu").classList.remove("active");
-    document.getElementById("overlay").classList.remove("active");
+document.getElementById("close-menu")?.addEventListener("click", () => {
+  document.getElementById("side-menu")?.classList.remove("active");
+  document.getElementById("overlay")?.classList.remove("active");
 });
 
-// Close on overlay
-document.getElementById("overlay").addEventListener("click", () => {
-    document.getElementById("side-menu").classList.remove("active");
-    document.getElementById("overlay").classList.remove("active");
+document.getElementById("overlay")?.addEventListener("click", () => {
+  document.getElementById("side-menu")?.classList.remove("active");
+  document.getElementById("overlay")?.classList.remove("active");
 });
 
 // Password toggle
-document.querySelectorAll(".toggle-password").forEach(btn => {
+document.addEventListener("DOMContentLoaded", () => {
+  document.querySelectorAll(".toggle-password").forEach((btn) => {
     btn.addEventListener("click", () => {
-        let target = document.getElementById(btn.dataset.target);
+      const targetId = btn.getAttribute("data-target");
+      const input = document.getElementById(targetId);
 
-        if (target.type === "password") {
-            target.type = "text";
-        } else {
-            target.type = "password";
-        }
+      if (!input) return;
+
+      input.type = input.type === "password" ? "text" : "password";
+
+      // optional: accessibility state
+      btn.setAttribute("aria-pressed", input.type === "text" ? "true" : "false");
     });
+  });
 });
+

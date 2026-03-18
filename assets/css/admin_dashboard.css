@@ -1,0 +1,381 @@
+/* Page background */
+.account-page .dash-page{
+  background: var(--background);
+  padding: 34px 0 70px;
+}
+
+/* Center content width */
+.account-page .dash-frame{
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 0 22px;
+}
+
+/* Two column layout */
+.account-page .dash-grid{
+  display: grid;
+  grid-template-columns: 320px 1fr;
+  gap: 50px;
+  align-items: start;
+}
+
+/* LEFT */
+.account-page .dash-left{
+  padding-top: 10px;
+}
+
+.account-page .dash-hello h3{
+  font-family: "Meshed Display", serif;
+  font-size: 48px;
+  font-weight: 600;
+  line-height: 1.05;
+  letter-spacing: -0.5px;
+  margin: 0 0 4px;
+  color: var(--secondary);
+}
+
+.account-page .dash-hello p{
+  font-family: "Meshed Display", serif;
+  font-size: 32px;
+  font-weight: 400;
+  line-height: 1.1;
+  margin: 0 0 28px;
+  color: #907867;
+}
+
+.account-page .dash-menu{
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  width: 270px;
+  border: none;
+  margin-top: 18px;
+}
+
+.account-page a.dash-link{
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 14px;
+  text-decoration: none !important;
+  color: var(--secondary) !important;
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid var(--border);
+  transition: background .2s ease;
+}
+
+.account-page a.dash-link:last-child{
+  border-bottom: 1px solid var(--border);
+}
+
+.account-page a.dash-link:hover{
+  background: rgba(212,197,186,0.25);
+}
+
+.account-page a.dash-link.is-active{
+  background: rgba(212,197,186,0.40);
+}
+
+.account-page .dash-ico{
+  width: 22px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.account-page .dash-ico img{
+  width: 16px;
+  height: 16px;
+  display: block;
+  opacity: .9;
+}
+
+.account-page a.dash-link > span:nth-child(2){
+  flex: 1;
+  font-size: 14px;
+  color: var(--secondary);
+}
+
+.account-page .dash-arrow{
+  margin-left: auto;
+  font-size: 18px;
+  opacity: .75;
+  line-height: 1;
+  transform: translateY(-1px);
+  color: var(--secondary);
+}
+
+/* RIGHT */
+.account-page .dash-right{
+  padding-top: 0;
+}
+
+.account-page .dash-title{
+  font-family: "Meshed Display", serif;
+  font-size: 60px;
+  font-weight: 600;
+  margin: 0;
+  color: var(--secondary);
+}
+
+.account-page .dash-rule{
+  height: 1px;
+  background: var(--border);
+  margin: 18px 0 18px;
+  border: 0;
+  width: 100%;
+}
+
+/* top info bars */
+.account-page .dash-bars{
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 18px;
+  margin-bottom: 12px;
+}
+
+.account-page .dash-bar{
+  background: rgba(212,197,186,0.35);
+  padding: 10px 12px;
+}
+
+.account-page .dash-bar-label{
+  font-size: 12px;
+  color: var(--text-light);
+  margin-bottom: 3px;
+}
+
+.account-page .dash-bar-value{
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-dark);
+}
+
+.account-page .dash-long{
+  background: rgba(212,197,186,0.35);
+  padding: 10px 12px;
+  margin-bottom: 14px;
+}
+
+.account-page .dash-long-label{
+  font-size: 12px;
+  color: var(--text-light);
+  margin-bottom: 3px;
+}
+
+.account-page .dash-long-value{
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-dark);
+}
+
+.account-page .dash-two{
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 18px;
+  margin-bottom: 20px;
+}
+
+.account-page .dash-field{
+  background: rgba(212,197,186,0.35);
+  padding: 10px 12px;
+}
+
+.account-page .dash-field-label{
+  font-size: 12px;
+  color: var(--text-light);
+  margin-bottom: 3px;
+}
+
+.account-page .dash-field-value{
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-dark);
+}
+
+/* admin sections */
+.account-page .dash-section{
+  border-top: 1px solid var(--border);
+  padding-top: 18px;
+  margin-top: 18px;
+}
+
+.account-page .dash-section:first-of-type{
+  margin-top: 0;
+}
+
+.account-page .dash-section-title{
+  font-family: "Meshed Display", serif;
+  font-size: 28px;
+  font-weight: 500;
+  color: var(--secondary);
+  margin: 0 0 14px;
+}
+
+.account-page .dash-empty{
+  margin: 0;
+  color: var(--text-light);
+  font-size: 14px;
+}
+
+/* two cards row */
+.account-page .dash-cards-two{
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 22px;
+  margin-top: 6px;
+}
+
+/* table */
+.account-page .dash-table-wrap{
+  overflow-x: auto;
+}
+
+.account-page .dash-table{
+  width: 100%;
+  border-collapse: collapse;
+  background: transparent;
+}
+
+.account-page .dash-table th,
+.account-page .dash-table td{
+  text-align: left;
+  padding: 12px 10px;
+  border-bottom: 1px solid var(--border);
+  font-size: 14px;
+}
+
+.account-page .dash-table th{
+  color: var(--text-light);
+  font-weight: 600;
+}
+
+.account-page .dash-table td{
+  color: var(--secondary);
+}
+
+/* buttons */
+.account-page .dash-actions{
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.account-page .dash-actions form{
+  margin: 0;
+}
+
+.account-page .dash-back{
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 92px;
+  padding: 8px 18px;
+  line-height: 1;
+  box-sizing: border-box;
+  text-decoration: none;
+  appearance: none;
+  -webkit-appearance: none;
+  background: var(--secondary);
+  color: #fff;
+  border: 1px solid var(--secondary);
+  border-radius: 999px;
+  font-size: 14px;
+  font-family: inherit;
+  cursor: pointer;
+}
+
+.account-page .dash-back:hover{
+  opacity: .92;
+}
+
+.account-page .dash-secondary-btn{
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 92px;
+  padding: 8px 18px;
+  line-height: 1;
+  box-sizing: border-box;
+  text-decoration: none;
+  appearance: none;
+  -webkit-appearance: none;
+  background: transparent;
+  color: var(--secondary);
+  border: 1.5px solid var(--secondary);
+  border-radius: 999px;
+  font-size: 14px;
+  font-family: inherit;
+  cursor: pointer;
+}
+
+.account-page .dash-secondary-btn:hover{
+  background: var(--secondary);
+  color: #fff;
+}
+
+/* alerts list */
+.account-page .dash-alerts{
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.account-page .dash-alerts li{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--border);
+  color: var(--secondary);
+  font-size: 14px;
+}
+
+.account-page .dash-alerts li strong{
+  font-weight: 600;
+  color: #9a6b45;
+}
+
+/* responsive */
+@media (max-width: 980px){
+  .account-page .dash-grid{
+    grid-template-columns: 1fr;
+    gap: 26px;
+  }
+
+  .account-page .dash-menu{
+    width: 100%;
+  }
+
+  .account-page .dash-cards-two{
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 700px){
+  .account-page .dash-title{
+    font-size: 42px;
+  }
+
+  .account-page .dash-hello h3{
+    font-size: 38px;
+  }
+
+  .account-page .dash-hello p{
+    font-size: 28px;
+  }
+
+  .account-page .dash-bars,
+  .account-page .dash-two{
+    grid-template-columns: 1fr;
+  }
+
+  .account-page .dash-table th,
+  .account-page .dash-table td{
+    font-size: 13px;
+    padding: 10px 8px;
+  }
+}

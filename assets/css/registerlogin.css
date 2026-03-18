@@ -220,3 +220,61 @@ input {
     text-decoration: underline;
 }
 
+.auth-form select {
+    width: 100%;
+    padding: 14px 16px;
+    border: 1px solid #d8d2c8;
+    border-radius: 8px;
+    background: #fff;
+    font-size: 16px;
+}
+
+/* Customer login bottom links */
+.signin,
+.admin-login-option{
+    text-align: center;
+    width: 100%;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.signin{
+    margin-top: 14px;
+    font-size: 15px;
+    color: #555;
+}
+
+.admin-login-option{
+    margin-top: 10px;
+    font-size: 15px;
+    color: #555;
+}
+
+.admin-login-option a,
+.signin a{
+    color: #7b5e57;
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.admin-login-option a:hover,
+.signin a:hover{
+    text-decoration: underline;
+}
+
+.password-rules {
+    margin-top: 8px;
+    font-size: 13px;
+    color: #666;
+    line-height: 1.5;
+}
+
+.password-rules ul {
+    margin: 6px 0 0 18px;
+    padding: 0;
+}
+
+.password-rules li {
+    margin-bottom: 2px;
+}

@@ -1,33 +1,121 @@
 <?php
+// Start session if not already started
+if (session_status() === PHP_SESSION_NONE) {
+    require_once __DIR__ . "/backend/config/session.php";
+}
+
+// Include account layout - FIXED PATH
 require_once __DIR__ . "/includes/account_layout.php";
 $active = "dashboard";
 
+// Ensure user is logged in
+if (!isset($_SESSION['user_id'])) {
+    header("Location: login.html");
+    exit;
+}
+
+// Set user data from session with proper fallbacks
+$userId = $_SESSION['user_id'] ?? 0;
+$userName = $_SESSION['user_name'] ?? 'Customer';
+$userEmail = $_SESSION['user_email'] ?? ''; // Get email from session
+$userPhone = $_SESSION['user_phone'] ?? 'Not added';
+
+// Initialize variables
 $totalOrders = 0;
 $pendingOrders = 0;
 $totalSpent = 0.0;
-
+$favCount = 0; // Initialize favorites count
 $recentOrders = [];
+
 try {
-  $stmt = $conn->prepare("SELECT COUNT(*) AS c FROM orders WHERE user_id = ?");
-  $stmt->bind_param("i", $userId);
-  $stmt->execute();
-  $totalOrders = (int)($stmt->get_result()->fetch_assoc()['c'] ?? 0);
+    // Check if database connection exists
+    if (!isset($conn) || $conn->connect_error) {
+        throw new Exception("Database connection failed");
+    }
 
-  $stmt = $conn->prepare("SELECT COUNT(*) AS c FROM orders WHERE user_id = ? AND status IN ('pending','processing')");
-  $stmt->bind_param("i", $userId);
-  $stmt->execute();
-  $pendingOrders = (int)($stmt->get_result()->fetch_assoc()['c'] ?? 0);
+    // Get total orders count
+    $stmt = $conn->prepare("SELECT COUNT(*) AS c FROM orders WHERE user_id = ?");
+    if ($stmt) {
+        $stmt->bind_param("i", $userId);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $totalOrders = (int)($result->fetch_assoc()['c'] ?? 0);
+        $stmt->close();
+    }
 
-  $stmt = $conn->prepare("SELECT COALESCE(SUM(total_amount),0) AS s FROM orders WHERE user_id = ?");
-  $stmt->bind_param("i", $userId);
-  $stmt->execute();
-  $totalSpent = (float)($stmt->get_result()->fetch_assoc()['s'] ?? 0);
+    // Get pending orders count
+    $stmt = $conn->prepare("
+        SELECT COUNT(*) AS c 
+        FROM orders 
+        WHERE user_id = ? 
+          AND LOWER(status) IN ('pending','processing')
+    ");
+    if ($stmt) {
+        $stmt->bind_param("i", $userId);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $pendingOrders = (int)($result->fetch_assoc()['c'] ?? 0);
+        $stmt->close();
+    }
 
-  $stmt = $conn->prepare("SELECT id,total_amount,status,created_at FROM orders WHERE user_id = ? ORDER BY created_at DESC LIMIT 5");
-  $stmt->bind_param("i", $userId);
-  $stmt->execute();
-  $recentOrders = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
-} catch (Exception $e) {}
+    // Get total spent
+    $stmt = $conn->prepare("SELECT COALESCE(SUM(total_amount),0) AS s FROM orders WHERE user_id = ?");
+    if ($stmt) {
+        $stmt->bind_param("i", $userId);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $totalSpent = (float)($result->fetch_assoc()['s'] ?? 0);
+        $stmt->close();
+    }
+
+    // ✅ Get favourites count (table name is `favourites`)
+    $stmt = $conn->prepare("SELECT COUNT(*) AS c FROM favourites WHERE user_id = ?");
+    if ($stmt) {
+        $stmt->bind_param("i", $userId);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $favCount = (int)($result->fetch_assoc()['c'] ?? 0);
+        $stmt->close();
+    }
+
+    // Get recent orders
+    $stmt = $conn->prepare("SELECT id, total_amount, status, created_at FROM orders WHERE user_id = ? ORDER BY created_at DESC LIMIT 5");
+    if ($stmt) {
+        $stmt->bind_param("i", $userId);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $recentOrders = $result->fetch_all(MYSQLI_ASSOC);
+        $stmt->close();
+    }
+
+} catch (Exception $e) {
+    // Log error for debugging
+    error_log("Dashboard error: " . $e->getMessage());
+}
+
+// Final fallbacks for email and phone
+$userEmail = !empty($userEmail) ? $userEmail : ($_SESSION['user_email'] ?? '');
+$userPhone = !empty($userPhone) ? $userPhone : ($_SESSION['user_phone'] ?? 'Not added');
+
+// If email is still empty, try to fetch from database
+if (empty($userEmail) && $userId > 0 && isset($conn) && !$conn->connect_error) {
+    try {
+        $stmt = $conn->prepare("SELECT email FROM users WHERE id = ? LIMIT 1");
+        if ($stmt) {
+            $stmt->bind_param("i", $userId);
+            $stmt->execute();
+            $result = $stmt->get_result();
+            if ($row = $result->fetch_assoc()) {
+                $userEmail = $row['email'];
+                // Update session for future requests
+                $_SESSION['user_email'] = $userEmail;
+            }
+            $stmt->close();
+        }
+    } catch (Exception $e) {
+        error_log("Error fetching user email: " . $e->getMessage());
+    }
+}
 ?>
 <!doctype html>
 <html lang="en">
@@ -35,85 +123,174 @@ try {
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>Customer Dashboard</title>
+
+ 
   <link rel="stylesheet" href="assets/css/style.css">
-  <link rel="stylesheet" href="assets/css/customer_dashboard.css">
+  <link rel="stylesheet" href="assets/css/customer_dashboard.css?v=<?= time() ?>">
+  <link rel="stylesheet" href="assets/css/darkmode.css">
+
+
+  <script defer src="assets/js/nav.js"></script>
+
+  <link rel="icon" type="image/png" href="assets/images/logo.png">
 </head>
+
 <body class="account-page">
 
-<div class="account-shell">
+<?php include __DIR__ . "/partials/navigation.php"; ?>
 
-  <aside class="account-side">
-    <h3 class="side-title">Sabil Account</h3>
-    <p class="side-sub">Welcome, <?= htmlspecialchars($userName) ?></p>
 
-    <nav class="side-nav">
-      <?= sideLink("customer_dashboard.php", "📌 Dashboard", true) ?>
-      <?= sideLink("my_orders.php", "🧾 My Orders", false, $orderCount) ?>
-      <?= sideLink("favourites.php", "🤍 Favourites", false, $favCount) ?>
-      <?= sideLink("messages.php", "💬 Messages", false) ?>
-      <?= sideLink("profile.php", "⚙️ Profile Settings", false) ?>
-      <a class="side-link logout" href="logout.php"><span class="side-text">🚪 Logout</span></a>
-    </nav>
-  </aside>
+<div class="dash-page">
 
-  <main class="account-main">
+  <div class="dash-frame">
 
-    <section class="panel">
-      <h1 class="panel-title">Hi, <?= htmlspecialchars($userName) ?></h1>
+    <div class="dash-grid">
 
-      <div class="dash-cards">
-        <div class="dash-card">
-          <div class="label">Total Orders</div>
-          <div class="big"><?= $totalOrders ?></div>
+      <!-- LEFT COLUMN -->
+      <aside class="dash-left">
+
+        <div class="dash-hello">
+          <h3>Hello <?= htmlspecialchars($userName) ?>,</h3>
+          <p>Welcome back!</p>
         </div>
-        <div class="dash-card">
-          <div class="label">Pending Orders</div>
-          <div class="big"><?= $pendingOrders ?></div>
-        </div>
-        <div class="dash-card">
-          <div class="label">Favourites</div>
-          <div class="big"><?= $favCount ?></div>
-        </div>
-        <div class="dash-card wide">
-          <div class="label">Total Spent</div>
-          <div class="big">£<?= number_format($totalSpent, 2) ?></div>
-        </div>
-      </div>
-    </section>
 
-    <section class="panel">
-      <div class="panel-head">
-        <h2 class="panel-h2">Recent Orders</h2>
-        <a class="btn-sabil" href="my_orders.php">View all</a>
-      </div>
+        <nav class="dash-menu">
 
-      <div class="tablewrap">
-        <table>
-          <thead>
-            <tr>
-              <th>Order</th><th>Total</th><th>Status</th><th>Date</th>
-            </tr>
-          </thead>
-          <tbody>
-          <?php if (empty($recentOrders)): ?>
-            <tr><td colspan="4">No orders yet.</td></tr>
-          <?php else: ?>
-            <?php foreach ($recentOrders as $o): ?>
-              <tr>
-                <td>#<?= htmlspecialchars($o['id']) ?></td>
-                <td>£<?= number_format((float)$o['total_amount'], 2) ?></td>
-                <td><span class="badge"><?= htmlspecialchars($o['status']) ?></span></td>
-                <td><?= htmlspecialchars($o['created_at']) ?></td>
-              </tr>
-            <?php endforeach; ?>
-          <?php endif; ?>
-          </tbody>
-        </table>
-      </div>
-    </section>
+          <a class="dash-link is-active" href="customer_dashboard.php">
+            <span class="dash-ico">
+              <img src="assets/images/user.png" alt="">
+            </span>
+            <span>My Account</span>
+            <span class="dash-arrow" aria-hidden="true">›</span>
+          </a>
 
-  </main>
+          <a class="dash-link" href="customer_orders.php">
+            <span class="dash-ico">
+              <img src="assets/images/shopping-bag-filled.png" alt="">
+            </span>
+            <span>Orders</span>
+            <span class="dash-arrow" aria-hidden="true">›</span>
+          </a>
+
+          <a class="dash-link" href="customer_favourites.php">
+            <span class="dash-ico">
+              <img src="assets/images/favorite-shaded.png" alt="">
+            </span>
+            <span>Favourites</span>
+            <span class="dash-arrow" aria-hidden="true">›</span>
+          </a>
+
+          <a class="dash-link" href="customer_security.php">
+            <span class="dash-ico">
+              <img src="assets/images/security-icon.png" alt="">
+            </span>
+            <span>Login &amp; Security</span>
+            <span class="dash-arrow" aria-hidden="true">›</span>
+          </a>
+
+        </nav>
+
+      </aside>
+
+      <!-- RIGHT COLUMN -->
+      <main class="dash-right">
+
+       <!-- <h1 class="dash-title">Hi <?= htmlspecialchars($userName) ?>,</h1> -->
+
+        <div class="dash-rule"></div>
+
+        <!-- Stats row (3 small bars) -->
+        <div class="dash-bars">
+          <div class="dash-bar">
+            <div class="dash-bar-label">Total Orders</div>
+            <div class="dash-bar-value"><?= (int)$totalOrders ?></div>
+          </div>
+
+          <div class="dash-bar">
+            <div class="dash-bar-label">Pending Orders</div>
+            <div class="dash-bar-value"><?= (int)$pendingOrders ?></div>
+          </div>
+
+          <div class="dash-bar">
+            <div class="dash-bar-label">Favourites</div>
+            <div class="dash-bar-value"><?= (int)$favCount ?></div>
+          </div>
+        </div>
+
+        <!-- Total spent (long bar) -->
+        <div class="dash-long">
+          <div class="dash-long-label">Total Spent</div>
+          <div class="dash-long-value">£<?= number_format((float)$totalSpent, 2) ?></div>
+        </div>
+
+        <!-- Email + phone bars -->
+        <div class="dash-two">
+          <div class="dash-field">
+            <div class="dash-field-label">Email</div>
+            <div class="dash-field-value"><?= htmlspecialchars($userEmail) ?></div>
+          </div>
+
+          <div class="dash-field">
+            <div class="dash-field-label">Phone Number</div>
+            <div class="dash-field-value"><?= htmlspecialchars($userPhone) ?></div>
+          </div>
+        </div>
+
+        <!-- Recent Orders (exact look: title left + view all right, then table text style) -->
+        <section class="dash-recent">
+          <div class="dash-recent-head">
+            <div>
+              <div class="dash-recent-title">Recent Orders</div>
+              <div class="dash-recent-sub">Order&nbsp;&nbsp;Total&nbsp;&nbsp;Status&nbsp;&nbsp;Date</div>
+            </div>
+
+            <a class="dash-viewall" href="customer_orders.php">View all</a>
+          </div>
+
+          <div class="dash-recent-body">
+            <?php if (empty($recentOrders)): ?>
+              <div class="dash-muted">No orders yet</div>
+            <?php else: ?>
+              <?php foreach ($recentOrders as $o): ?>
+                <div class="dash-row">
+                  <div class="dash-cell">#<?= htmlspecialchars($o['id']) ?></div>
+                  <div class="dash-cell">£<?= number_format((float)$o['total_amount'], 2) ?></div>
+                  <div class="dash-cell">
+                    <span class="dash-badge"><?= htmlspecialchars($o['status']) ?></span>
+                  </div>
+                  <div class="dash-cell"><?= htmlspecialchars($o['created_at']) ?></div>
+                </div>
+              <?php endforeach; ?>
+            <?php endif; ?>
+          </div>
+        </section>
+
+        <div class="dash-bottom">
+          <a class="dash-back" href="index.php">Back to home</a>
+        </div>
+
+      </main>
+    </div>
+  </div>
 </div>
+
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  console.log('Dashboard CSS loaded');
+  const badges = document.querySelectorAll('.dash-badge');
+  badges.forEach(badge => {
+    const status = badge.textContent.trim().toLowerCase();
+    if (status === 'pending' || status === 'processing') {
+      badge.style.background = '#fff3e0';
+      badge.style.borderColor = '#e6b87e';
+    } else if (status === 'completed' || status === 'delivered') {
+      badge.style.background = '#e3f1e3';
+      badge.style.borderColor = '#8fb08c';
+    }
+  });
+});
+</script>
 
 </body>
 </html>
