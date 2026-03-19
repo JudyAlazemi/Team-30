@@ -174,10 +174,9 @@ if (empty($userEmail) && $userId > 0 && isset($conn) && !$conn->connect_error) {
   <title>Customer Dashboard</title>
 
   <link rel="stylesheet" href="assets/css/style.css">
-  <link rel="stylesheet" href="assets/css/customer_dashboard.css?v=<?= time() ?>">
+  <link rel="stylesheet" href="assets/css/customer_dashboard.css">
+   <link rel="stylesheet" href="assets/css/darkmode.css">
   <link rel="stylesheet" href="assets/css/darkmode.css">
-
-  <script defer src="assets/js/nav.js"></script>
 
   <link rel="icon" type="image/png" href="assets/images/logo.png">
 </head>
@@ -258,7 +257,7 @@ if (empty($userEmail) && $userId > 0 && isset($conn) && !$conn->connect_error) {
 
       <!-- RIGHT COLUMN -->
       <main class="dash-right">
-
+        <h1 class="dash-title">My Account</h1>
         <div class="dash-rule"></div>
 
         <!-- Stats row -->
