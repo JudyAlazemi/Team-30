@@ -106,7 +106,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 throw new Exception("Product #{$pid} not found");
             }
 
-            if ((int)$p['stock'] < $qty) {
+            if ((int) $p['stock'] < $qty) {
                 throw new Exception("Not enough stock for {$p['name']}");
             }
 
@@ -120,9 +120,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             ];
         }
 
-        $shipping = ($subtotal >= 150) ? 0.0 : 10.0;
+        $shipping = ($subtotal >= 40) ? 0.0 : 4.99;
         if ($shippingMethod === 'express') {
-            $shipping = ($subtotal >= 150) ? 0.0 : 20.0;
+            $shipping = ($subtotal >= 40) ? 0.0 : 7.99;
         }
 
         $tax = round($subtotal * 0.08, 2);
@@ -634,7 +634,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                   <p>5-7 business days</p>
                 </div>
               </div>
-              <p>£10.00</p>
+              <p>£4.99</p>
             </div>
 
             <div class="shipping-option" onclick="selectShipping('express', event)">
@@ -645,7 +645,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                   <p>2-3 business days</p>
                 </div>
               </div>
-              <p>£20.00</p>
+              <p>£7.99</p>
             </div>
           </div>
 
@@ -660,22 +660,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <div id="card-payment">
               <div class="form-group">
                 <label for="cardNumber">Card Number *</label>
-                <input type="text" id="cardNumber" name="cardNumber" placeholder="1234 5678 9012 3456">
+                <input type="text" id="cardNumber" name="cardNumber" placeholder="1234 5678 9012 3456" required>
               </div>
 
               <div class="form-group">
                 <label for="cardName">Name on Card *</label>
-                <input type="text" id="cardName" name="cardName" placeholder="John Doe">
+                <input type="text" id="cardName" name="cardName" placeholder="John Doe" required>
               </div>
 
               <div class="form-row two-col">
                 <div class="form-group">
                   <label for="expiry">Expiry Date *</label>
-                  <input type="text" id="expiry" name="expiry" placeholder="MM/YY">
+                  <input type="text" id="expiry" name="expiry" placeholder="MM/YY" required>
                 </div>
                 <div class="form-group">
                   <label for="cvv">CVV *</label>
-                  <input type="text" id="cvv" name="cvv" placeholder="123">
+                  <input type="text" id="cvv" name="cvv" placeholder="123" required>
                 </div>
               </div>
             </div>
@@ -702,7 +702,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             <div class="summary-row">
               <span>Shipping</span>
-              <span id="shipping-cost">£10.00</span>
+              <span id="shipping-cost">£0.00</span>
             </div>
 
             <div class="summary-row">
@@ -732,8 +732,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   <script src="products-data.php?v=<?= time() ?>"></script>
 
   <script>
+    const FREE_LIMIT = 40;
+    const STANDARD_SHIPPING = 4.99;
+    const EXPRESS_SHIPPING = 7.99;
+
     function money(n) {
-      return "£" + Number(n || 0).toFixed(2);
+      return "£" + (Math.round((Number(n) || 0) * 100) / 100).toFixed(2);
     }
 
     async function updateNavbar() {
@@ -799,30 +803,39 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     function getFullCart() {
       const cart = getLocalCart();
-      const products = window.productsData || [];
+      const products = Array.isArray(window.productsData) ? window.productsData : [];
 
       return cart.map(item => {
-        const productId = item.id || item.product_id;
+        const productId = item.id ?? item.product_id;
         const product = products.find(p => String(p.id) === String(productId));
         if (!product) return null;
 
-        const quantity = parseInt(item.quantity || item.qty || 1, 10);
+        const quantity = Math.max(1, parseInt(item.quantity ?? item.qty ?? 1, 10) || 1);
+        const safePrice = parseFloat(product.price) || 0;
 
         return {
           id: parseInt(product.id, 10),
           product_id: parseInt(product.id, 10),
-          name: product.name,
-          price: parseFloat(product.price),
+          name: product.name ?? 'Unnamed Product',
+          image: product.image ?? 'assets/images/logo.png',
+          price: safePrice,
           quantity: quantity,
           qty: quantity,
-          subtotal: parseFloat(product.price) * quantity
+          subtotal: safePrice * quantity
         };
       }).filter(Boolean);
     }
 
     function calculateTotals(items, shippingMethod = 'standard') {
       const subtotal = items.reduce((sum, item) => sum + item.subtotal, 0);
-      const shipping = subtotal >= 150 ? 0 : (shippingMethod === 'express' ? 20 : 10);
+
+      let shipping = 0;
+      if (items.length) {
+        shipping = subtotal >= FREE_LIMIT
+          ? 0
+          : (shippingMethod === 'express' ? EXPRESS_SHIPPING : STANDARD_SHIPPING);
+      }
+
       const tax = subtotal * 0.08;
       const total = subtotal + shipping + tax;
 
@@ -838,7 +851,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       const totalEl = document.getElementById('total-cost');
       const placeOrderBtn = document.getElementById('place-order-btn');
 
-      if (items.length === 0) {
+      if (!items.length) {
         itemsContainer.innerHTML = '<p style="text-align:center; padding:2rem;">Your cart is empty</p>';
         subtotalEl.textContent = money(0);
         shippingEl.textContent = money(0);
@@ -887,8 +900,31 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       document.querySelectorAll('.payment-tab').forEach(tab => tab.classList.remove('active'));
       event.currentTarget.classList.add('active');
 
-      document.getElementById('card-payment').style.display = method === 'card' ? 'block' : 'none';
-      document.getElementById('paypal-payment').style.display = method === 'paypal' ? 'block' : 'none';
+      const cardPayment = document.getElementById('card-payment');
+      const paypalPayment = document.getElementById('paypal-payment');
+
+      const cardNumber = document.getElementById('cardNumber');
+      const cardName = document.getElementById('cardName');
+      const expiry = document.getElementById('expiry');
+      const cvv = document.getElementById('cvv');
+
+      if (method === 'card') {
+        cardPayment.style.display = 'block';
+        paypalPayment.style.display = 'none';
+
+        cardNumber.required = true;
+        cardName.required = true;
+        expiry.required = true;
+        cvv.required = true;
+      } else {
+        cardPayment.style.display = 'none';
+        paypalPayment.style.display = 'block';
+
+        cardNumber.required = false;
+        cardName.required = false;
+        expiry.required = false;
+        cvv.required = false;
+      }
     };
 
     async function placeOrder() {
@@ -1011,8 +1047,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     document.addEventListener('DOMContentLoaded', function () {
       updateNavbar();
       checkLogin();
-
-      setTimeout(renderOrderSummary, 100);
+      renderOrderSummary();
 
       document.getElementById('checkout-form').addEventListener('submit', function(e) {
         e.preventDefault();
