@@ -235,111 +235,115 @@ try {
         <p>See what customers think about Sabil.</p>
       </div>
 
-      <button type="button" class="home-add-review-btn" id="openReviewForm" aria-label="Add a review">
+      <button type="button" class="home-add-review-btn" id="openReviewForm" aria-label="Open review form">
         +
       </button>
     </div>
 
-<div class="home-review-form-wrapper" id="reviewFormWrapper" aria-hidden="true">
-  <form class="review-form" action="submit_site_review.php" method="POST">
-    <div class="home-review-form-grid">
+    <div class="home-review-form-wrapper" id="reviewFormWrapper" aria-hidden="true">
+      <form class="review-form" action="submit_site_review.php" method="POST">
+        <div class="home-review-form-grid">
 
           <div class="home-form-row">
             <label for="reviewName">Name</label>
             <input
-            id="reviewName"
-            name="display_name"
-            type="text"
-            value="<?= htmlspecialchars($_SESSION['name'] ?? '') ?>"
-            placeholder="Enter your name"
+              id="reviewName"
+              name="display_name"
+              type="text"
+              value="<?= htmlspecialchars($_SESSION['name'] ?? '') ?>"
+              placeholder="Enter your name"
             >
           </div>
 
-      <div class="home-form-row">
-        <label>Rating</label>
-        <div class="home-star-input" aria-label="Select a rating">
-          <input type="radio" id="homeStar5" name="rating" value="5" required>
-          <label for="homeStar5" title="5 stars">★</label>
+          <div class="home-form-row">
+            <label>Rating</label>
+            <div class="home-star-input" aria-label="Select a rating">
+              <input type="radio" id="homeStar5" name="rating" value="5" required>
+              <label for="homeStar5" title="5 stars">★</label>
 
-          <input type="radio" id="homeStar4" name="rating" value="4">
-          <label for="homeStar4" title="4 stars">★</label>
+              <input type="radio" id="homeStar4" name="rating" value="4">
+              <label for="homeStar4" title="4 stars">★</label>
 
-          <input type="radio" id="homeStar3" name="rating" value="3">
-          <label for="homeStar3" title="3 stars">★</label>
+              <input type="radio" id="homeStar3" name="rating" value="3">
+              <label for="homeStar3" title="3 stars">★</label>
 
-          <input type="radio" id="homeStar2" name="rating" value="2">
-          <label for="homeStar2" title="2 stars">★</label>
+              <input type="radio" id="homeStar2" name="rating" value="2">
+              <label for="homeStar2" title="2 stars">★</label>
 
-          <input type="radio" id="homeStar1" name="rating" value="1">
-          <label for="homeStar1" title="1 star">★</label>
+              <input type="radio" id="homeStar1" name="rating" value="1">
+              <label for="homeStar1" title="1 star">★</label>
+            </div>
+          </div>
+
+          <div class="home-form-row home-form-row--full">
+            <label for="reviewText">Your Review</label>
+            <textarea id="reviewText" name="comment" rows="4" placeholder="Write your review..." required></textarea>
+          </div>
+
         </div>
-      </div>
 
-      <div class="home-form-row home-form-row--full">
-        <label for="reviewText">Your Review</label>
-        <textarea id="reviewText" name="comment" rows="4" placeholder="Write your review..." required></textarea>
-      </div>
-
+        <div class="review-form-actions">
+          <button type="submit" class="hero-btn submit-review-btn">Submit Review</button>
+        </div>
+      </form>
     </div>
 
     <div class="home-reviews-carousel">
-  <button class="review-arrow review-arrow-prev" id="reviewPrevBtn" aria-label="Previous review">‹</button>
+      <button class="review-arrow review-arrow-prev" id="reviewPrevBtn" aria-label="Previous review">‹</button>
 
-  <div class="home-reviews-track" id="homeReviewsTrack">
-    <?php if (!empty($siteReviews)): ?>
-      <?php foreach ($siteReviews as $review): ?>
-        <article class="home-review-card">
-          <h3 class="home-review-name"><?= htmlspecialchars($review['display_name']) ?></h3>
+      <div class="home-reviews-track" id="homeReviewsTrack">
+        <?php if (!empty($siteReviews)): ?>
+          <?php foreach ($siteReviews as $review): ?>
+            <article class="home-review-card">
+              <h3 class="home-review-name"><?= htmlspecialchars($review['display_name']) ?></h3>
 
-          <span class="home-review-date">
-            <?= date("d M Y", strtotime($review['created_at'])) ?>
-          </span>
+              <span class="home-review-date">
+                <?= date("d M Y", strtotime($review['created_at'])) ?>
+              </span>
 
-          <div class="home-review-stars" aria-label="<?= (int)$review['rating'] ?> out of 5 stars">
-            <?php for ($i = 1; $i <= 5; $i++): ?>
-              <?= $i <= (int)$review['rating'] ? '★' : '☆' ?>
-            <?php endfor; ?>
-          </div>
+              <div class="home-review-stars" aria-label="<?= (int)$review['rating'] ?> out of 5 stars">
+                <?php for ($i = 1; $i <= 5; $i++): ?>
+                  <?= $i <= (int)$review['rating'] ? '★' : '☆' ?>
+                <?php endfor; ?>
+              </div>
 
-          <p class="home-review-text">
-            <?= htmlspecialchars($review['comment']) ?>
-          </p>
-        </article>
-      <?php endforeach; ?>
-    <?php else: ?>
-      <article class="home-review-card">
-        <h3 class="home-review-name">Sarah M.</h3>
-        <span class="home-review-date">04 Mar 2026</span>
-        <div class="home-review-stars">★★★★★</div>
-        <p class="home-review-text">
-          Beautiful experience from start to finish. The website was elegant and very easy to use.
-        </p>
-      </article>
+              <p class="home-review-text">
+                <?= htmlspecialchars($review['comment']) ?>
+              </p>
+            </article>
+          <?php endforeach; ?>
+        <?php else: ?>
+          <article class="home-review-card">
+            <h3 class="home-review-name">Sarah M.</h3>
+            <span class="home-review-date">04 Mar 2026</span>
+            <div class="home-review-stars">★★★★★</div>
+            <p class="home-review-text">
+              Beautiful experience from start to finish. The website was elegant and very easy to use.
+            </p>
+          </article>
 
-      <article class="home-review-card">
-        <h3 class="home-review-name">Layla A.</h3>
-        <span class="home-review-date">02 Mar 2026</span>
-        <div class="home-review-stars">★★★★☆</div>
-        <p class="home-review-text">
-          I loved the overall shopping experience and the design felt very premium.
-        </p>
-      </article>
+          <article class="home-review-card">
+            <h3 class="home-review-name">Layla A.</h3>
+            <span class="home-review-date">02 Mar 2026</span>
+            <div class="home-review-stars">★★★★☆</div>
+            <p class="home-review-text">
+              I loved the overall shopping experience and the design felt very premium.
+            </p>
+          </article>
 
-      <article class="home-review-card">
-        <h3 class="home-review-name">Huda K.</h3>
-        <span class="home-review-date">28 Feb 2026</span>
-        <div class="home-review-stars">★★★★★</div>
-        <p class="home-review-text">
-          Very smooth website and the brand presentation looks luxurious and professional.
-        </p>
-      </article>
-    <?php endif; ?>
-  </div>
+          <article class="home-review-card">
+            <h3 class="home-review-name">Huda K.</h3>
+            <span class="home-review-date">28 Feb 2026</span>
+            <div class="home-review-stars">★★★★★</div>
+            <p class="home-review-text">
+              Very smooth website and the brand presentation looks luxurious and professional.
+            </p>
+          </article>
+        <?php endif; ?>
+      </div>
 
-  <button class="review-arrow review-arrow-next" id="reviewNextBtn" aria-label="Next review">›</button>
-</div>
-</form>
-</div>
+      <button class="review-arrow review-arrow-next" id="reviewNextBtn" aria-label="Next review">›</button>
+    </div>
 
   </div>
 </section>
@@ -427,10 +431,13 @@ const homeFormWrap = document.getElementById("reviewFormWrapper");
 
 if (homeOpenBtn && homeFormWrap) {
   homeOpenBtn.addEventListener("click", () => {
-    homeFormWrap.classList.toggle("active");
-    homeFormWrap.setAttribute(
-      "aria-hidden",
-      homeFormWrap.classList.contains("active") ? "false" : "true"
+    const isOpen = homeFormWrap.classList.toggle("active");
+
+    homeFormWrap.setAttribute("aria-hidden", isOpen ? "false" : "true");
+    homeOpenBtn.textContent = isOpen ? "−" : "+";
+    homeOpenBtn.setAttribute(
+      "aria-label",
+      isOpen ? "Close review form" : "Open review form"
     );
   });
 }
