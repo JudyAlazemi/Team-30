@@ -10,7 +10,7 @@ if (file_exists(__DIR__ . '/db.php')) {
   <title>FAQ | Sabil</title>
     <link rel="stylesheet" href="assets/css/style.css" />
   <link rel="stylesheet" href="assets/css/static.css" />
-  <link rel="stylesheet" href="assets/css/darkmode.css">
+
     <script defer src="assets/js/home.js"></script>
     <script defer src="assets/js/newsletter.js"></script>
  

@@ -15,7 +15,6 @@ require_once __DIR__ . "/backend/config/session.php";
     <script defer src="assets/js/newsletter.js"></script>
     <link rel="stylesheet" href="assets/css/globals.css">
     <link rel="stylesheet" href="assets/css/product.css">
-    <link rel="stylesheet" href="assets/css/darkmode.css">
 </head>
 <body class="page-product">
 

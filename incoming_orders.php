@@ -45,7 +45,7 @@ try {
 
     <link rel="stylesheet" href="assets/css/style.css">
     <link rel="stylesheet" href="assets/css/admin_dashboard.css?v=<?= time() ?>">
-    <link rel="stylesheet" href="assets/css/darkmode.css">
+  
 </head>
 <body class="account-page">
 

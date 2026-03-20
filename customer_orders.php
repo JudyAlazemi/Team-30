@@ -42,7 +42,7 @@ try {
 
   <link rel="stylesheet" href="assets/css/style.css">
   <link rel="stylesheet" href="assets/css/customer_dashboard.css">
-  <link rel="stylesheet" href="assets/css/darkmode.css">
+
   <link rel="icon" type="image/png" href="assets/images/logo.png">
 </head>
 
