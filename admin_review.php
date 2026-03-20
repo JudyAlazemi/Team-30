@@ -118,7 +118,7 @@ include __DIR__ . "/partials/navigation.php";
           </a>
 
           <a class="dash-link" href="admin_messages.php">
-            <span class="dash-ico"><img src="assets/images/message.png" alt=""></span>
+            <span class="dash-ico"><img src="/images/message.png" alt=""></span>
             <span>Customer Messages</span>
             <span class="dash-arrow">›</span>
           </a>
@@ -154,7 +154,7 @@ include __DIR__ . "/partials/navigation.php";
           </a>
 
           <a class="dash-link is-active" href="admin_review.php">
-            <span class="dash-ico"><img src="assets/images/reviews.png" alt=""></span>
+            <span class="dash-ico"><img src="/images/reviews.png" alt=""></span>
             <span>Manage Reviews</span>
             <span class="dash-arrow">›</span>
           </a>

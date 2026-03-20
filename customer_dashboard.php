@@ -176,7 +176,6 @@ if (empty($userEmail) && $userId > 0 && isset($conn) && !$conn->connect_error) {
   <link rel="stylesheet" href="assets/css/style.css">
   <link rel="stylesheet" href="assets/css/customer_dashboard.css">
    <link rel="stylesheet" href="assets/css/darkmode.css">
-  <link rel="stylesheet" href="assets/css/darkmode.css">
 
   <link rel="icon" type="image/png" href="assets/images/logo.png">
 </head>
@@ -224,13 +223,13 @@ if (empty($userEmail) && $userId > 0 && isset($conn) && !$conn->connect_error) {
           </a>
 
           <a class="dash-link" href="customer_messages.php">
-            <span class="dash-ico"><img src="assets/images/message.png" alt=""></span>
+            <span class="dash-ico"><img src="/images/message.png" alt=""></span>
             <span>Messages</span>
             <span class="dash-arrow">›</span>
           </a>
 
           <a class="dash-link" href="customer_review.php">
-            <span class="dash-ico"><img src="assets/images/reviews.png" alt=""></span>
+            <span class="dash-ico"><img src="/images/reviews.png" alt=""></span>
             <span>Reviews</span>
             <span class="dash-arrow">›</span>
           </a>

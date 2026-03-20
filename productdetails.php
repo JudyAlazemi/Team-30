@@ -1,7 +1,8 @@
 <?php
 require_once __DIR__ . "/backend/config/session.php";
-require_once __DIR__ . "/backend/config/db.php";
-
+if (file_exists(__DIR__ . "/backend/config/db.php")) {
+    require_once __DIR__ . "/backend/config/db.php";
+}
 $productId = isset($_GET['id']) ? (int) $_GET['id'] : 0;
 
 $reviews = [];
@@ -320,7 +321,7 @@ if ($productId > 0) {
             <input
               id="reviewName"
               type="text"
-              value="<?= htmlspecialchars($_SESSION['user_name'] ?? '') ?>"
+              value="<?= htmlspecialchars($_SESSION['name'] ?? '') ?>"
               placeholder="Enter your name"
             >
           </div>
@@ -463,6 +464,45 @@ if (openBtn) {
 
 <script src="assets/js/products-data.js"></script>
 <script src="assets/js/productdetails.js"></script>
+
+
+<script>
+async function updateNavbar() {
+  const userBtn = document.getElementById('userBtn');
+  const userText = document.getElementById('userText');
+  const userIcon = document.getElementById('userIcon');
+
+  if (!userBtn || !userText || !userIcon) return;
+
+  try {
+    const res = await fetch('check_login.php', {
+      cache: 'no-store',
+      credentials: 'same-origin'
+    });
+
+    if (!res.ok) throw new Error('Network response was not ok');
+
+    const data = await res.json();
+
+    if (data.loggedIn) {
+      userBtn.href = 'customer_dashboard.php';
+      userText.textContent = 'My Account';
+      userIcon.src = 'assets/images/user.png';
+      userIcon.alt = 'My Account';
+    } else {
+      userBtn.href = 'login.html';
+      userText.textContent = 'Sign in';
+      userIcon.src = 'assets/images/sign-in.png';
+      userIcon.alt = 'Sign in';
+    }
+  } catch (e) {
+    console.error('Navbar update failed:', e);
+  }
+}
+
+document.addEventListener('DOMContentLoaded', updateNavbar);
+window.addEventListener('pageshow', updateNavbar);
+</script>
 
 
   </body>

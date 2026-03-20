@@ -347,31 +347,33 @@ body.darkmode #theme-switch svg:last-child { display: inline; }        /* sun */
 .menu-toggle.is-open .icon--close{ opacity:1; transform: rotate(0deg) scale(1); }
 
 /* Logo (center) */
-.brand{  text-decoration:none;
- }
-.brand-logo{
-  display: block;
+.brand {
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+}
+
+.brand-logo {
   height: 64px;
- width: auto;
- padding: 0;
-         
+  width: auto;
+  padding: 0;
 }
 
-/*  light mode */
-.brand-logo--default{
-  display: block;
+/* Light mode */
+body:not(.darkmode) .brand-logo--default {
+  display: block !important;
 }
 
-.brand-logo--light{
-  display: none;
-}
-
-/* dark mode switch */
-body.darkmode .brand-logo--default{
+body:not(.darkmode) .brand-logo--light {
   display: none !important;
 }
 
-body.darkmode .brand-logo--light{
+/* Dark mode */
+body.darkmode .brand-logo--default {
+  display: none !important;
+}
+
+body.darkmode .brand-logo--light {
   display: block !important;
 }
 
