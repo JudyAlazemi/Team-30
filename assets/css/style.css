@@ -279,6 +279,13 @@ body {
    
 }
 
+  .left-controls {
+  display: flex;
+  align-items: center;
+  gap: 25px;
+}
+
+
  .topbar {
   background: var(--background);
   position: sticky;
@@ -286,6 +293,7 @@ body {
   z-index: 1300;
   border: 1.5px solid var(--border);
   margin: 16px;
+
 
 
 
