@@ -102,7 +102,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["action"])) {
   <title>Favourites | Sabil</title>
   <link rel="stylesheet" href="assets/css/style.css" />
   <link rel="stylesheet" href="assets/css/static.css" /> 
-  <link rel="stylesheet" href="assets/css/darkmode.css" />
     <script defer src="assets/js/home.js"></script>
     <script defer src="assets/js/newsletter.js"></script>
 
