@@ -1,6 +1,7 @@
 <!-- Chat Widget -->
 <link rel="stylesheet" href="assets/css/chatbot.css" />
 
+
 <script defer src="assets/js/chatbot.js"></script>
 
 <button class="chat-fab" id="chatFab" aria-label="Open chat">

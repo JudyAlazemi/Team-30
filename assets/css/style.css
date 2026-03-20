@@ -38,7 +38,6 @@ body.darkmode {
     --btn-text-hover: #121212;
 }
 
-button,
 .hero-btn,
 .view-more-btn,
 .cta-quiz__btn,
@@ -57,7 +56,6 @@ button,
   transition: background-color 0.25s ease, color 0.25s ease, border-color 0.25s ease, opacity 0.25s ease, transform 0.25s ease;
 }
 
-button:hover,
 .hero-btn:hover,
 .view-more-btn:hover,
 .cta-quiz__btn:hover,
@@ -72,6 +70,31 @@ button:hover,
 .review-arrow:hover {
   background: var(--btn-bg-hover);
   color: var(--btn-text-hover);
+}
+
+.icon-btn,
+#theme-switch,
+.menu-toggle,
+.quiz-close {
+  background: none;
+  border: none;
+  color: var(--text-dark);
+  box-shadow: none;
+}
+
+.icon-btn:hover,
+#theme-switch:hover,
+.menu-toggle:hover,
+.quiz-close:hover {
+  background: none;
+  border: none;
+  color: var(--text-dark);
+  opacity: 0.8;
+}
+
+body.darkmode .icon--menu,
+body.darkmode .icon--close {
+  filter: invert(1) brightness(1.5);
 }
 
 @font-face {

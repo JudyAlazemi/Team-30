@@ -14,6 +14,8 @@ if (file_exists(__DIR__ . '/db.php')) {
 
     <script defer src="assets/js/home.js"></script>
     <script defer src="assets/js/newsletter.js"></script>
+    <script defer src="assets/js/nav.js"></script>
+
  
       <link rel="icon" type="image/png" href="images/logo.png">
 
