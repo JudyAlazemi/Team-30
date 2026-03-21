@@ -1,0 +1,36 @@
+body.darkmode {
+    transition: background-color 0.3s, color 0.3s;
+    --background: #120d0b;
+    --secondary: #d8c2b2;
+    --text-dark: #f3ebe5;
+    --text-light: #b8a79b;
+    --white: #1b1411;
+    --border: #3a2d27;
+    --primary: #f3ebe5;
+    --nav-bg: #140f0d;
+    --hero-overlay: rgba(20, 12, 10, 0.24);
+    --button-bg: #1a1310;
+    --button-text: #f3ebe5;
+   
+}
+
+body.darkmode .brand-logo--default {
+  display: none !important;
+}
+
+body.darkmode .brand-logo--light {
+  display: block !important;
+}
+
+body.darkmode .icon-btn,
+body.darkmode .actions .action,
+body.darkmode .actions .action-text,
+body.darkmode #theme-switch {
+    color: #f0e7df;
+}
+
+body.darkmode .hero h1,
+body.darkmode .hero-banner h1,
+body.darkmode .hero-section h1 {
+    color: #f2e7de;
+}

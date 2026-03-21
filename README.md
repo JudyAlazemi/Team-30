@@ -217,20 +217,22 @@ Team 30 – CS2TP
 
 **Backend Development**
 - Sara Ghareeb – Authentication system, session management, and database integration
+- Abdulwahab Mohammed – Assisted with backend development
 
 **Frontend Development**
-- Judy – Interface layout and page implementation
+- Judy Alazemi – Interface layout and page implementation
 - Chandni – Frontend styling and responsive design
-- Iman – Page development and UI components
+- Iman Javed – Page development and UI components
 
 **UI Design**
-- Judy – Figma wireframes and interface planning
+- Judy Alazemi – Figma wireframes and interface planning
 
 **Testing & Documentation**
-- Prabhjot – Testing and documentation support
-- Rihad – Feature validation and testing
+- Prabhjot Singh – Testing and documentation support
+- Mohibul Rihad – Feature validation and testing
+- Novejot Singh – Supported software testing and validation of features
 
 **Deployment & Coordination**
-- Abdulwahab – Deployment assistance and project coordination
+- Sara Ghareeb -  Deployment assistance, hosting of the web application and project coordination
 
 ---
