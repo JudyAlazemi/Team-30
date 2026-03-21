@@ -470,7 +470,7 @@ if ($isApi) {
   </div>
 </div>
 
-<script src="products-data.php?v=<?= time() ?>"></script>
+<script src="product-data.php?v=<?= time() ?>"></script>
 <script src="assets/js/cart.js"></script>
 
 </body>

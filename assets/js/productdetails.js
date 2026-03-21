@@ -51,30 +51,48 @@ console.log("Image path:", product.image);
     get(k, fb){ try { return JSON.parse(localStorage.getItem(k)) ?? fb; } catch { return fb; } },
     set(k, v){ localStorage.setItem(k, JSON.stringify(v)); }
   };
-  const CART_KEY = 'cart'; // [{id, qty}]
+  const CART_KEY = 'cart';
 
-  function getCart(){ return LS.get(CART_KEY, []); }
-  function setCart(c){ LS.set(CART_KEY, c); }
-  function addToCartInternal(id, qty){
-    qty = clamp(qty);
-    const cart = getCart();
-    const i = cart.findIndex(x => x.id === id);
-    if (i === -1) cart.push({ id, qty });
-    else cart[i].qty = clamp((cart[i].qty||1) + qty);
-    setCart(cart);
+function getCart() {
+  return LS.get(CART_KEY, []);
+}
+
+function setCart(cart) {
+  LS.set(CART_KEY, cart);
+}
+
+function addToCartInternal(product, qty) {
+  qty = clamp(qty);
+  const cart = getCart();
+  const existingItem = cart.find(item => item.id === product.id);
+
+  if (existingItem) {
+    existingItem.quantity = clamp((existingItem.quantity || 1) + qty);
+  } else {
+    cart.push({
+      id: product.id,
+      name: product.name,
+      price: product.price,
+      image: product.image,
+      category: product.category || '',
+      quantity: qty
+    });
   }
 
+  setCart(cart);
+}
+
   // Public handlers used by your HTML
-  window.addToCart = () => {
-    const q = clamp(qtyIn ? qtyIn.value : 1);
-    addToCartInternal(product.id, q);
-    alert(`${product.name} ×${q} added to cart`);
-  };
+ window.addToCart = () => {
+  const q = clamp(qtyIn ? qtyIn.value : 1);
+  addToCartInternal(product, q);
+  alert(`${product.name} ×${q} added to cart`);
+};
   window.buyNow = () => {
-    const q = clamp(qtyIn ? qtyIn.value : 1);
-    addToCartInternal(product.id, q);
-    location.href = 'cart.php';
-  };
+  const q = clamp(qtyIn ? qtyIn.value : 1);
+  addToCartInternal(product, q);
+  location.href = 'cart.php';
+};
 
 // ----- FAVOURITES (server-backed via favourites.php) -----
 const FAV_ENDPOINT = 'favourites.php';

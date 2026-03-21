@@ -729,7 +729,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <!-- your footer -->
   </footer>
 
-  <script src="products-data.php?v=<?= time() ?>"></script>
+  <script src="product-data.php?v=<?= time() ?>"></script>
 
   <script>
     const FREE_LIMIT = 40;
