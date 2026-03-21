@@ -2,7 +2,7 @@
 
 @font-face{
   font-family: "Meshed Display";
-  src: url("assets/fonts/MeshedDisplay-Medium") format("truetype");
+  src: url("../fonts/MeshedDisplay-Medium") format("truetype");
   font-weight: 500;
   font-style: normal;
   font-display: swap;
