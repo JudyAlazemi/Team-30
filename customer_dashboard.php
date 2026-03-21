@@ -323,8 +323,11 @@ if (empty($userEmail) && $userId > 0 && isset($conn) && !$conn->connect_error) {
             <?php else: ?>
               <?php foreach ($recentOrders as $o): ?>
                 <div class="dash-row">
-                  <div class="dash-cell">#<?= htmlspecialchars($o['id']) ?></div>
-                  <div class="dash-cell">£<?= number_format((float)$o['total_amount'], 2) ?></div>
+<div class="dash-cell">
+  <a href="order_details.php?id=<?= (int)$o['id'] ?>">
+    #<?= (int)$o['id'] ?>
+  </a>
+</div>                  <div class="dash-cell">£<?= number_format((float)$o['total_amount'], 2) ?></div>
                   <div class="dash-cell">
                     <span class="dash-badge"><?= htmlspecialchars($o['status']) ?></span>
                   </div>

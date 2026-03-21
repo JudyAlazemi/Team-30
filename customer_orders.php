@@ -134,8 +134,10 @@ try {
                 <div class="dash-row" style="grid-template-columns: 100px 140px 150px 210px 160px; align-items:center;">
 
                   <div class="dash-cell">
-                    #<?= htmlspecialchars($o['id']) ?>
-                  </div>
+                   <a href="order_details.php?id=<?= (int)$o['id'] ?>">
+                       #<?= (int)$o['id'] ?>
+                         </a>
+                            </div>
 
                   <div class="dash-cell">
                     £<?= number_format((float)$o['total_amount'], 2) ?>

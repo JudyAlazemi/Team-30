@@ -567,6 +567,22 @@
   background: var(--secondary);
   color: var(--background) !important;
 }
+.dash-cell {
+  position: relative;
+}
+
+.dash-cell a {
+  position: relative;
+  z-index: 10;
+  pointer-events: auto;
+  text-decoration: none;
+  color: inherit;
+}
+
+.dash-cell a:hover {
+  text-decoration: underline;
+  cursor: pointer;
+}
 
 
 /* ================================
