@@ -326,12 +326,9 @@ require_once __DIR__ . "/backend/config/session.php";
       <p>© 2025 Sabil. All rights reserved.</p>
     </div>
   </footer>
-  <!--
-  <script src="assets/js/products-data.js?v=2"></script>
-  <script src="assets/js/product.js?v=2"></script>
-  <script src="assets/js/wire-products-lite.js?v=2"></script>
-  <script src="assets/js/render-product.js?v=2"></script>
--->
+  
+    <script src="assets/js/product.js?v=2"></script>
+
   <script>
       function money(n) { return "£" + Number(n || 0).toFixed(2); }
 

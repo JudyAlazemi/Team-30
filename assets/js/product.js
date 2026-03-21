@@ -2,71 +2,45 @@
 
 
 document.addEventListener("DOMContentLoaded", () => {
-    console.log('Products page loaded - initializing filters');
-    
-    // Initialize category filtering
     initializeCategoryFilters();
-    
-    // Initialize cart count
+    initializeAddToCartButtons();
+    initializeSearch();
+    handleURLParameters();
     updateCartCount();
-    
-    // to show all products
-    filterProductsByCategory('all');
+    filterProductsByCategory("all");
 });
 
-// Initialize category filtering
+// CATEGORY FILTER
 function initializeCategoryFilters() {
     const categoryButtons = document.querySelectorAll(".category-btn");
-    console.log('Found category buttons:', categoryButtons.length);
 
     categoryButtons.forEach(button => {
-        button.addEventListener("click", (e) => {
-            e.preventDefault();
-            console.log('Category button clicked:', button.textContent.trim());
-            
-        
-            document.querySelectorAll(".category-btn").forEach(btn => {
-                btn.classList.remove("active");
-            });
+        button.addEventListener("click", () => {
+            categoryButtons.forEach(btn => btn.classList.remove("active"));
             button.classList.add("active");
 
             const selectedCategory = button.dataset.category;
-            console.log('Selected category:', selectedCategory);
-            
             filterProductsByCategory(selectedCategory);
         });
     });
 }
 
-// Filter products by category
 function filterProductsByCategory(category) {
     const productCards = document.querySelectorAll(".product-card");
     let visibleCount = 0;
 
-    console.log(`Filtering ${productCards.length} products for category: ${category}`);
-
-    productCards.forEach((card, index) => {
+    productCards.forEach(card => {
         const cardCategory = card.dataset.category;
         const shouldShow = category === "all" || category === cardCategory;
 
-        console.log(`Product ${index + 1}: category="${cardCategory}", show=${shouldShow}`);
-
         if (shouldShow) {
-            card.style.display = "block";
-            card.style.opacity = "1";
+            card.style.display = "flex";
             visibleCount++;
-            
-        
-            card.classList.add("fade-in");
         } else {
             card.style.display = "none";
-            card.classList.remove("fade-in");
         }
     });
-    
-    console.log(`Filtering complete: ${visibleCount} products visible`);
-    
-    // Show message if no products found
+
     if (visibleCount === 0) {
         showNoProductsMessage(category);
     } else {
@@ -74,28 +48,27 @@ function filterProductsByCategory(category) {
     }
 }
 
-// display no products message
 function showNoProductsMessage(category) {
-    let messageEl = document.getElementById('no-products-message');
+    let messageEl = document.getElementById("no-products-message");
+
     if (!messageEl) {
-        messageEl = document.createElement('div');
-        messageEl.id = 'no-products-message';
-        messageEl.style.textAlign = 'center';
-        messageEl.style.padding = '60px 20px';
-        messageEl.style.color = 'var(--text-light)';
-        messageEl.style.fontSize = '18px';
-        
-        const productsSection = document.querySelector('.products-section .container');
+        messageEl = document.createElement("div");
+        messageEl.id = "no-products-message";
+        messageEl.style.textAlign = "center";
+        messageEl.style.padding = "40px 20px";
+        messageEl.style.color = "var(--text-light)";
+        messageEl.style.fontSize = "18px";
+
+        const productsSection = document.querySelector(".products-section .container");
         productsSection.appendChild(messageEl);
     }
-    
+
     const categoryName = getCategoryDisplayName(category);
-    messageEl.innerHTML = `<p>No products found in <strong>${categoryName}</strong> category.</p>
-                          <p style="margin-top: 10px; font-size: 14px;">Please check back later or browse other categories.</p>`;
+    messageEl.innerHTML = `<p>No products found in <strong>${categoryName}</strong>.</p>`;
 }
 
 function hideNoProductsMessage() {
-    const messageEl = document.getElementById('no-products-message');
+    const messageEl = document.getElementById("no-products-message");
     if (messageEl) {
         messageEl.remove();
     }
@@ -103,14 +76,14 @@ function hideNoProductsMessage() {
 
 function getCategoryDisplayName(categoryKey) {
     const categoryMap = {
-        'all': 'All Products',
-        'perfume': 'Perfumes',
-        'car-perfume': 'Car Perfumes',
-        'candle': 'Candles',
-        'home-spray': 'Home Sprays',
-        'body-wash': 'Body Wash'
+        all: "All Products",
+        perfume: "Perfumes",
+        "car-perfume": "Car Perfumes",
+        candle: "Candles",
+        "home-spray": "Home Sprays",
+        "body-wash": "Body Wash"
     };
-    
+
     return categoryMap[categoryKey] || categoryKey;
 }
 
@@ -210,8 +183,8 @@ function updateCartCount() {
 // adding cart button
 
 function initializeAddToCartButtons() {
-    document.addEventListener('click', function(e) {
-        if (e.target.classList.contains('add-to-cart')) {
+    document.addEventListener("click", function(e) {
+        if (e.target.classList.contains("add-to-cart")) {
             const productId = e.target.dataset.id;
             if (productId) {
                 addToCart(productId);
