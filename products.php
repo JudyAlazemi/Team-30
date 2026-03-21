@@ -327,7 +327,7 @@ require_once __DIR__ . "/backend/config/session.php";
     </div>
   </footer>
   
-    <script src="assets/js/product.js?v=2"></script>
+    <script src="assets/js/product.js"></script>
 
   <script>
       function money(n) { return "£" + Number(n || 0).toFixed(2); }
