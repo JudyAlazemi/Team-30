@@ -1,3 +1,5 @@
+/* not in use */
+
 body.darkmode {
     transition: background-color 0.3s, color 0.3s;
     --background: #120d0b;
