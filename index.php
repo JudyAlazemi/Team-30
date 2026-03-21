@@ -386,8 +386,8 @@ try {
     </div>
   </div>
 
-  <div class="footer-bottom">
-    <p>© 2025 Sabil. All rights reserved.</p>
+   <div class="footer-bottom">
+    <p>© <?php echo date('Y'); ?> Sabil. All rights reserved.</p>
   </div>
 </footer>
 

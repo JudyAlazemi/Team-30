@@ -376,7 +376,7 @@ if (openBtn) {
 
 </script>
 
-<script src="assets/js/products-data.php"></script>
+<script src="product-data.php"></script>
 <script src="assets/js/productdetails.js"></script>
 
 
