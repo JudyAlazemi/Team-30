@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Mar 17, 2026 at 02:46 PM
+-- Generation Time: Mar 21, 2026 at 03:33 AM
 -- Server version: 8.0.45-0ubuntu0.22.04.1
 -- PHP Version: 8.3.30
 
@@ -46,7 +46,7 @@ CREATE TABLE `admins` (
 INSERT INTO `admins` (`id`, `name`, `email`, `password`, `approval_status`, `must_change_password`, `approved_by`, `approved_at`, `created_at`) VALUES
 (1, 'Main Admin', 'admin@sabil.com', '$2y$10$r1q2qxo5rWAC4Ta/hU/cEOUGJZ.31NjA65FzbM/klst7h5uA5XnjS', 'approved', 0, NULL, '2026-03-11 19:38:14', '2026-03-11 19:38:14'),
 (2, 'Chandni Admin', 'chandniadmin@sabil.com', '$2y$10$wp5jXrBksp6PxSyUs4HCJedV09LQ7qXyKZlTKK9f31NBOidYc5F3W', 'approved', 1, 1, '2026-03-12 11:28:48', '2026-03-12 11:28:10'),
-(3, 'jhon john', 'john9@gmail.com', '$2y$10$Ggyw9vpltOZLQ0oUSmKFie2JYKkVoCqeChRmb/MhnHOci6ddfzaPW', 'pending', 1, NULL, NULL, '2026-03-15 21:31:43');
+(3, 'jhon john', 'john9@gmail.com', '$2y$10$Ggyw9vpltOZLQ0oUSmKFie2JYKkVoCqeChRmb/MhnHOci6ddfzaPW', 'approved', 1, 1, '2026-03-18 14:53:58', '2026-03-15 21:31:43');
 
 -- --------------------------------------------------------
 
@@ -70,6 +70,33 @@ INSERT INTO `categories` (`id`, `name`, `description`) VALUES
 (3, 'candle', 'Scented candles'),
 (4, 'home-spray', 'Home sprays and room fresheners'),
 (5, 'body-wash', 'Body wash and shower gels');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `customer_messages`
+--
+
+CREATE TABLE `customer_messages` (
+  `id` int NOT NULL,
+  `user_id` int NOT NULL,
+  `name` varchar(100) COLLATE utf8mb4_unicode_520_ci NOT NULL,
+  `email` varchar(255) COLLATE utf8mb4_unicode_520_ci NOT NULL,
+  `subject` varchar(255) COLLATE utf8mb4_unicode_520_ci DEFAULT NULL,
+  `message` text COLLATE utf8mb4_unicode_520_ci NOT NULL,
+  `admin_reply` text COLLATE utf8mb4_unicode_520_ci,
+  `status` enum('sent','replied') COLLATE utf8mb4_unicode_520_ci NOT NULL DEFAULT 'sent',
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `replied_at` datetime DEFAULT NULL,
+  `replied_by` int DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci;
+
+--
+-- Dumping data for table `customer_messages`
+--
+
+INSERT INTO `customer_messages` (`id`, `user_id`, `name`, `email`, `subject`, `message`, `admin_reply`, `status`, `created_at`, `replied_at`, `replied_by`) VALUES
+(1, 18, 'chandni', 'chandni@yahoo.com', '', 'delievery time estimated for birmingham?', '5 days', 'replied', '2026-03-19 00:39:00', '2026-03-19 00:42:50', 1);
 
 -- --------------------------------------------------------
 
@@ -109,7 +136,12 @@ INSERT INTO `favourites` (`id`, `user_id`, `session_id`, `product_id`, `created_
 (23, NULL, '29o194d62a71dkhc82ds932b9d', 2, '2026-02-17 14:47:33'),
 (29, 7, NULL, 1, '2026-03-10 14:06:42'),
 (30, NULL, '242vv4ff5fiunjd39o2bqjlc5u', 1, '2026-03-10 15:44:19'),
-(31, NULL, '8rsvs7pvoeotod584j3e698sig', 2, '2026-03-10 15:44:56');
+(31, NULL, '8rsvs7pvoeotod584j3e698sig', 2, '2026-03-10 15:44:56'),
+(34, 18, NULL, 11, '2026-03-17 15:25:27'),
+(38, 18, NULL, 2, '2026-03-19 00:38:14'),
+(39, 9, NULL, 3, '2026-03-19 01:33:43'),
+(40, 9, NULL, 2, '2026-03-19 01:47:23'),
+(41, 9, NULL, 1, '2026-03-19 03:31:13');
 
 -- --------------------------------------------------------
 
@@ -144,11 +176,12 @@ CREATE TABLE `orders` (
 
 INSERT INTO `orders` (`id`, `user_id`, `total_amount`, `status`, `created_at`, `updated_at`) VALUES
 (1, 12, '74.79', 'processing', '2026-03-08 14:19:34', NULL),
-(2, 9, '144.98', 'return_pending', '2026-03-09 22:10:59', '2026-03-09 22:12:58'),
-(3, 13, '85.59', 'return_pending', '2026-03-09 22:24:40', '2026-03-09 22:25:00'),
+(2, 9, '144.98', 'returned', '2026-03-09 22:10:59', '2026-03-18 16:59:38'),
+(3, 13, '85.59', 'delivered', '2026-03-09 22:24:40', '2026-03-18 16:59:45'),
 (4, 7, '150.38', 'processing', '2026-03-10 14:06:27', NULL),
 (5, 13, '38.35', 'processing', '2026-03-10 14:47:44', NULL),
-(6, 9, '103.94', 'processing', '2026-03-16 19:27:07', NULL);
+(6, 9, '103.94', 'delivered', '2026-03-16 19:27:07', '2026-03-18 16:59:21'),
+(7, 18, '104.22', 'delivered', '2026-03-18 15:32:55', '2026-03-18 16:59:53');
 
 -- --------------------------------------------------------
 
@@ -177,7 +210,9 @@ INSERT INTO `order_items` (`id`, `order_id`, `product_id`, `quantity`, `price`) 
 (6, 4, 2, 1, '69.99'),
 (7, 5, 4, 1, '16.99'),
 (8, 6, 2, 1, '69.99'),
-(9, 6, 4, 1, '16.99');
+(9, 6, 4, 1, '16.99'),
+(10, 7, 2, 1, '69.99'),
+(11, 7, 15, 1, '7.99');
 
 -- --------------------------------------------------------
 
@@ -201,8 +236,8 @@ CREATE TABLE `products` (
 
 INSERT INTO `products` (`id`, `name`, `description`, `price`, `stock`, `image_url`, `category_id`) VALUES
 (1, 'Ocean Breeze', 'Fresh aquatic fragrance with marine notes', '59.99', 97, 'assets/images/oceanmist.png', 1),
-(2, 'Midnight Oud', 'Deep and mysterious oriental fragrance', '69.99', 97, 'assets/images/midnightoud.png', 1),
-(3, 'Velvet Rose', 'Luxurious rose with velvety undertones', '64.99', 99, 'assets/images/velvetmusk.jpeg', 1),
+(2, 'Midnight Oud', 'Deep and mysterious oriental fragrance', '69.99', 96, 'assets/images/midnightoud.png', 1),
+(3, 'Velvet Rose', 'Luxurious rose with velvety undertones', '64.99', 89, 'assets/images/velvetmusk.jpeg', 1),
 (4, 'Unleaded Petrol', 'Energetic and bold car fragrance', '16.99', 98, 'assets/images/carperfdark.jpeg', 2),
 (5, 'Ionix Fresh', 'Air-purifying fresh car scent', '14.99', 100, 'assets/images/carperflight.jpeg', 2),
 (6, 'Lavender Cruise', 'Calming lavender for relaxed drives', '18.99', 100, 'assets/images/carperfmed.png', 2),
@@ -214,7 +249,7 @@ INSERT INTO `products` (`id`, `name`, `description`, `price`, `stock`, `image_ur
 (12, 'Ocean Breeze Spray', 'Fresh coastal air room spray', '16.99', 100, 'assets/images/homesprayblue.jpeg', 4),
 (13, 'Tropical Breeze Body Wash', 'Exotic tropical fruit cleansing wash', '8.99', 100, 'assets/images/tropicalbreeze.jpeg', 5),
 (14, 'Strawberry Silk Body Wash', 'Sweet strawberry with silk proteins', '9.99', 100, 'assets/images/strawbsilk.jpeg', 5),
-(15, 'Ultra Fresh Body Wash', 'Deep cleansing with mint freshness', '7.99', 100, 'assets/images/ultrafresh.jpeg', 5);
+(15, 'Ultra Fresh Body Wash', 'Deep cleansing with mint freshness', '7.99', 99, 'assets/images/ultrafresh.jpeg', 5);
 
 -- --------------------------------------------------------
 
@@ -254,7 +289,8 @@ CREATE TABLE `reviews` (
 INSERT INTO `reviews` (`id`, `product_id`, `user_id`, `rating`, `comment`, `created_at`) VALUES
 (1, 1, 9, 5, 'Amazing', '2026-03-08 00:28:49'),
 (2, 8, 9, 5, 'Amazing', '2026-03-16 15:35:01'),
-(3, 2, 9, 5, '..', '2026-03-16 19:24:51');
+(3, 2, 9, 5, '..', '2026-03-16 19:24:51'),
+(4, 7, 9, 5, '.', '2026-03-20 04:09:41');
 
 -- --------------------------------------------------------
 
@@ -276,7 +312,12 @@ CREATE TABLE `site_reviews` (
 --
 
 INSERT INTO `site_reviews` (`id`, `user_id`, `display_name`, `rating`, `comment`, `created_at`) VALUES
-(2, 7, 'Anonymous', 5, 'I am obsessed!', '2026-03-16 18:56:13');
+(2, 7, 'Anonymous', 5, 'I am obsessed!', '2026-03-16 18:56:13'),
+(7, 1, 'Sarah M.', 5, 'Beautiful experience from start to finish. The website was very easy to use.', '2026-03-18 22:45:22'),
+(8, 1, 'Layla A.', 4, 'I loved the overall shopping experience and the design felt very premium.', '2026-03-18 22:45:22'),
+(9, 1, 'Huda K.', 5, 'Very smooth website and the brand presentation looks luxurious and professional.', '2026-03-18 22:45:22'),
+(10, 18, 'Chandni', 5, 'Love the packaging', '2026-03-19 00:26:46'),
+(11, 9, 'Jane', 5, '.', '2026-03-20 04:09:24');
 
 -- --------------------------------------------------------
 
@@ -316,7 +357,8 @@ INSERT INTO `users` (`id`, `name`, `email`, `password`, `created_at`, `reset_tok
 (15, 'Sara', 'sara2@123.com', '$2y$10$3vfHrl3LbtM2dfmo5rCxM.K2AYV7gr5Rf.DnknjdnAxcEs0kwAr3e', '2026-03-15 03:32:12', NULL, NULL, 'What was the name of your first pet?', '$2y$10$1lxydibjFlDOvKwwS6jG8OYmUXYoUHRXlO7YKVfwq5ADrflNBu2Ga', 1),
 (16, 'John', 'john9@gmail.com', '$2y$10$3iIo.105isfnIBFw4UIq5uulLU3s8gpIOxvCVzK4Ol25d0YG7aeD6', '2026-03-15 21:29:53', NULL, NULL, 'What is your mother’s first name?', '$2y$10$nULJpP/WARfLie4AMIywT.JxwSWBm3qJHjIeLXBigY.sgr8rZGAP6', 1),
 (17, 'Chandni', 'chandni@test.com', '$2y$10$lMLMq.MDVmcG7X/kyAGb6uboUaUUDgMWIoPyifmHpA6uRe31qisL2', '2026-03-16 11:52:30', NULL, NULL, 'What was the name of your first school?', '$2y$10$ecRtC1GQ09PBDw9ZAPYDZOnLD9ItyLeuwdKrfVioYeaUzO0TGDxeW', 1),
-(18, 'chandni', 'chandni@yahoo.com', '$2y$10$Rg6HY7xj6FTOqXrKvDRW2ejZ9xo4O2stby4JkmsQjcWBrbozjt3ba', '2026-03-17 14:25:30', NULL, NULL, 'What was the name of your first school?', '$2y$10$cjATy6xPcHhrrn3JJ/nu/.p0fXhOCrDJm6HX4HmpmvYX8zw.FzqSi', 1);
+(18, 'chandni', 'chandni@yahoo.com', '$2y$10$Rg6HY7xj6FTOqXrKvDRW2ejZ9xo4O2stby4JkmsQjcWBrbozjt3ba', '2026-03-17 14:25:30', NULL, NULL, 'What was the name of your first school?', '$2y$10$cjATy6xPcHhrrn3JJ/nu/.p0fXhOCrDJm6HX4HmpmvYX8zw.FzqSi', 1),
+(19, 'judy3', 'judy3@test.com', '$2y$10$cwcNjT8Kpvuy8ptEk1mjaOFP76xUbRBsS/uw2EXWuVi4JL4kO51A2', '2026-03-20 14:56:55', NULL, NULL, 'What was the name of your first school?', '$2y$10$AtyW/W0iQd9HzCZOzlcCz.DaKH4uM/gVGVvkiRP0.qxfPY8sXB2.W', 1);
 
 --
 -- Indexes for dumped tables
@@ -335,6 +377,14 @@ ALTER TABLE `admins`
 --
 ALTER TABLE `categories`
   ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `customer_messages`
+--
+ALTER TABLE `customer_messages`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `user_id` (`user_id`),
+  ADD KEY `replied_by` (`replied_by`);
 
 --
 -- Indexes for table `favourites`
@@ -416,10 +466,16 @@ ALTER TABLE `categories`
   MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
+-- AUTO_INCREMENT for table `customer_messages`
+--
+ALTER TABLE `customer_messages`
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
 -- AUTO_INCREMENT for table `favourites`
 --
 ALTER TABLE `favourites`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=34;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=42;
 
 --
 -- AUTO_INCREMENT for table `newsletter_subscribers`
@@ -431,13 +487,13 @@ ALTER TABLE `newsletter_subscribers`
 -- AUTO_INCREMENT for table `orders`
 --
 ALTER TABLE `orders`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT for table `order_items`
 --
 ALTER TABLE `order_items`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT for table `products`
@@ -455,19 +511,19 @@ ALTER TABLE `quiz_results`
 -- AUTO_INCREMENT for table `reviews`
 --
 ALTER TABLE `reviews`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `site_reviews`
 --
 ALTER TABLE `site_reviews`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
 
 --
 -- Constraints for dumped tables
@@ -478,6 +534,13 @@ ALTER TABLE `users`
 --
 ALTER TABLE `admins`
   ADD CONSTRAINT `fk_admin_approved_by` FOREIGN KEY (`approved_by`) REFERENCES `admins` (`id`) ON DELETE SET NULL;
+
+--
+-- Constraints for table `customer_messages`
+--
+ALTER TABLE `customer_messages`
+  ADD CONSTRAINT `fk_customer_messages_admin` FOREIGN KEY (`replied_by`) REFERENCES `admins` (`id`) ON DELETE SET NULL,
+  ADD CONSTRAINT `fk_customer_messages_user` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE;
 
 --
 -- Constraints for table `orders`
