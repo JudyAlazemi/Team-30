@@ -22,14 +22,14 @@
 body {
     margin: 0;
     padding: 0;
-    background: #F4EEE9; /* full background */
+    background: var(--background);
     font-family: 'Meshed Display', sans-serif;
-    color: #303C30;
+    color: var(--text-dark);
 }
 
 /* === HEADER === */
 .top-banner {
-    background: #4e4138;
+    background: var(--secondary);
     width: 100%;
     padding: 1.5rem 0;
     position: relative;
@@ -152,12 +152,14 @@ label {
     display: block;
 }
 
-input {
+input,
+.auth-form select {
     width: 100%;
-    padding: 0.85rem;
+    padding: 14px 16px;
     border: 1px solid #ccc;
     border-radius: 6px;
     background: white;
+    box-sizing: border-box;
 }
 
 .two-cols {
@@ -279,3 +281,70 @@ input {
     margin-bottom: 2px;
 }
 
+/* =============================
+   DARK MODE - LOGIN / REGISTER
+   ============================= */
+
+body.darkmode {
+    background: #050505;
+    color: #f5f0e8;
+}
+
+body.darkmode .content h1,
+body.darkmode h1 {
+    color: #f5f0e8;
+}
+
+body.darkmode .subtitle,
+body.darkmode .legal,
+body.darkmode .signin,
+body.darkmode .admin-login-option,
+body.darkmode .password-rules {
+    color: #f5f0e8;
+}
+
+body.darkmode label {
+    color: #f5f0e8;
+}
+
+body.darkmode input,
+body.darkmode .auth-form select {
+    background: #1a1a1d !important;
+    color: #f5f0e8 !important;
+    border: 1px solid #2f2f34 !important;
+    box-sizing: border-box;
+}
+
+body.darkmode input::placeholder {
+    color: #b9b2aa;
+}
+
+body.darkmode .btn-primary {
+    background: #1a1a1d !important;
+    color: #f5e7dc !important;
+    border: 1px solid #bba894 !important;
+    border-radius: 10px;
+}
+
+body.darkmode .btn-primary:hover {
+    background: #242428 !important;
+    color: #ffffff !important;
+    border-color: #d8c4b2 !important;
+}
+
+body.darkmode .signin a,
+body.darkmode .admin-login-option a,
+body.darkmode .forgot-link {
+    color: #d1b49d;
+}
+
+body.darkmode .signin a:hover,
+body.darkmode .admin-login-option a:hover,
+body.darkmode .forgot-link:hover {
+    color: #ffffff;
+    text-decoration: underline;
+}
+
+body.darkmode .eye-icon {
+    stroke: #b9b2aa;
+}
